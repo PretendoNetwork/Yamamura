@@ -6,6 +6,12 @@ import platform
 
 client = Bot(description="Yamamura by superwhiskers", command_prefix=".", pm_help = True)
 
+# find a role by it's name
+def getRoleByName(name, rolesList):
+    for x in range(0, len(rolesList)):
+        if rolesList[x].name == name:
+            return rolesList[x]
+
 @client.event
 async def on_ready():
 
@@ -20,7 +26,10 @@ async def on_message(msg):
         # print(msg.server.emojis[0].name)
         await client.add_reaction(msg, u'\U0001F44D')
         await client.add_reaction(msg, u'\U0001F44E')
-    if msg.content == "ayy":
+    elif msg.content == "ayy":
         await client.send_message(msg.channel, "lmao")
+    elif "i'm a teapot" in msg.content.lower():
+        role = getRoleByName("Real Devs", msg.server.roles)
+        await client.add_roles(msg.author, role)
 
-client.run('place key here')
+client.run('put bot key here')
