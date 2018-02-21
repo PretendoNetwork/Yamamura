@@ -27,10 +27,14 @@ async def on_message(msg):
         # print(msg.server.emojis[0].name)
         await client.add_reaction(msg, u'\U0001F44D')
         await client.add_reaction(msg, u'\U0001F44E')
-    elif re.match(r"^ay{2,}", msg.content, re.IGNORECASE & re.MULTILINE):
-        await client.send_message(msg.channel, "lmao")
+    elif re.match(r"^ay{1,}", msg.content, re.IGNORECASE & re.MULTILINE):
+        y = ""
+        for x in range(0, len(msg.content)):
+            if msg.content[x] == "y":
+                y += "o"
+        await client.send_message(msg.channel, "lma"+y)
     elif "i'm a teapot" in msg.content.lower():
         role = getRoleByName("Real Devs", msg.server.roles)
         await client.add_roles(msg.author, role)
 
-client.run('MzI5ODMwOTY3MzI4MTEyNjUx.DW5Gww.ncxcvgyv9oNhrXZ5thJT12t8zXo')
+client.run('NDE1MzY1MDc0NjUyMjMzNzM4.DW04lA.aHfjBIlIioCD4BJ2X7Xy7FXmbQU')
