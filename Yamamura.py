@@ -3,6 +3,7 @@ import asyncio
 from discord.ext.commands import Bot
 from discord.ext import commands
 import platform
+import re
 
 client = Bot(description="Yamamura by superwhiskers", command_prefix=".", pm_help = True)
 
@@ -26,10 +27,10 @@ async def on_message(msg):
         # print(msg.server.emojis[0].name)
         await client.add_reaction(msg, u'\U0001F44D')
         await client.add_reaction(msg, u'\U0001F44E')
-    elif msg.content == "ayy":
+    elif re.match(r"^ay{2,}", msg.content, re.IGNORECASE & re.MULTILINE):
         await client.send_message(msg.channel, "lmao")
     elif "i'm a teapot" in msg.content.lower():
         role = getRoleByName("Real Devs", msg.server.roles)
         await client.add_roles(msg.author, role)
 
-client.run('put bot key here')
+client.run('MzI5ODMwOTY3MzI4MTEyNjUx.DW5Gww.ncxcvgyv9oNhrXZ5thJT12t8zXo')
