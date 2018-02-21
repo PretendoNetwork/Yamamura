@@ -25,7 +25,10 @@ async def on_ready():
     # print some output
     print('logged in as: '+bot.user.name+' (id:'+bot.user.id+') | connected to '+str(len(bot.servers))+' server(s)')
     print('invite: https://discordapp.com/oauth2/authorize?bot_id={}&scope=bot&permissions=8'.format(bot.user.id))
-    return await bot.change_presence(game=discord.Game(name='with edamame'))
+    await bot.change_presence(game=discord.Game(name='with edamame'))
+
+    global channels
+    global roles
 
     # get some roles
     roles["developer"] = discord.utils.get(bot.server.roles, name="Developer")
@@ -60,11 +63,12 @@ async def on_ready():
 # message handling
 @bot.event
 async def on_message(msg):
+    print("[{} in {}]: {}".format(msg.author.name, msg.channel.name, msg.content))
     if (msg.channel.name == "voting") or (msg.channel.name == "voting-game-suggestions"):
         # print(msg.server.emojis[0].name)
         await bot.add_reaction(msg, u'\U0001F44D')
         await bot.add_reaction(msg, u'\U0001F44E')
-    elif re.match(r"^ay{1,}", msg.content, re.IGNORECASE & re.MULTILINE):
+    elif re.match(r"^ay{1,}$", msg.content, re.IGNORECASE & re.MULTILINE):
         y = ""
         for x in range(0, len(msg.content)):
             if msg.content[x] == "y":
