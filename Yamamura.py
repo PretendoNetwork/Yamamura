@@ -71,7 +71,6 @@ async def on_message(msg):
                 y += "o"
         await bot.send_message(msg.channel, "lma"+y)
     elif "i'm a teapot" in msg.content.lower():
-        role = getRoleByName("Real Devs", msg.server.roles)
-        await bot.add_roles(msg.author, role)
+        await bot.add_roles(msg.author, roles["realdev"])
 
 bot.run(cfg["token"])
