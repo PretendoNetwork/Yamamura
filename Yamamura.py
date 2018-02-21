@@ -37,4 +37,4 @@ async def on_message(msg):
         role = getRoleByName("Real Devs", msg.server.roles)
         await client.add_roles(msg.author, role)
 
-client.run('NDE1MzY1MDc0NjUyMjMzNzM4.DW04lA.aHfjBIlIioCD4BJ2X7Xy7FXmbQU')
+client.run('da key goes here')
