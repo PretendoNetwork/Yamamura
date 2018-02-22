@@ -76,6 +76,9 @@ async def on_message(msg):
 
     # eh ayy?
     elif "ay" in msg.content:
+        if ("@everyone" in msg.content) or ("@here" in msg.content):
+            await bot.send_message(msg.channel, "Coo, {}, no everyone pings in 'ayy' messages".format(msg.author.mention))
+            return
         splitmsg = msg.content.split(" ")
         msgayy = None
         for x in range(0, len(splitmsg)):
