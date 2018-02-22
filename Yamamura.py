@@ -6,7 +6,6 @@ import platform
 import json
 import re
 
-
 # load config file, exit if not found
 cfg = None
 
@@ -15,6 +14,19 @@ try:
         cfg = json.load(cfgFile)
 except FileNotFoundError:
     print('copy "config.example.json", rename it to "config.json" and edit it before running Yamamura')
+
+# help msg
+helpmsg = f"""```
+Yamamura™, the Pretendo Discord bot
+
+{cfg["prefix"]}help          : Shows this message
+{cfg["prefix"]}toggleupdates : Toggles the Updates role
+{cfg["prefix"]}authors       : Shows the authors of the bot```"""
+
+# author message
+authors = """```
+superwhiskers (@!superwhiskers™#3210) : bot concept and main developer
+Netux         (@Netux#2308)           : certain features and some regex work```"""
 
 if cfg:
     # get the bot
@@ -26,18 +38,34 @@ if cfg:
         with open("output.log", "a") as output:
             output.write(string + "\n")
 
+    # returns the server the bot is in
     def server():
         for x in bot.servers:
             return x
 
+    # return a channel object by name
     def channel(channel_name):
         return discord.utils.get(server().channels, name=channel_name)
 
+    # returns a role object by name
     def role(role_name):
         return discord.utils.get(server().roles, name=role_name)
 
+    # returns a user object by name
     def user(user_name):
         return discord.utils.get(server().members, name=user_name)
+
+    # checks if a command is at the start of a message
+    def command(command, msg):
+        return re.match(r"^"+cfg["prefix"]+command, msg, re.MULTILINE)
+
+    # checks if the specified member has a role
+    def hasRole(member, role):
+        hasRole = False
+        for x in range(0, len(member.roles)):
+            if role == member.roles[x].name:
+                hasRole = True
+        return hasRole
 
     @bot.event
     async def on_ready():
@@ -48,8 +76,8 @@ if cfg:
             break
 
         # print some output
-        print('logged in as: '+bot.user.name+' (id:'+bot.user.id+') | connected to '+str(len(bot.servers))+' server(s)')
-        print('invite: https://discordapp.com/oauth2/authorize?bot_id={}&scope=bot&permissions=8'.format(bot.user.id))
+        print(f"logged in as: { bot.user.name } (id:{ bot.user.id }) | connected to { str(len(bot.servers)) } server(s)")
+        print(f"invite: https://discordapp.com/oauth2/authorize?bot_id={ bot.user.id }&scope=bot&permissions=8")
         await bot.change_presence(game=discord.Game(name='with edamame'))
 
     # message handling
@@ -82,12 +110,19 @@ if cfg:
 
         # do you like teapots? dun dun dun dun dunnn....
         elif "i'm a teapot" in msg.content.lower():
-            await bot.add_roles(msg.author, role("Real Devs"))
+            if hasRole(msg.author, "Real Devs"):
+                await bot.remove_roles(msg.author, role("Real Devs"))
+                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you no longer have the Real Devs role.")
+            else:
+                await bot.add_roles(msg.author, role("Real Devs"))
+                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you now have the Real Devs role.")
+            await bot.delete_message(msg)
 
         # eh ayy?
         elif "ay" in msg.content:
+
             if ("@everyone" in msg.content) or ("@here" in msg.content):
-                await bot.send_message(msg.channel, "Coo, {}, no everyone pings in 'ayy' messages".format(msg.author.mention))
+                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, no everyone pings in 'ayy' messages")
                 return
             splitmsg = msg.content.split(" ")
             msgayy = None
@@ -106,43 +141,41 @@ if cfg:
             ret = "lma"+y
 
             # concatenating the message
-            if slot == 0:
-                fullret = ret + " " + " ".join(splitmsg[1:len(splitmsg)])
+            fullret = splitmsg
+            fullret[slot] = ret
+            fullret = " ".join(fullret)
 
-                # if the string is too long,
+            # if the string is too long,
+            if len(fullret) > 2000:
+
+                # i'm too lazy to implement splicing the message
                 if len(fullret) > 2000:
-
-                    # i'm too lazy to implement splicing the message
-                    if len(fullret) > 2000:
-                        await bot.send_message(msg.channel, "Coo, {}, your message is too long.".format(msg.author.mention))
-                        return
-
-            elif slot == (len(splitmsg) - 1):
-                fullret = " ".join(splitmsg[0:len(splitmsg) - 1]) + " " + ret
-
-                # if the string is too long,
-                if len(fullret) > 2000:
-
-                    # i'm too lazy to implement splicing the message
-                    if len(fullret) > 2000:
-                        await bot.send_message(msg.channel, "Coo, {}, your message is too long.".format(msg.author.mention))
-                        return
-
-            else:
-                fullret = splitmsg
-                fullret[slot] = ret
-                fullret = " ".join(fullret)
-
-                # if the string is too long,
-                if len(fullret) > 2000:
-
-                    # i'm too lazy to implement splicing the message
-                    if len(fullret) > 2000:
-                        await bot.send_message(msg.channel, "Coo, {}, your message is too long.".format(msg.author.mention))
-                        return
+                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, your message is too long.")
+                    return
 
             # SEND IT ALREADY!!!
             await bot.send_message(msg.channel, fullret)
+
+        # if the first character is the prefix
+        elif msg.content[0] == cfg["prefix"]:
+
+            # prefix + help
+            if command("help", msg.content):
+                await bot.send_message(msg.author, helpmsg)
+
+            # prefix + remindme
+            elif command("toggleupdates", msg.content):
+                if hasRole(msg.author, "Updates"):
+                    await bot.remove_roles(msg.author, role("Updates"))
+                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you no longer have the Updates role.")
+                else:
+                    await bot.add_roles(msg.author, role("Updates"))
+                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you now have the Updates role.")
+
+            # prefix + authors
+            elif command("authors", msg.content):
+                await bot.send_message(msg.author, authors)
+
 
 
     bot.run(cfg["token"])
