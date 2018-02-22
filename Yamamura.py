@@ -17,13 +17,15 @@ except FileNotFoundError:
     print('copy "config.example.json", rename it to "config.json" and edit it before running Yamamura')
 
 if cfg:
-    # load the output file
-    output = open("output.log", "w")
-
     # get the bot
     bot = Bot(description="Yamamura by superwhiskers", command_prefix=cfg["prefix"], pm_help = cfg["pm-help"])
 
     # useful functions
+    def log(string):
+        print(string)
+        with open("output.log", "a") as output:
+            output.write(string + "\n")
+
     def server():
         for x in bot.servers:
             return x
@@ -55,7 +57,7 @@ if cfg:
     async def on_message(msg):
 
         # log-em.
-        print("[{} in {}]: {}".format(msg.author.name, msg.channel.name, msg.content))
+        log(f"[{ msg.author.name } in { msg.channel.name }] { msg.content }")
 
         # no checkin yourself
         if msg.author.name == "Yamamura™":
