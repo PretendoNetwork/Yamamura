@@ -9,10 +9,25 @@ import re
 # load the access token
 cfg = json.load(open("config.json", "r"))
 
+# load the output file
+output = open("output.log", "w")
+
 # get the bot
 bot = Bot(description="Yamamura by superwhiskers", command_prefix=cfg["prefix"], pm_help = cfg["pm-help"])
-channels = { }
-roles = { }
+
+# useful functions
+def server():
+    for x in bot.servers:
+        return x
+
+def channel(channel_name):
+    return discord.utils.get(server().channels, name=channel_name)
+
+def role(role_name):
+    return discord.utils.get(server().roles, name=role_name)
+
+def user(user_name):
+    return discord.utils.get(server().members, name=user_name)
 
 @bot.event
 async def on_ready():
@@ -27,54 +42,94 @@ async def on_ready():
     print('invite: https://discordapp.com/oauth2/authorize?bot_id={}&scope=bot&permissions=8'.format(bot.user.id))
     await bot.change_presence(game=discord.Game(name='with edamame'))
 
-    global channels
-    global roles
-
-    # get some roles
-    roles["developer"] = discord.utils.get(bot.server.roles, name="Developer")
-    roles["realerdev"] = discord.utils.get(bot.server.roles, name="Realer Devs")
-    roles["partner"] = discord.utils.get(bot.server.roles, name="Partner")
-    roles["realdev"] = discord.utils.get(bot.server.roles, name="Real Devs")
-    roles["updates"] = discord.utils.get(bot.server.roles, name="Updates")
-    roles["everyone"] = bot.server.default_role
-
-    # get the channels
-    channels["welcomes"] = discord.utils.get(bot.server.channels, name="welcomes")
-    channels["rules"] = discord.utils.get(bot.server.channels, name="rules")
-    channels["general"] = discord.utils.get(bot.server.channels, name="general")
-    channels["announcements"] = discord.utils.get(bot.server.channels, name="announcements")
-    channels["support"] = discord.utils.get(bot.server.channels, name="support")
-    channels["offtopic"] = discord.utils.get(bot.server.channels, name="offtopic")
-    channels["gitupdates"] = discord.utils.get(bot.server.channels, name="git-updates")
-    channels["generaldev"] = discord.utils.get(bot.server.channels, name="general-dev")
-    channels["memes"] = discord.utils.get(bot.server.channels, name="memes")
-    channels["botspam"] = discord.utils.get(bot.server.channels, name="botspam")
-    channels["cotrd"] = discord.utils.get(bot.server.channels, name="cult-of-the-real-devs")
-    channels["services-general"] = discord.utils.get(bot.server.channels, name="general-services")
-    channels["oauth"] = discord.utils.get(bot.server.channels, name="oauth")
-    channels["prudp"] = discord.utils.get(bot.server.channels, name="prudp")
-    channels["cors"] = discord.utils.get(bot.server.channels, name="cors")
-    channels["voting"] = discord.utils.get(bot.server.channels, name="voting")
-    channels["voting-gs"] = discord.utils.get(bot.server.channels, name="voting-game-suggestions")
-    channels["dev-general"] = discord.utils.get(bot.server.channels, name="general-developer")
-    channels["dev"] = discord.utils.get(bot.server.channels, name="dev")
-    channels["thesituationroom"] = discord.utils.get(bot.server.channels, name="the-situation-room")
-
 # message handling
 @bot.event
 async def on_message(msg):
+
+    # log-em.
     print("[{} in {}]: {}".format(msg.author.name, msg.channel.name, msg.content))
+
+    # no checkin yourself
+    if msg.author.name == "Yamamura™":
+        return
+
+    # voting made easy
     if (msg.channel.name == "voting") or (msg.channel.name == "voting-game-suggestions"):
         # print(msg.server.emojis[0].name)
         await bot.add_reaction(msg, u'\U0001F44D')
         await bot.add_reaction(msg, u'\U0001F44E')
+
+    # ayyyyyyyyyyyyy...
     elif re.match(r"^ay{1,}$", msg.content, re.IGNORECASE & re.MULTILINE):
         y = ""
         for x in range(0, len(msg.content)):
             if msg.content[x] == "y":
                 y += "o"
-        await bot.send_message(msg.channel, "lma"+y)
+        ret = "lma"+y
+        if len(ret) > 2000:
+            ret = ret[0:2000]
+        await bot.send_message(msg.channel, ret)
+
+    # do you like teapots? dun dun dun dun dunnn....
     elif "i'm a teapot" in msg.content.lower():
-        await bot.add_roles(msg.author, roles["realdev"])
+        await bot.add_roles(msg.author, role("Real Devs"))
+
+    # eh ayy?
+    elif "ay" in msg.content:
+        splitmsg = msg.content.split(" ")
+        msgayy = None
+        for x in range(0, len(splitmsg)):
+            if re.match(r"^ay{1,}$", splitmsg[x], re.IGNORECASE & re.MULTILINE):
+                msgayy = splitmsg[x]
+                slot = x
+                break
+        y = ""
+        if msgayy == None:
+            return
+
+        for x in range(0, len(msgayy)):
+            if msgayy[x] == "y":
+                y += "o"
+        ret = "lma"+y
+
+        # concatenating the message
+        if slot == 0:
+            fullret = ret + " " + " ".join(splitmsg[1:len(splitmsg)])
+
+            # if the string is too long,
+            if len(fullret) > 2000:
+
+                # i'm too lazy to implement splicing the message
+                if len(fullret) > 2000:
+                    await bot.send_message(msg.channel, "Coo, {}, your message is too long.".format(msg.author.mention))
+                    return
+
+        elif slot == (len(splitmsg) - 1):
+            fullret = " ".join(splitmsg[0:len(splitmsg) - 1]) + " " + ret
+
+            # if the string is too long,
+            if len(fullret) > 2000:
+
+                # i'm too lazy to implement splicing the message
+                if len(fullret) > 2000:
+                    await bot.send_message(msg.channel, "Coo, {}, your message is too long.".format(msg.author.mention))
+                    return
+
+        else:
+            fullret = splitmsg
+            fullret[slot] = ret
+            fullret = " ".join(fullret)
+
+            # if the string is too long,
+            if len(fullret) > 2000:
+
+                # i'm too lazy to implement splicing the message
+                if len(fullret) > 2000:
+                    await bot.send_message(msg.channel, "Coo, {}, your message is too long.".format(msg.author.mention))
+                    return
+
+        # SEND IT ALREADY!!!
+        await bot.send_message(msg.channel, fullret)
+
 
 bot.run(cfg["token"])
