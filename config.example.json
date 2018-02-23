@@ -1,5 +1,5 @@
 {
-  "token" : "Create a BOT account at https://discordapp.com/developers/applications/me",
+  "token" : "create a bot account at https://discordapp.com/developers/applications/me",
   "prefix" : ".",
-  "pm-help" : true
+  "moderators" : [ "put your moderator names here" ]
 }

@@ -5,6 +5,7 @@ from discord.ext import commands
 import platform
 import json
 import re
+import time
 
 # load config file, exit if not found
 cfg = None
@@ -15,28 +16,249 @@ try:
 except FileNotFoundError:
     print('copy "config.example.json", rename it to "config.json" and edit it before running Yamamura')
 
+# load the modmail file
+#with open("modmail.json", "a+") as mailfile:
+#    if mailfile.read() == "":
+#        mailfile.write("[]")
+
 # help msg
 helpmsg = f"""```
 Yamamura™, the Pretendo Discord bot
 
-{cfg["prefix"]}help          : Shows this message
-{cfg["prefix"]}toggleupdates : Toggles the Updates role
-{cfg["prefix"]}authors       : Shows the authors of the bot```"""
+General:
+    {cfg["prefix"]}help             : Shows this message
+    {cfg["prefix"]}toggleupdates    : Toggles the Updates role
+    {cfg["prefix"]}authors          : Shows the authors of the bot
+Mail:
+    {cfg["prefix"]}mail send        : Send a message to the mods
+    {cfg["prefix"]}mail read        : Read mail (mods only)
+    {cfg["prefix"]}mail readid <id> : Read mail by id (mods only)
+    {cfg["prefix"]}mail all         : Read all mail (mods only)
+    {cfg["prefix"]}mail clean       : Clean mail read by all mods (mods only)
+    {cfg["prefix"]}mail delete <id> : Delete mail by id (mods only)```"""
 
 # author message
 authors = """```
 superwhiskers (@!superwhiskers™#3210) : bot concept and main developer
 Netux         (@Netux#2308)           : certain features and some regex work```"""
 
+# currently composing people
+composing = []
+
 if cfg:
     # get the bot
-    bot = Bot(description="Yamamura by superwhiskers", command_prefix=cfg["prefix"], pm_help = cfg["pm-help"])
+    bot = Bot(description="Yamamura by superwhiskers", command_prefix=cfg["prefix"])
 
     # useful functions
+
+    # log to the message log
     def log(string):
         print(string)
         with open("output.log", "a") as output:
             output.write(string + "\n")
+
+    # parse modmail to text
+    def parseMail(mail):
+
+        # parse a list of mail
+        if type(mail) == list:
+
+            # the string to send to Discord
+            retstr = """Mail:
+"""
+
+            # loop through the mail list
+            for x in range(0, len(mail)):
+
+                # append the parsed message to the string
+                retstr += f"""
+{mail[x]["id"]} - Sent by {mail[x]["sender"]}```
+{mail[x]["message"]}```
+"""
+
+            # return the string
+            return retstr
+
+        # parse only a single message
+        else:
+
+            # the string to send to Discord
+            retstr = f"""
+{mail["id"]} - Sent by {mail["sender"]}```
+{mail["message"]}```
+
+"""
+
+            # return the parsed message
+            return retstr
+
+    # get the current modmail
+    def readmail(mod):
+
+        # the current mail
+        mail = None
+
+        # open the modmail file
+        with open("modmail.json", "r") as mailfile:
+            mail = json.load(mailfile)
+
+        # the unread mail list
+        unread = []
+
+        # add all of the unread mail
+        for x in range(0, len(mail)):
+            try:
+                mail[x]["readBy"].index(mod)
+            except ValueError:
+                unread.append(mail[x])
+                mail[x]["readBy"].append(mod)
+
+        # if no mail is unread
+        if unread == []:
+            return None
+
+        # write the readby
+        with open("modmail.json", "w") as mailfile:
+            mailfile.seek(0)
+            mailfile.write(json.dumps(mail))
+            mailfile.truncate()
+
+        # return the unread mail
+        return parseMail(unread)
+
+    # send modmail
+    def sendmail(message, sender):
+
+        # the current mail
+        mail = None
+
+        # open the modmail file
+        with open("modmail.json", "r") as mailfile:
+             mail = json.load(mailfile)
+
+        # constructed mail
+        mailToSend = {}
+
+        # construct the message
+        mailToSend["id"] = str(hash(time.time()))
+        mailToSend["sender"] = sender
+        mailToSend["message"] = message
+        mailToSend["readBy"] = []
+
+        # send the message
+        mail.append(mailToSend)
+
+        # write the mail
+        with open("modmail.json", "w") as mailfile:
+            mailfile.seek(0)
+            mailfile.write(json.dumps(mail))
+            mailfile.truncate()
+
+        return "written"
+
+    # clean mail
+    def cleanmail(mods):
+
+        # the current mail
+        mail = None
+
+        # open the modmail file
+        with open("modmail.json", "r") as mailfile:
+            mail = json.load(mailfile)
+
+        # indexes of mail to delete
+        indexesToDelete = []
+
+        # check if all the mods have read the mail
+        for x in range(0, len(mail)):
+            mailRead = True
+            for y in range(0, len(mods)):
+                try:
+                    mail[x]["readBy"].index(mods[y])
+                except ValueError:
+                    mailRead = False
+            if mailRead == True:
+                indexesToDelete.append(x)
+
+        # then clean from the mail list the indexes to delete
+        for x in range(0, len(indexesToDelete)):
+            del mail[indexesToDelete[x]]
+
+        # then save the file
+        with open("modmail.json", "w") as mailfile:
+            mailfile.seek(0)
+            mailfile.write(json.dumps(mail))
+            mailfile.truncate()
+
+        return
+
+    # delete a specific message
+    def deletemail(sid):
+        # the current mail
+        mail = None
+
+        # open the modmail file
+        with open("modmail.json", "r") as mailfile:
+            mail = json.load(mailfile)
+
+        # search the mail for a specific id
+        found = False
+        for x in range(0, len(mail)):
+            if mail[x]["id"] == sid:
+                del mail[x]
+                found = True
+
+        # if we couldn't find the mail
+        if found == False:
+            return None
+
+        # then save the file
+        with open("modmail.json", "w") as mailfile:
+            mailfile.seek(0)
+            mailfile.write(json.dumps(mail))
+            mailfile.truncate()
+
+        # return at the end
+        return "not none"
+
+        # return "found" if we could delete it
+        return "found"
+
+    # shows all mail
+    def listall():
+
+        # mail variable
+        mail = None
+
+        # open the modmail file and return the contents
+        with open("modmail.json", "r") as mailfile:
+            mail = json.load(mailfile)
+
+        # this might happen
+        if mail == []:
+            return None
+
+        # the mail
+        return parseMail(mail)
+
+    # read a specific message
+    def readsinglemail(sid):
+
+        # the current mail
+        mail = None
+
+        # open the modmail file
+        with open("modmail.json", "r") as mailfile:
+            mail = json.load(mailfile)
+
+        # find the single message
+        for x in range(0, len(mail)):
+            if mail[x]["id"] == sid:
+                message = mail[x]
+                return parseMail(message)
+
+        # return None if not found
+        return None
 
     # returns the server the bot is in
     def server():
@@ -86,6 +308,15 @@ if cfg:
 
         # log-em.
         log(f"[{ msg.author.name } in { msg.channel.name }] { msg.content }")
+
+        # check if the message is sent by a person who is composing
+        try:
+            ind = composing.index(msg.author.name)
+            sendmail(msg.content, msg.author.name)
+            await bot.send_message(msg.author, f"Coo, { msg.author.mention }, your mail has been sent.")
+            del composing[ind]
+        except ValueError:
+            pass
 
         # no checkin yourself
         if msg.author.name == "Yamamura™":
@@ -159,6 +390,12 @@ if cfg:
         # if the first character is the prefix
         elif msg.content[0] == cfg["prefix"]:
 
+            # variable telling if the command user is eligible for mod commands
+            if hasRole(msg.author, "Developer"):
+                mod = True
+            else:
+                mod = False
+
             # prefix + help
             if command("help", msg.content):
                 await bot.send_message(msg.author, helpmsg)
@@ -176,6 +413,77 @@ if cfg:
             elif command("authors", msg.content):
                 await bot.send_message(msg.author, authors)
 
+            # prefix + modmail
+            elif command("mail", msg.content):
 
+                # split the message and get the arguments
+                args = msg.content.split(" ")[1:]
+
+                # this is a subcommand command
+                if args == []:
+                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, the mail command requires a subcommand.")
+                    return
+
+                # test for subcommands
+
+                # send mail
+                if args[0] == "send":
+                    await bot.send_message(msg.author, f"""Coo, { msg.author.mention },
+send a message right here containing
+the message that you want to send to the mods.""")
+                    composing.append(msg.author.name)
+                # read unread mail
+                elif args[0] == "read":
+                    if mod == True:
+                        mail = readmail(msg.author.name)
+                        if mail == None:
+                            await bot.send_message(msg.author, f"Coo, { msg.author.mention }, you have no mail.")
+                        else:
+                            await bot.send_message(msg.author, mail)
+                    else:
+                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
+                # read a specific message
+                elif args[0] == "readid":
+                    if mod == True:
+                        mail = readsinglemail(args[1])
+                        if mail == None:
+                            await bot.send_message(msg.author, f"Coo, { msg.author.mention }, no mail found by that id.")
+                        else:
+                            await bot.send_message(msg.author, mail)
+                    else:
+                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
+                # read all messages
+                elif args[0] == "all":
+                    if mod == True:
+                        mail = listall()
+                        if mail == None:
+                            await bot.send_message(msg.author, f"Coo, { msg.author.mention }, there is no mail.")
+                        else:
+                            await bot.send_message(msg.author, mail)
+                    else:
+                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
+                # clean mail
+                elif args[0] == "clean":
+                    if mod == True:
+                        cleanmail(cfg["moderators"])
+                        await bot.send_message(msg.author, f"Coo, { msg.author.mention }, cleaned mail.")
+                    else:
+                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
+                # delete a specific message
+                elif args[0] == "delete":
+                    if mod == True:
+                        mail = deletemail(args[1])
+                        if mail == None:
+                            await bot.send_message(msg.author, f"Coo, { msg.author.mention }, couldn't find a message with that id.")
+                        else:
+                            await bot.send_message(msg.author, f"Coo, { msg.author.mention }, deleted message.")
+                    else:
+                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
+                # subcommand not found
+                else:
+                    await bot.send_message(msg.author, f"Coo, { msg.author.mention }, { args[0] } is not a mail command.")
+
+                # return at the end
+                return
 
     bot.run(cfg["token"])
