@@ -309,6 +309,10 @@ try:
             # log-em.
             log(f"[{ msg.author.name } in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]")
 
+            # no checkin yourself or the GitHub bot.
+            if (msg.author.name == "Yamamura™") or (msg.author.name == "GitHub"):
+                return
+            
             # check if the message is sent by a person who is composing
             try:
                 ind = composing.index(msg.author.name)
@@ -320,10 +324,6 @@ try:
                 del composing[ind]
             except ValueError:
                 pass
-
-            # no checkin yourself
-            if msg.author.name == "Yamamura™":
-                return
 
             # voting made easy
             if (msg.channel.name == "voting") or (msg.channel.name == "voting-game-suggestions"):
