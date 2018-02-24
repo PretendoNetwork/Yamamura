@@ -312,7 +312,7 @@ try:
             # no checkin yourself or the GitHub bot.
             if (msg.author.name == "Yamamura™") or (msg.author.name == "GitHub"):
                 return
-            
+
             # check if the message is sent by a person who is composing
             try:
                 ind = composing.index(msg.author.name)
@@ -484,6 +484,6 @@ the message that you want to send to the mods.""")
 
         bot.run(cfg["token"])
 
-# trying to split an image message or imbed message doesn't work
-except ValueError or IndexError:
+# trying to split an image message doesn't work
+except ValueError:
     pass
