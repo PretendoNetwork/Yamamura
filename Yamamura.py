@@ -346,7 +346,7 @@ try:
                 if ("@everyone" in msg.content) or ("@here" in msg.content):
                     await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, no everyone pings in 'ayy' messages")
                     return
-                splitmsg = msg.content.split(" ")
+                splitmsg = msg.content.lower().split(" ")
                 msgayy = None
                 for x in range(0, len(splitmsg)):
                     if re.match(r"^ay{1,}$", splitmsg[x].lower(), re.IGNORECASE & re.MULTILINE):
