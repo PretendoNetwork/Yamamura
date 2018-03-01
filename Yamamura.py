@@ -343,40 +343,52 @@ try:
 
             # eh ayy?
             elif "ay" in msg.content.lower():
+
+                # no everyones
                 if ("@everyone" in msg.content) or ("@here" in msg.content):
                     await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, no everyone pings in 'ayy' messages")
                     return
+
+                # split the message
                 splitmsg = msg.content.lower().split(" ")
+
+                # the part of the string that contains the 'ayy'
                 msgayy = None
+
+                # find the part of the string with 'ayy'
                 for x in range(0, len(splitmsg)):
                     if re.match(r"^ay{1,}$", splitmsg[x].lower(), re.IGNORECASE & re.MULTILINE):
                         msgayy = splitmsg[x]
                         slot = x
                         break
-                y = ""
-                if msgayy == None:
-                    return
 
-                for x in range(0, len(msgayy)):
-                    if msgayy[x] == "y":
-                        y += "o"
-                ret = "lma"+y
+                # if nothing was found, stop the handler
+                if msgayy != None:
 
-                # concatenating the message
-                fullret = splitmsg
-                fullret[slot] = ret
-                fullret = " ".join(fullret)
+                    # the contructed 'lmaoo'
+                    ret = ""
 
-                # if the string is too long,
-                if len(fullret) > 2000:
+                    # match the parts
+                    re.sub(r"^a", "lma", msgayy)
+                    re.sub(r"^A", "LMA", msgayy)
+                    re.sub(r"y", "o", msgayy)
+                    re.sub(r"Y", "O", msgayy)
 
-                    # i'm too lazy to implement splicing the message
+                    # concatenating the message
+                    fullret = splitmsg
+                    fullret[slot] = ret
+                    fullret = " ".join(fullret)
+
+                    # if the string is too long,
                     if len(fullret) > 2000:
-                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, your message is too long.")
-                        return
 
-                # SEND IT ALREADY!!!
-                await bot.send_message(msg.channel, fullret)
+                        # i'm too lazy to implement splicing the message
+                        if len(fullret) > 2000:
+                            await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, your message is too long.")
+                            return
+
+                    # SEND IT ALREADY!!!
+                    await bot.send_message(msg.channel, fullret)
 
             # if the first character is the prefix
             elif msg.content[0] == cfg["prefix"]:
