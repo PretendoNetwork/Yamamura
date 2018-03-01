@@ -350,7 +350,7 @@ try:
                     return
 
                 # split the message
-                splitmsg = msg.content.lower().split(" ")
+                splitmsg = msg.content.split(" ")
 
                 # the part of the string that contains the 'ayy'
                 msgayy = None
@@ -365,14 +365,20 @@ try:
                 # if nothing was found, stop the handler
                 if msgayy != None:
 
-                    # the contructed 'lmaoo'
+                    # replacement string
                     ret = ""
 
-                    # match the parts
-                    re.sub(r"^a", "lma", msgayy)
-                    re.sub(r"^A", "LMA", msgayy)
-                    re.sub(r"y", "o", msgayy)
-                    re.sub(r"Y", "O", msgayy)
+                    # regexes don't work at all with this for some reason.
+                    # see commit cfa4e40d53b637132a7d120918aa03c52c04c720 if you want to fix it..
+                    for x in range(0, len(msgayy)):
+                        if msgayy[x] == "y":
+                            ret += "o"
+                        elif msgayy[x] == "Y":
+                            ret += "O"
+                        elif msgayy[x] == "a":
+                            ret += "lma"
+                        elif msgayy[x] == "A":
+                            ret += "LMA"
 
                     # concatenating the message
                     fullret = splitmsg
