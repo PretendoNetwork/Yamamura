@@ -326,7 +326,7 @@ try:
                 pass
 
             # voting made easy
-            if (msg.channel.name == "voting") or (msg.channel.name == "voting-game-suggestions"):
+            if (msg.channel.name == "voting") or (msg.channel.name == "yamamura-suggestions") or (msg.channel.name == "voting-game-suggestions"):
                 # print(msg.server.emojis[0].name)
                 await bot.add_reaction(msg, u'\U0001F44D')
                 await bot.add_reaction(msg, u'\U0001F44E')
