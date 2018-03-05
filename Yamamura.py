@@ -74,9 +74,7 @@ try:
 
         # return true if user is mod
         def is_mod(user):
-            # Security issue!
-            # Change this to check for user IDs
-            return user.name in cfg["moderators"]
+            return user.id in cfg["moderators"]
 
         # parse modmail to text
         def parseMail(mail):
