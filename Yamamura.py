@@ -42,8 +42,9 @@ Mail:
 
 # author message
 authors = """```
-superwhiskers (@!superwhiskers™#3210) : bot concept and main developer
-Netux         (@Netux#2308)           : certain features and some regex work```"""
+superwhiskers (@!superwhiskers™#3210): bot concept and main developer
+Netux         (@Netux#2308): certain features and some regex work
+Pika          (@《ThatNerdyPikachu》#2849): \"features\" and working on rewrite```"""
 
 # currently composing people
 composing = []
@@ -366,7 +367,7 @@ try:
                         sendgudmeme = True
                         break
                 if sendgudmeme is True:
-                    await bot.send_message(msg.channel, "Ahh, I remember the great ReduxRedstone incident of 2018. Everyone set their username to ReduxRedstone, which is RedDucks old name.\n(thank pika for this)")
+                    await bot.send_message(msg.channel, "Ahh, I remember the great ReduxRedstone incident of 2018. Everyone set their username to ReduxRedstone, which is RedDucks old name.\nhttps://www.youtube.com/user/halolink4\nhttps://www.github.com/ReduxRedstone\n(thank pika for this)")
                     return                  
 
             # eh ayy?
