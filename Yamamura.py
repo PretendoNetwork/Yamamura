@@ -23,22 +23,33 @@ with open("modmail.json", "a+") as mailfile:
     if mailfile.read() == "":
         mailfile.write("[]")
 
+# check if the tags file exists
+with open("tags.json", "a+") as tags_file:
+    tags_file.seek(0)
+    if tags_file.read() == "":
+        tags_file.write("{}")
+
 # help msg
 helpmsg = f"""```
 Yamamura™, the Pretendo Discord bot
 
 General:
-    {cfg["prefix"]}help             : Shows this message
-    {cfg["prefix"]}toggleupdates    : Toggles the Updates role
-    {cfg["prefix"]}authors          : Shows the authors of the bot
+    {cfg["prefix"]}help                    : Shows this message
+    {cfg["prefix"]}toggleupdates           : Toggles the Updates role
+    {cfg["prefix"]}authors                 : Shows the authors of the bot
+Tags:
+    {cfg["prefix"]}tag <name>              : Shows a tag's content
+    {cfg["prefix"]}tag create <name> <txt> : Creates a tag (mods only)
+    {cfg["prefix"]}tag delete <name>       : Deletes a tag (mods only)
+    {cfg["prefix"]}tag list                : Shows the tags available
 Mail:
-    {cfg["prefix"]}mail send <msg>  : Send a message to the mods with msg as message
-    {cfg["prefix"]}mail compose     : Send a message to the mods in-dms (private)
-    {cfg["prefix"]}mail read        : Read mail (mods only)
-    {cfg["prefix"]}mail readid <id> : Read mail by id (mods only)
-    {cfg["prefix"]}mail all         : Read all mail (mods only)
-    {cfg["prefix"]}mail clean       : Clean mail read by all mods (mods only)
-    {cfg["prefix"]}mail delete <id> : Delete mail by id (mods only)```"""
+    {cfg["prefix"]}mail send <msg>         : Send a message to the mods with msg as message
+    {cfg["prefix"]}mail compose            : Send a message to the mods in-dms (private)
+    {cfg["prefix"]}mail read               : Read mail (mods only)
+    {cfg["prefix"]}mail readid <id>        : Read mail by id (mods only)
+    {cfg["prefix"]}mail all                : Read all mail (mods only)
+    {cfg["prefix"]}mail clean              : Clean mail read by all mods (mods only)
+    {cfg["prefix"]}mail delete <id>        : Delete mail by id (mods only)```"""
 
 # author message
 authors = """```
@@ -60,6 +71,10 @@ try:
             print(string)
             with open("output.log", "a") as output:
                 output.write(string + "\n")
+
+        # return true if user is mod
+        def is_mod(user):
+            return user.id in cfg["moderators"]
 
         # parse modmail to text
         def parseMail(mail):
@@ -161,7 +176,9 @@ try:
             return "written"
 
         # clean mail
-        def cleanmail(mods):
+        def cleanmail():
+            # list of moderator's usernames
+            mods = cfg["moderators"]
 
             # the current mail
             mail = None
@@ -261,6 +278,43 @@ try:
             # return None if not found
             return None
 
+        # Tag helpers
+        def get_tags():
+            with open("tags.json", "r") as tags_file:
+                return json.load(tags_file)
+
+        def get_tag(tag_name):
+            tags = get_tags()
+
+            for name, tag in tags.items():
+                if name == name:
+                    return tag
+
+            return None
+
+        def create_tag(name, content):
+            tags = get_tags()
+
+            tags[name] = {
+                # support for future additions
+                'content': content
+            }
+
+            save_tags(tags)
+
+        def delete_tag(name):
+            tags = get_tags()
+
+            del tags[name]
+
+            save_tags(tags)
+
+        def save_tags(tags):
+            with open("tags.json", "w") as tags_file:
+                tags_file.seek(0)
+                tags_file.write(json.dumps(tags))
+                tags_file.truncate()
+
         # returns the server the bot is in
         def server():
             for x in bot.servers:
@@ -311,7 +365,7 @@ try:
             log(f"[{ msg.author.name } in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]")
 
             # no checkin yourself or the GitHub bot.
-            if (msg.author.name == "Yamamura™") or (msg.author.name == "GitHub"):
+            if (msg.author.bot):
                 return
 
             # check if the message is sent by a person who is composing
@@ -359,6 +413,7 @@ try:
                 if interject == True:
                     await bot.send_message(msg.channel, f"""I'd just like to interject for a moment, { msg.author.mention }. What you're referring to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux. Linux is not an operating system unto itself, but rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell utilities and vital system components comprising a full OS as defined by POSIX. Many computer users run a modified version of the GNU system every day, without realizing it. Through a peculiar turn of events, the version of GNU which is widely used today is often called "Linux", and many of its users are not aware that it is basically the GNU system, developed by the GNU Project. There really is a Linux, and these people are using it, but it is just a part of the system they use. Linux is the kernel: the program in the system that allocates the machine's resources to the other programs that you run. The kernel is an essential part of an operating system, but useless by itself; it can only function in the context of a complete operating system. Linux is normally used in combination with the GNU operating system: the whole system is basically GNU with Linux added, or GNU/Linux. All the so-called "Linux" distributions are really distributions of GNU/Linux.""")
                     return
+
             elif "reduxredstone" in msg.content.lower():
                 splitmsg = msg.content.split(" ")
                 sendgudmeme = False
@@ -429,11 +484,7 @@ try:
             elif msg.content[0] == cfg["prefix"]:
 
                 # variable telling if the command user is eligible for mod commands
-                try:
-                    cfg["moderators"].index(msg.author.name)
-                    mod = True
-                except ValueError:
-                    mod = False
+                mod = is_mod(msg.author)
 
                 # prefix + help
                 if command("help", msg.content):
@@ -508,7 +559,7 @@ the message that you want to send to the mods.""")
                     # clean mail
                     elif args[0] == "clean":
                         if mod == True:
-                            cleanmail(cfg["moderators"])
+                            cleanmail()
                             await bot.send_message(msg.author, f"Coo, { msg.author.mention }, cleaned mail.")
                         else:
                             await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
@@ -528,6 +579,63 @@ the message that you want to send to the mods.""")
 
                     # return at the end
                     return
+
+                elif command("tag", msg.content):
+                    args = msg.content.split(" ")[1:]
+                    args_len = len(args)
+
+                    if args_len <= 0:
+                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, this command requires more arguments.")
+                    else:
+                        subcommand = args[0]
+
+                        if subcommand == "create":
+                            if is_mod(msg.author):
+                                if args_len >= 3:
+                                    tag_name = args[1]
+
+                                    if tag_name == "create" or tag_name == "delete" or tag_name == "remove" or tag_name == "list" or tag_name == "ls":
+                                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, nice try but that's a reserved name.")
+                                    else:
+                                        create_tag(tag_name, " ".join(args[2:]))
+                                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, tag { tag_name } created.")
+                                else:
+                                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, this command requires you give the tag a name and content.")
+                            else:
+                                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, only moderators can create tags.")
+                        elif subcommand == "delete" or subcommand == "remove":
+                            if is_mod(msg.author):
+                                if args_len >= 2:
+                                    tag_name = args[1]
+                                    tag = get_tag(tag_name)
+
+                                    if tag:
+                                        delete_tag(tag_name)
+                                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, tag { tag_name } deleted.")
+                                    else:
+                                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, there is no that \"{ tag_name }\" to delete. Did you misspell the name?")
+                                else:
+                                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, this command requires you give the tag to delete.")
+                            else:
+                                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, only moderators can delete tags.")
+                        elif subcommand == "list" or subcommand == "ls":
+                            tag_list = get_tags()
+                            tag_list_msg = f"""tags available: ```
+{ ", ".join(tag_list) if len(tag_list) > 0 else "<none>" }
+```"""
+
+                            if msg.channel.id in cfg["spam_channels"]:
+                                await bot.send_message(msg.channel, f"Coo, { tag_list_msg }")
+                            else:
+                                await bot.send_message(msg.author, tag_list_msg)
+                                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, sent list in DMs")
+                        else:
+                            tag = get_tag(args[0])
+
+                            if tag == None:
+                                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, { args[0] } is not a tag or subcommand")
+                            else:
+                                await bot.send_message(msg.channel, tag['content'])
 
         bot.run(cfg["token"])
 

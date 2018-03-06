@@ -1,5 +1,6 @@
 {
   "token" : "create a bot account at https://discordapp.com/developers/applications/me",
   "prefix" : ".",
-  "moderators" : [ "put your moderator names here" ]
+  "moderators" : [ "user ID" ],
+  "spam_channels": [ "channel ID" ]
 }
