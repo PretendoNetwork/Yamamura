@@ -408,12 +408,20 @@ try:
                 # make sure it is only linux
                 splitmsg = msg.content.split(" ")
 
+
                 # search for linux
                 interject = False
+                punct=False
+
                 for x in range(0, len(splitmsg)):
                     if splitmsg[x].lower() == "linux":
                         interject = True
                         break
+                    elif len(splitmsg[x])>5 and splitmsg[x].lower()[0,5] == "linux" and not splitmsg[x][6].isalpha:
+                        interject=True
+                        break
+                if str(msg.channel)=="414517142390702091" or str(msg.channel)=="408723233030799362":
+                    interject=False
 
                 # interject
                 if interject == True:
@@ -646,8 +654,25 @@ the message that you want to send to the mods.""")
                             else:
                                 await bot.send_message(msg.channel, tag['content'])
 
-        bot.run(cfg["token"])
+        msgs=[]
+        votes=[]
+        @bot.event
+        async def on_reaction_add(reaction,user):
+            global msgs
+            global votes
+            updown=str(reaction.emoji)
+            if updown.startswith("👍"):
+                updown=1
+            elif updown.startswith("👎"):
+                updown=False-1
+            if reaction.message in msgs:
+                votes[msgs.index(reaction.message)]+=updown
+            else:
+                msgs.append(votes.message)
+                votes.append(updown)
 
+
+        bot.run(cfg["token"])
 # trying to split an image message doesn't work
 except ValueError:
     pass
