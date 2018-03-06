@@ -430,7 +430,16 @@ try:
                 if sendgudmeme == True:
                     await bot.send_message(msg.channel, "Ahh, I remember the great ReduxRedstone incident of 2018. Everyone set their username to ReduxRedstone, which is RedDucks old name.\nhttps://www.youtube.com/user/halolink4\nhttps://www.github.com/ReduxRedstone\n(thank pika for this)")
                     return
-
+            elif "okey" in msg.content.lower():
+                splitmsg = msg.content.split(" ")
+                sayokeyback = False
+                for x in range(0, len(splitmsg)):
+                    if splitmsg[x].lower() == "okey":
+                        sayokeyback = True
+                        break
+                if sayokeyback == True:
+                    await bot.send_message(msg.channel, "**Okey**")
+                    return
             # eh ayy?
             elif "ay" in msg.content.lower():
 
