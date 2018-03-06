@@ -34,22 +34,23 @@ helpmsg = f"""```
 Yamamura™, the Pretendo Discord bot
 
 General:
-    {cfg["prefix"]}help                    : Shows this message
-    {cfg["prefix"]}toggleupdates           : Toggles the Updates role
-    {cfg["prefix"]}authors                 : Shows the authors of the bot
+    {cfg["prefix"]}help                                 : Shows this message
+    {cfg["prefix"]}toggleupdates                        : Toggles the Updates role
+    {cfg["prefix"]}authors                              : Shows the authors of the bot
 Tags:
-    {cfg["prefix"]}tag <name>              : Shows a tag's content
-    {cfg["prefix"]}tag create <name> <txt> : Creates a tag (mods only)
-    {cfg["prefix"]}tag delete <name>       : Deletes a tag (mods only)
-    {cfg["prefix"]}tag list                : Shows the tags available
+    {cfg["prefix"]}tag <name>                           : Shows a tag's content
+    {cfg["prefix"]}tag mk/make/create <name> <txt>      : Creates a tag (mods only)
+    {cfg["prefix"]}tag rm/del/remove/delete <name>      : Deletes a tag (mods only)
+    {cfg["prefix"]}tag ls/list                          : Shows the tags available
 Mail:
-    {cfg["prefix"]}mail send <msg>         : Send a message to the mods with msg as message
-    {cfg["prefix"]}mail compose            : Send a message to the mods in-dms (private)
-    {cfg["prefix"]}mail read               : Read mail (mods only)
-    {cfg["prefix"]}mail readid <id>        : Read mail by id (mods only)
-    {cfg["prefix"]}mail all                : Read all mail (mods only)
-    {cfg["prefix"]}mail clean              : Clean mail read by all mods (mods only)
-    {cfg["prefix"]}mail delete <id>        : Delete mail by id (mods only)```"""
+    {cfg["prefix"]}mail send <msg>                      : Send a message to the mods with msg as message
+    {cfg["prefix"]}mail compose                         : Send a message to the mods in-dms (private)
+    {cfg["prefix"]}mail read                            : Read mail (mods only)
+    {cfg["prefix"]}mail readid <id>                     : Read mail by id (mods only)
+    {cfg["prefix"]}mail all                             : Read all mail (mods only)
+    {cfg["prefix"]}mail clean                           : Clean mail read by all mods (mods only)
+    {cfg["prefix"]}mail delete <id>                     : Delete mail by id (mods only)
+```"""
 
 # author message
 authors = """```
@@ -287,7 +288,7 @@ try:
             tags = get_tags()
 
             for name, tag in tags.items():
-                if name == name:
+                if name == tag_name:
                     return tag
 
             return None
@@ -344,6 +345,11 @@ try:
                     hasRole = True
             return hasRole
 
+        def coo(channel, target_user, response):
+            target_part = f"{ target_user.mention }, " if target_user != None else ""
+
+            return bot.send_message(channel, f"Coo, { target_part }{ response }")
+
         @bot.event
         async def on_ready():
 
@@ -373,9 +379,9 @@ try:
                 ind = composing.index(msg.author.name)
                 if type(msg.channel) == discord.channel.PrivateChannel:
                     sendmail(msg.content, msg.author.name)
-                    await bot.send_message(msg.author, f"Coo, { msg.author.mention }, your mail has been sent.")
+                    await coo(msg.author, msg.author, "your mail has been sent.")
                 else:
-                    await bot.send_message(msg.author, f"Coo, { msg.author.mention }, cancelled composing.")
+                    await coo(msg.author, msg.author, "cancelled composing.")
                 del composing[ind]
             except ValueError:
                 pass
@@ -390,10 +396,10 @@ try:
             elif "i'm a teapot" in msg.content.lower():
                 if hasRole(msg.author, "Real Devs"):
                     await bot.remove_roles(msg.author, role("Real Devs"))
-                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you no longer have the Real Devs role.")
+                    await coo(msg.channel, msg.author, "you no longer have the Real Devs role.")
                 else:
                     await bot.add_roles(msg.author, role("Real Devs"))
-                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you now have the Real Devs role.")
+                    await coo(msg.channel, msg.author, "you now have the Real Devs role.")
                 await bot.delete_message(msg)
 
             # i'd just like to interject for a moment...
@@ -430,7 +436,7 @@ try:
 
                 # no everyones
                 if ("@everyone" in msg.content) or ("@here" in msg.content):
-                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, no everyone pings in 'ayy' messages")
+                    await coo(msg.channel, msg.author, "no everyone pings in 'ayy' messages")
                     return
 
                 # split the message
@@ -474,7 +480,7 @@ try:
 
                         # i'm too lazy to implement splicing the message
                         if len(fullret) > 2000:
-                            await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, your message is too long.")
+                            await coo(msg.channel, msg.author, "your message is too long.")
                             return
 
                     # SEND IT ALREADY!!!
@@ -494,10 +500,10 @@ try:
                 elif command("toggleupdates", msg.content):
                     if hasRole(msg.author, "Updates"):
                         await bot.remove_roles(msg.author, role("Updates"))
-                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you no longer have the Updates role.")
+                        await coo(msg.channel, msg.author, "you no longer have the Updates role.")
                     else:
                         await bot.add_roles(msg.author, role("Updates"))
-                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you now have the Updates role.")
+                        await coo(msg.channel, msg.author, "you now have the Updates role.")
 
                 # prefix + authors
                 elif command("authors", msg.content):
@@ -511,71 +517,70 @@ try:
 
                     # this is a subcommand command
                     if args == []:
-                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, the mail command requires a subcommand.")
+                        await coo(msg.channel, msg.author, "the mail command requires a subcommand.")
                         return
 
                     # test for subcommands
 
                     # send mail with compose in-dm
                     if args[0] == "compose":
-                        await bot.send_message(msg.author, f"""Coo, { msg.author.mention },
-send a message right here containing
+                        await coo(msg.author, msg.author, """send a message right here containing
 the message that you want to send to the mods.""")
                         composing.append(msg.author.name)
                     # send mail with 1st argument as message
                     elif args[0] == "send":
-                        await bot.send_message(msg.author, f"Coo, { msg.author.mention }, your message has been sent.")
+                        await coo(msg.author, msg.author, "your message has been sent.")
                         sendmail(" ".join(args[1:]), msg.author.name)
                     # read unread mail
                     elif args[0] == "read":
                         if mod == True:
                             mail = readmail(msg.author.name)
                             if mail == None:
-                                await bot.send_message(msg.author, f"Coo, { msg.author.mention }, you have no mail.")
+                                await coo(msg.author, msg.author, "you have no mail.")
                             else:
                                 await bot.send_message(msg.author, mail)
                         else:
-                            await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
+                            await coo(msg.channel, msg.author, "you aren't a mod.")
                     # read a specific message
                     elif args[0] == "readid":
                         if mod == True:
                             mail = readsinglemail(args[1])
                             if mail == None:
-                                await bot.send_message(msg.author, f"Coo, { msg.author.mention }, no mail found by that id.")
+                                await coo(msg.author, msg.author, "no mail found by that id.")
                             else:
                                 await bot.send_message(msg.author, mail)
                         else:
-                            await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
+                            await coo(msg.channel, msg.author, "you aren't a mod.")
                     # read all messages
                     elif args[0] == "all":
                         if mod == True:
                             mail = listall()
                             if mail == None:
-                                await bot.send_message(msg.author, f"Coo, { msg.author.mention }, there is no mail.")
+                                await coo(msg.author, msg.author, "there is no mail.")
                             else:
                                 await bot.send_message(msg.author, mail)
                         else:
-                            await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
+                            await coo(msg.channel, msg.author, "you aren't a mod.")
                     # clean mail
                     elif args[0] == "clean":
                         if mod == True:
                             cleanmail()
-                            await bot.send_message(msg.author, f"Coo, { msg.author.mention }, cleaned mail.")
+                            await coo(msg.author, msg.author, "cleaned mail.")
                         else:
-                            await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
+                            await coo(msg.channel, msg.author, "you aren't a mod.")
                     # delete a specific message
                     elif args[0] == "delete":
                         if mod == True:
                             mail = deletemail(args[1])
                             if mail == None:
-                                await bot.send_message(msg.author, f"Coo, { msg.author.mention }, couldn't find a message with that id.")
+                                await coo(msg.author, msg.author, "couldn't find a message with that id.")
                             else:
-                                await bot.send_message(msg.author, f"Coo, { msg.author.mention }, deleted message.")
+                                await coo(msg.author, msg.author, "deleted message.")
                         else:
-                            await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, you aren't a mod.")
+                            await coo(msg.channel, msg.author, "you aren't a mod.")
                     # subcommand not found
                     else:
-                        await bot.send_message(msg.author, f"Coo, { msg.author.mention }, { args[0] } is not a mail command.")
+                        await coo(msg.author, msg.author, f"{ args[0] } is not a mail command.")
 
                     # return at the end
                     return
@@ -583,27 +588,31 @@ the message that you want to send to the mods.""")
                 elif command("tag", msg.content):
                     args = msg.content.split(" ")[1:]
                     args_len = len(args)
+                    create_subcmds = [ "mk", "make", "create" ]
+                    delete_subcmds = [ "rm", "del", "remove", "delete" ]
+                    list_subcmds = [ "ls", "list" ]
+                    reserved_words = create_subcmds + delete_subcmds + list_subcmds
 
                     if args_len <= 0:
-                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, this command requires more arguments.")
+                        await coo(msg.channel, msg.author, "this command requires more arguments.")
                     else:
-                        subcommand = args[0]
+                        subcommand = args[0].lower()
 
-                        if subcommand == "create":
+                        if subcommand in create_subcmds:
                             if is_mod(msg.author):
                                 if args_len >= 3:
                                     tag_name = args[1]
 
-                                    if tag_name == "create" or tag_name == "delete" or tag_name == "remove" or tag_name == "list" or tag_name == "ls":
-                                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, nice try but that's a reserved name.")
+                                    if tag_name in reserved_words:
+                                        await coo(msg.channel, msg.author, "nice try but that's a reserved name.")
                                     else:
                                         create_tag(tag_name, " ".join(args[2:]))
-                                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, tag { tag_name } created.")
+                                        await coo(msg.channel, msg.author, f"tag { tag_name } created.")
                                 else:
-                                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, this command requires you give the tag a name and content.")
+                                    await coo(msg.channel, msg.author, "this command requires you give the tag a name and content.")
                             else:
-                                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, only moderators can create tags.")
-                        elif subcommand == "delete" or subcommand == "remove":
+                                await coo(msg.channel, msg.author, "only moderators can create tags.")
+                        elif subcommand in delete_subcmds:
                             if is_mod(msg.author):
                                 if args_len >= 2:
                                     tag_name = args[1]
@@ -611,29 +620,29 @@ the message that you want to send to the mods.""")
 
                                     if tag:
                                         delete_tag(tag_name)
-                                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, tag { tag_name } deleted.")
+                                        await coo(msg.channel, msg.author, f"tag { tag_name } deleted.")
                                     else:
-                                        await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, there is no that \"{ tag_name }\" to delete. Did you misspell the name?")
+                                        await coo(msg.channel, msg.author, f"there is no tag \"{ tag_name }\" to delete. Did you misspell the name?")
                                 else:
-                                    await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, this command requires you give the tag to delete.")
+                                    await coo(msg.channel, msg.author, "this command requires you give the tag to delete.")
                             else:
-                                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, only moderators can delete tags.")
-                        elif subcommand == "list" or subcommand == "ls":
+                                await coo(msg.channel, msg.author, "only moderators can delete tags.")
+                        elif subcommand in list_subcmds:
                             tag_list = get_tags()
                             tag_list_msg = f"""tags available: ```
 { ", ".join(tag_list) if len(tag_list) > 0 else "<none>" }
 ```"""
 
                             if msg.channel.id in cfg["spam_channels"]:
-                                await bot.send_message(msg.channel, f"Coo, { tag_list_msg }")
+                                await coo(msg.channel, None, tag_list_msg)
                             else:
-                                await bot.send_message(msg.author, tag_list_msg)
-                                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, sent list in DMs")
+                                await coo(msg.author, None, tag_list_msg)
+                                await coo(msg.channel, msg.author, "sent list in DMs")
                         else:
                             tag = get_tag(args[0])
 
                             if tag == None:
-                                await bot.send_message(msg.channel, f"Coo, { msg.author.mention }, { args[0] } is not a tag or subcommand")
+                                await coo(msg.channel, msg.author, f"\"{ args[0] }\" is not a tag or subcommand")
                             else:
                                 await bot.send_message(msg.channel, tag['content'])
 
