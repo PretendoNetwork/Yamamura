@@ -1,5 +1,5 @@
 # Yamamura
-### a pretendo-integrated Discord bot by superwhiskers
+### a pretendo-integrated Discord bot by superwhiskers & friends
 
 ### instructions:
 1. run `python3 -m pip install -U https://github.com/Rapptz/discord.py/archive/rewrite.zip`
