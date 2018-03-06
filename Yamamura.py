@@ -1,9 +1,6 @@
 from discord.ext.commands import Bot
-from discord.ext import commands
 from time import gmtime, strftime
-import platform
 import discord
-import asyncio
 import time
 import json
 import re
@@ -56,14 +53,14 @@ Mail:
 authors = """```
 superwhiskers (@!superwhiskers™#3210): bot concept and main developer
 Netux         (@Netux#2308): certain features and some regex work
-Pika          (@《ThatNerdyPikachu》#2849): \"features\" and working on rewrite```"""
+Pika          (@《ThatNerdyPikachu》#2849): features and rewrote bot to use newlib```"""
 
 # currently composing people
 composing = []
 try:
     if cfg:
         # get the bot
-        bot = Bot(description="Yamamura by superwhiskers", command_prefix=cfg["prefix"])
+        bot = Bot(description="Yamamura by superwhiskers & friends", command_prefix=cfg["prefix"])
 
         # useful functions
 
@@ -318,7 +315,7 @@ try:
 
         # returns the server the bot is in
         def server():
-            for x in bot.servers:
+            for x in bot.guilds:
                 return x
 
         # return a channel object by name
@@ -348,18 +345,18 @@ try:
         def coo(channel, target_user, response):
             target_part = f"{ target_user.mention }, " if target_user != None else ""
 
-            return bot.send_message(channel, f"Coo, { target_part }{ response }")
+            return channel.send(f"Coo, { target_part }{ response }")
 
         @bot.event
         async def on_ready():
 
             # set server var
-            for x in bot.servers:
+            for x in bot.guilds:
                 bot.server = x
                 break
 
             # print some output
-            print(f"logged in as: { bot.user.name } (id:{ bot.user.id }) | connected to { str(len(bot.servers)) } server(s)")
+            print(f"logged in as: { bot.user.name } (id:{ bot.user.id }) | connected to { str(len(bot.guilds)) } server(s)")
             print(f"invite: https://discordapp.com/oauth2/authorize?bot_id={ bot.user.id }&scope=bot&permissions=8")
             await bot.change_presence(game=discord.Game(name='with edamame'))
 
@@ -371,13 +368,13 @@ try:
             log(f"[{ msg.author.name } in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]")
 
             # no checkin yourself or the GitHub bot.
-            if (msg.author.bot):
+            if msg.author.bot:
                 return
 
             # check if the message is sent by a person who is composing
             try:
                 ind = composing.index(msg.author.name)
-                if type(msg.channel) == discord.channel.PrivateChannel:
+                if type(msg.channel) == discord.channel.DMChannel:
                     sendmail(msg.content, msg.author.name)
                     await coo(msg.author, msg.author, "your mail has been sent.")
                 else:
@@ -389,18 +386,18 @@ try:
             # voting made easy
             if (msg.channel.name == "voting") or (msg.channel.name == "yamamura-suggestions") or (msg.channel.name == "voting-game-suggestions"):
                 # print(msg.server.emojis[0].name)
-                await bot.add_reaction(msg, u'\U0001F44D')
-                await bot.add_reaction(msg, u'\U0001F44E')
+                await msg.add_reaction(u'\U0001F44D')
+                await msg.add_reaction(u'\U0001F44E')
 
             # do you like teapots? dun dun dun dun dunnn....
             elif "i'm a teapot" in msg.content.lower():
                 if hasRole(msg.author, "Real Devs"):
-                    await bot.remove_roles(msg.author, role("Real Devs"))
+                    await msg.author.remove_roles(role("Real Devs"))
                     await coo(msg.channel, msg.author, "you no longer have the Real Devs role.")
                 else:
-                    await bot.add_roles(msg.author, role("Real Devs"))
+                    await msg.author.add_roles(role("Real Devs"))
                     await coo(msg.channel, msg.author, "you now have the Real Devs role.")
-                await bot.delete_message(msg)
+                await msg.channel.delete_message(msg)
 
             # i'd just like to interject for a moment...
             elif "linux" in msg.content.lower():
@@ -428,7 +425,7 @@ try:
                         sendgudmeme = True
                         break
                 if sendgudmeme == True:
-                    await bot.send_message(msg.channel, "Ahh, I remember the great ReduxRedstone incident of 2018. Everyone set their username to ReduxRedstone, which is RedDucks old name.\nhttps://www.youtube.com/user/halolink4\nhttps://www.github.com/ReduxRedstone\n(thank pika for this)")
+                    await msg.channel.send("Ahh, I remember the great ReduxRedstone incident of 2018. Everyone set their username to ReduxRedstone, which is RedDucks old name.\nhttps://www.youtube.com/user/halolink4\nhttps://www.github.com/ReduxRedstone\n(thank pika for this)")
                     return
 
             # eh ayy?
@@ -484,7 +481,7 @@ try:
                             return
 
                     # SEND IT ALREADY!!!
-                    await bot.send_message(msg.channel, fullret)
+                    await msg.channel.send(fullret)
 
             # if the first character is the prefix
             elif msg.content[0] == cfg["prefix"]:
@@ -494,20 +491,20 @@ try:
 
                 # prefix + help
                 if command("help", msg.content):
-                    await bot.send_message(msg.author, helpmsg)
+                    await msg.author.send(helpmsg)
 
                 # prefix + remindme
                 elif command("toggleupdates", msg.content):
                     if hasRole(msg.author, "Updates"):
-                        await bot.remove_roles(msg.author, role("Updates"))
+                        await msg.author.remove_roles(role("Updates"))
                         await coo(msg.channel, msg.author, "you no longer have the Updates role.")
                     else:
-                        await bot.add_roles(msg.author, role("Updates"))
+                        await msg.author.add_roles(role("Updates"))
                         await coo(msg.channel, msg.author, "you now have the Updates role.")
 
                 # prefix + authors
                 elif command("authors", msg.content):
-                    await bot.send_message(msg.author, authors)
+                    await msg.author.send(authors)
 
                 # prefix + modmail
                 elif command("mail", msg.content):
@@ -538,7 +535,7 @@ the message that you want to send to the mods.""")
                             if mail == None:
                                 await coo(msg.author, msg.author, "you have no mail.")
                             else:
-                                await bot.send_message(msg.author, mail)
+                                await msg.author.send(mail)
                         else:
                             await coo(msg.channel, msg.author, "you aren't a mod.")
                     # read a specific message
@@ -548,7 +545,7 @@ the message that you want to send to the mods.""")
                             if mail == None:
                                 await coo(msg.author, msg.author, "no mail found by that id.")
                             else:
-                                await bot.send_message(msg.author, mail)
+                                await msg.author.send(mail)
                         else:
                             await coo(msg.channel, msg.author, "you aren't a mod.")
                     # read all messages
@@ -558,7 +555,7 @@ the message that you want to send to the mods.""")
                             if mail == None:
                                 await coo(msg.author, msg.author, "there is no mail.")
                             else:
-                                await bot.send_message(msg.author, mail)
+                                await msg.author.send(mail)
                         else:
                             await coo(msg.channel, msg.author, "you aren't a mod.")
                     # clean mail
@@ -570,9 +567,9 @@ the message that you want to send to the mods.""")
                             await coo(msg.channel, msg.author, "you aren't a mod.")
                     # delete a specific message
                     elif args[0] == "delete":
-                        if mod == True:
+                        if mod is True:
                             mail = deletemail(args[1])
-                            if mail == None:
+                            if mail is None:
                                 await coo(msg.author, msg.author, "couldn't find a message with that id.")
                             else:
                                 await coo(msg.author, msg.author, "deleted message.")
@@ -644,7 +641,7 @@ the message that you want to send to the mods.""")
                             if tag == None:
                                 await coo(msg.channel, msg.author, f"\"{ args[0] }\" is not a tag or subcommand")
                             else:
-                                await bot.send_message(msg.channel, tag['content'])
+                                await msg.channel.send(tag['content'])
 
         bot.run(cfg["token"])
 
