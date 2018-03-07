@@ -365,7 +365,10 @@ try:
         async def on_message(msg):
 
             # log-em.
-            log(f"[{ msg.author.name } in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]")
+            if type(msg.channel) != discord.channel.DMChannel:
+                log(f"[{ msg.author.name } in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]")
+            else:
+                log(f"[DM with { msg.author.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]")
 
             # no checkin yourself or the GitHub bot.
             if msg.author.bot:
