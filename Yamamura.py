@@ -660,9 +660,9 @@ the message that you want to send to the mods.""")
                         async with cs.get("https://account.pretendo.cc/isthisworking") as r:
                             resp = await r.json()
                             if resp is not None and resp["server"] == "account.nintendo.net":
-                                coo(msg.channel, msg.author, "the offical Pretendo servers are indeed online!")
+                                await coo(msg.channel, msg.author, "the offical Pretendo servers are indeed online!")
                             else:
-                                coo(msg.channel, msg.author, "the offical Pretendo servers are offline! Oh no...")
+                                await coo(msg.channel, msg.author, "the offical Pretendo servers are offline! Oh no...")
 
         bot.run(cfg["token"])
 
