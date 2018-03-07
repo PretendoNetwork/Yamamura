@@ -658,7 +658,7 @@ the message that you want to send to the mods.""")
                 elif command("status", msg.content):
                     async with aiohttp.ClientSession() as cs:
                         async with cs.get("https://account.pretendo.cc/isthisworking") as r:
-                            resp = await r.json()
+                            resp = await r.json(content_type="text/html")
                             if resp is not None and resp["server"] == "account.nintendo.net":
                                 await coo(msg.channel, msg.author, "the offical Pretendo servers are indeed online!")
                             else:
