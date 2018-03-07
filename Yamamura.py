@@ -438,7 +438,7 @@ try:
                         sayokeyback = True
                         break
                 if sayokeyback == True:
-                    await bot.send_message(msg.channel, "**Okey**")
+                    await msg.channel.send("**Okey**")
                     return
             # eh ayy?
             elif "ay" in msg.content.lower():
