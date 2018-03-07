@@ -5,6 +5,7 @@ import time
 import json
 import re
 import string
+import aiohttp
 
 # load config file, exit if not found
 cfg = None
@@ -48,6 +49,7 @@ Mail:
     {cfg["prefix"]}mail all                             : Read all mail (mods only)
     {cfg["prefix"]}mail clean                           : Clean mail read by all mods (mods only)
     {cfg["prefix"]}mail delete <id>                     : Delete mail by id (mods only)
+    {cfg["prefix"]}status                               : Check the status of the offical Pretendo servers
 ```"""
 
 # author message
@@ -665,6 +667,15 @@ the message that you want to send to the mods.""")
                                 await coo(msg.channel, msg.author, f"\"{ args[0] }\" is not a tag or subcommand")
                             else:
                                 await msg.channel.send(tag['content'])
+
+                elif command("status", msg.content):
+                    async with aiohttp.ClientSession() as cs:
+                        async with cs.get("https://account.pretendo.cc/isthisworking") as r:
+                            resp = await r.json(content_type="text/html")
+                            if resp is not None and resp["server"] == "account.nintendo.net":
+                                await coo(msg.channel, msg.author, "the offical Pretendo servers are indeed online!")
+                            else:
+                                await coo(msg.channel, msg.author, "the offical Pretendo servers are offline! Oh no...")
 
         bot.run(cfg["token"])
 
