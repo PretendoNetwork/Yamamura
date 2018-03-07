@@ -396,7 +396,6 @@ try:
             # voting made easy
             if type(msg.channel) != discord.DMChannel:
                 if (msg.channel.name == "voting") or (msg.channel.name == "yamamura-suggestions") or (msg.channel.name == "voting-game-suggestions"):
-                    # print(msg.server.emojis[0].name)
                     await msg.add_reaction(u'\U0001F44D')
                     await msg.add_reaction(u'\U0001F44E')
 
