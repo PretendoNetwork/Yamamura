@@ -4,6 +4,7 @@ import discord
 import time
 import json
 import re
+import string
 
 # load config file, exit if not found
 cfg = None
@@ -364,11 +365,17 @@ try:
         @bot.event
         async def on_message(msg):
 
-            # log-em.
+            # log-em, but first we gotta strip those nasty unicode characters! >:D
             if type(msg.channel) != discord.channel.DMChannel:
-                log(f"[{ msg.author.name } in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]")
+                str = f"[{ msg.author.name } in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
+                printable = set(string.printable)
+                logstr = ''.join(filter(lambda x: x in string.printable, str))
+                log(logstr)
             else:
-                log(f"[DM with { msg.author.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]")
+                str = f"[DM with { msg.author.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
+                printable = set(string.printable)
+                logstr = ''.join(filter(lambda x: x in string.printable, str))
+                log(logstr)
 
             # no checkin yourself or the GitHub bot.
             if msg.author.bot:
