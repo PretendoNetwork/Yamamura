@@ -49,6 +49,7 @@ Mail:
     {cfg["prefix"]}mail all                             : Read all mail (mods only)
     {cfg["prefix"]}mail clean                           : Clean mail read by all mods (mods only)
     {cfg["prefix"]}mail delete <id>                     : Delete mail by id (mods only)
+    {cfg["prefix"]}status                               : Check the status of the offical Pretendo servers
 ```"""
 
 # author message
