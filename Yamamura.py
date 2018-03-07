@@ -358,7 +358,7 @@ try:
             # print some output
             print(f"logged in as: { bot.user.name } (id:{ bot.user.id }) | connected to { str(len(bot.guilds)) } server(s)")
             print(f"invite: https://discordapp.com/oauth2/authorize?bot_id={ bot.user.id }&scope=bot&permissions=8")
-            await bot.change_presence(game=discord.Game(name='with edamame'))
+            await bot.change_presence(activity=discord.Game(name='with edamame'))
 
         # message handling
         @bot.event
