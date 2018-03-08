@@ -396,9 +396,10 @@ try:
                 pass
 
             # voting made easy
-            if type(msg.channel) != discord.DMChannel and (msg.channel.name == "voting") or (msg.channel.name == "yamamura-suggestions") or (msg.channel.name == "voting-game-suggestions"):
-                await msg.add_reaction(u'\U0001F44D')
-                await msg.add_reaction(u'\U0001F44E')
+            if type(msg.channel) != discord.DMChannel:
+                if (msg.channel.name == "voting") or (msg.channel.name == "yamamura-suggestions") or (msg.channel.name == "voting-game-suggestions"):
+                    await msg.add_reaction(u'\U0001F44D')
+                    await msg.add_reaction(u'\U0001F44E')
 
             # do you like teapots? dun dun dun dun dunnn....
             elif "i'm a teapot" in msg.content.lower():
