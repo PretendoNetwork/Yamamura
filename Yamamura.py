@@ -379,7 +379,7 @@ try:
                 logstr = ''.join(filter(lambda x: x in string.printable, str))
                 log(logstr)
 
-            # no checkin yourself or the GitHub bot.
+            #no checkin yourself or the GitHub bot.
             if msg.author.bot:
                 return
 
@@ -396,10 +396,9 @@ try:
                 pass
 
             # voting made easy
-            if type(msg.channel) != discord.DMChannel:
-                if (msg.channel.name == "voting") or (msg.channel.name == "yamamura-suggestions") or (msg.channel.name == "voting-game-suggestions"):
-                        await msg.add_reaction(u'\U0001F44D')
-                        await msg.add_reaction(u'\U0001F44E')
+            if type(msg.channel) != discord.DMChannel and (msg.channel.name == "voting") or (msg.channel.name == "yamamura-suggestions") or (msg.channel.name == "voting-game-suggestions"):
+                await msg.add_reaction(u'\U0001F44D')
+                await msg.add_reaction(u'\U0001F44E')
 
             # do you like teapots? dun dun dun dun dunnn....
             elif "i'm a teapot" in msg.content.lower():
@@ -424,31 +423,18 @@ try:
                         interject = True
                         break
 
-                # check to see if it is a good place to send it
-                if not (msg.channel.id in cfg["spam_channels"]):
-                    interject = False
-
                 # interject
                 if interject == True:
                     await msg.channel.send(f"""I'd just like to interject for a moment, { msg.author.mention }. What you're referring to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux. Linux is not an operating system unto itself, but rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell utilities and vital system components comprising a full OS as defined by POSIX. Many computer users run a modified version of the GNU system every day, without realizing it. Through a peculiar turn of events, the version of GNU which is widely used today is often called "Linux", and many of its users are not aware that it is basically the GNU system, developed by the GNU Project. There really is a Linux, and these people are using it, but it is just a part of the system they use. Linux is the kernel: the program in the system that allocates the machine's resources to the other programs that you run. The kernel is an essential part of an operating system, but useless by itself; it can only function in the context of a complete operating system. Linux is normally used in combination with the GNU operating system: the whole system is basically GNU with Linux added, or GNU/Linux. All the so-called "Linux" distributions are really distributions of GNU/Linux.""")
                     return
 
-	    # the redux meme
             elif "reduxredstone" in msg.content.lower():
-
-                # split the message
                 splitmsg = msg.content.split(" ")
-
-                # check to see if this is a good place to send it
                 sendgudmeme = False
                 for x in range(0, len(splitmsg)):
                     if splitmsg[x].lower() == "reduxredstone":
                         sendgudmeme = True
                         break
-                if not (msg.channel.id in cfg["spam_channels"]):
-                    sendgudmeme = False
-
-                # send it if appropriate
                 if sendgudmeme == True:
                     await msg.channel.send("Ahh, I remember the great ReduxRedstone incident of 2018. Everyone set their username to ReduxRedstone, which is RedDucks old name.\nhttps://www.youtube.com/user/halolink4\nhttps://www.github.com/ReduxRedstone\n(thank pika for this)")
                     return
