@@ -379,7 +379,7 @@ try:
                 logstr = ''.join(filter(lambda x: x in string.printable, str))
                 log(logstr)
 
-            #no checkin yourself or the GitHub bot.
+            #no checkin yourself or the GitHub bot. (what, it's right here)
             if msg.author.bot:
                 return
 
