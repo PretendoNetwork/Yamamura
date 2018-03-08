@@ -56,7 +56,7 @@ Mail:
 authors = """```
 superwhiskers (@!superwhiskers™#3210): bot concept and main developer
 Netux         (@Netux#2308): certain features and some regex work
-Pika          (@《ThatNerdyPikachu》#2849): features and rewrote bot to use newlib```"""
+Pika          (@《ThatNerdyPikachu》#2849): features, rewrote bot to use newlib, and fixed the bot several times```"""
 
 # currently composing people
 composing = []
@@ -379,7 +379,7 @@ try:
                 logstr = ''.join(filter(lambda x: x in string.printable, str))
                 log(logstr)
 
-            #no checkin yourself or the GitHub bot. (what, it's right here)
+            #no checkin yourself or the GitHub bot.
             if msg.author.bot:
                 return
 
@@ -423,8 +423,12 @@ try:
                         interject = True
                         break
 
+                # check to see if it is a good place to send it
+                if msg.channel.id not in cfg["spam_channels"]:
+                    interject = False
+
                 # interject
-                if interject == True:
+                if interject is True:
                     await msg.channel.send(f"""I'd just like to interject for a moment, { msg.author.mention }. What you're referring to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux. Linux is not an operating system unto itself, but rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell utilities and vital system components comprising a full OS as defined by POSIX. Many computer users run a modified version of the GNU system every day, without realizing it. Through a peculiar turn of events, the version of GNU which is widely used today is often called "Linux", and many of its users are not aware that it is basically the GNU system, developed by the GNU Project. There really is a Linux, and these people are using it, but it is just a part of the system they use. Linux is the kernel: the program in the system that allocates the machine's resources to the other programs that you run. The kernel is an essential part of an operating system, but useless by itself; it can only function in the context of a complete operating system. Linux is normally used in combination with the GNU operating system: the whole system is basically GNU with Linux added, or GNU/Linux. All the so-called "Linux" distributions are really distributions of GNU/Linux.""")
                     return
 
@@ -435,7 +439,12 @@ try:
                     if splitmsg[x].lower() == "reduxredstone":
                         sendgudmeme = True
                         break
-                if sendgudmeme == True:
+
+                # check to see if it is a good place to send it
+                if msg.channel.id not in cfg["spam_channels"]:
+                    sendgudmeme = False
+
+                if sendgudmeme is True:
                     await msg.channel.send("Ahh, I remember the great ReduxRedstone incident of 2018. Everyone set their username to ReduxRedstone, which is RedDucks old name.\nhttps://www.youtube.com/user/halolink4\nhttps://www.github.com/ReduxRedstone\n(thank pika for this)")
                     return
 
