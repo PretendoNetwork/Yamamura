@@ -386,23 +386,25 @@ try:
             # check if the message is sent by a person who is composing
             try:
                 ind = composing.index(msg.author.name)
-                if type(msg.channel) == discord.channel.DMChannel:
-                    sendmail(msg.content, msg.author.name)
-                    await coo(msg.author, msg.author, "your mail has been sent.")
-                else:
-                    await coo(msg.author, msg.author, "cancelled composing.")
-                del composing[ind]
+                if type(msg.channel) == discord.DMChannel:
+                    def dmcheck(m):
+                        return m.channel == msg.author.dm_channel and msg.author == msg.author
+                    del composing[ind]
+                    await coo(msg.author, msg.author, "are you sure you want to send that message? (yes|no)")
+                    confirm = await bot.wait_for("message", check=dmcheck)
+                    if confirm.content == "yes" or 'y':
+                        sendmail(msg.content, msg.author.name)
+                        await coo(msg.author, msg.author, "your mail has been sent.")
+                        for m in cfg["moderators"]:
+                            await bot.guilds[0].get_member(m).send("New modmail received from {}!\nHere is the content of the message:```{}```".format(msg.author.name, msg.content))
+                    else:
+                        await coo(msg.author, msg.author, "your mail has not been sent!")
+                    del composing[ind]
             except ValueError:
                 pass
 
-            # voting made easy
-            if type(msg.channel) != discord.DMChannel:
-                if (msg.channel.name == "voting") or (msg.channel.name == "yamamura-suggestions") or (msg.channel.name == "voting-game-suggestions"):
-                    await msg.add_reaction(u'\U0001F44D')
-                    await msg.add_reaction(u'\U0001F44E')
-
             # do you like teapots? dun dun dun dun dunnn....
-            elif "i'm a teapot" in msg.content.lower():
+            if "i'm a teapot" in msg.content.lower():
                 if hasRole(msg.author, "Real Devs"):
                     await msg.author.remove_roles(role("Real Devs"))
                     await coo(msg.channel, msg.author, "you no longer have the Real Devs role.")
@@ -547,8 +549,19 @@ the message that you want to send to the mods.""")
                         composing.append(msg.author.name)
                     # send mail with 1st argument as message
                     elif args[0] == "send":
-                        await coo(msg.author, msg.author, "your message has been sent.")
-                        sendmail(" ".join(args[1:]), msg.author.name)
+                        def dmcheck(m):
+                            return m.channel == msg.author.dm_channel and msg.author == msg.author
+                        await coo(msg.author, msg.author, "are you sure you want to send that message? (yes|no)")
+                        confirm = await bot.wait_for("message", check=dmcheck)
+                        if confirm.content == "yes" or 'y':
+                            sendmail(" ".join(args[1:]), msg.author.name)
+                            await coo(msg.author, msg.author, "your mail has been sent.")
+                            for m in cfg["moderators"]:
+                                await bot.guilds[0].get_member(m).send("New modmail received from {}!\nHere is the content of the message:```{}```".format(msg.author.name, msg.content))
+                        else:
+                            await coo(msg.author, msg.author, "your mail has not been sent!")
+                        for m in cfg["moderators"]:
+                            await bot.guilds[0].get_member(m).send("New modmail received from {}!\nHere is the content of the message:```{}```".format(msg.author.name, " ".join(args[1:])))
                     # read unread mail
                     elif args[0] == "read":
                         if mod == True:
