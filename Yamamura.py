@@ -393,7 +393,7 @@ try:
                     await coo(msg.author, msg.author, "are you sure you want to send that message? (yes|no)")
                     confirm = await bot.wait_for("message", check=dmcheck)
                     print(confirm.content)
-                    if confirm.content == "yes" or 'y':
+                    if confirm.content.lower() == "yes" or confirm.content.lower() == 'y':
                         sendmail(msg.content, msg.author.name)
                         await coo(msg.author, msg.author, "your mail has been sent.")
                         for m in cfg["moderators"]:
