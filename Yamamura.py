@@ -388,7 +388,7 @@ try:
                 ind = composing.index(msg.author.name)
                 if type(msg.channel) == discord.DMChannel:
                     def dmcheck(m):
-                        return m.channel == msg.author.dm_channel and msg.author == msg.author
+                        return m.channel == msg.author.dm_channel and m.author == msg.author
                     del composing[ind]
                     await coo(msg.author, msg.author, "are you sure you want to send that message? (yes|no)")
                     confirm = await bot.wait_for("message", check=dmcheck)
@@ -442,6 +442,7 @@ try:
                     if splitmsg[x].lower() == "reduxredstone":
                         sendgudmeme = True
                         break
+
 
                 # check to see if it is a good place to send it
                 if msg.channel.id not in cfg["spam_channels"]:
@@ -550,7 +551,7 @@ the message that you want to send to the mods.""")
                     # send mail with 1st argument as message
                     elif args[0] == "send":
                         def dmcheck(m):
-                            return m.channel == msg.author.dm_channel and msg.author == msg.author
+                            return m.channel == msg.author.dm_channel and m.author == msg.author
                         await coo(msg.author, msg.author, "are you sure you want to send that message? (yes|no)")
                         confirm = await bot.wait_for("message", check=dmcheck)
                         if confirm.content == "yes" or 'y':
