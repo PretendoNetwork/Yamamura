@@ -553,7 +553,7 @@ the message that you want to send to the mods.""")
                             return m.channel == msg.author.dm_channel and m.author == msg.author
                         await coo(msg.author, msg.author, "are you sure you want to send that message? (yes|no)")
                         confirm = await bot.wait_for("message", check=dmcheck)
-                        if confirm.content.lower() == "yes" or msg.content.lower() == 'y':
+                        if confirm.content.lower() == "yes" or confirm.content.lower() == 'y':
                             sendmail(" ".join(args[1:]), msg.author.name)
                             await coo(msg.author, msg.author, "your mail has been sent.")
                             for m in cfg["moderators"]:
