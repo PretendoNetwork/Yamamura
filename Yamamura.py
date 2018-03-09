@@ -391,14 +391,16 @@ try:
                         return m.channel == msg.author.dm_channel and m.author == msg.author
                     del composing[ind]
                     await coo(msg.author, msg.author, "are you sure you want to send that message? (yes|no)")
-                    confirm = await bot.wait_for("message", check=dmcheck)        
-                    if confirm.content.lower() == "yes" or confirm.content.lower() == 'y':
+                    confirm = await bot.wait_for("message", check=dmcheck)
+                    if confirm.content == "yes" or 'y':
                         sendmail(msg.content, msg.author.name)
                         await coo(msg.author, msg.author, "your mail has been sent.")
                         for m in cfg["moderators"]:
-                            await bot.guilds[0].get_member(m).send("New modmail received from {}!\nHere is the content of the message:```{}```".format(msg.author.name, msg.content))
+                            if m not in cfg["modmail_notif_optout"]:
+                                await bot.guilds[0].get_member(m).send("New modmail received from {}!\nHere is the content of the message:```{}```".format(msg.author.name, msg.content))
                     else:
                         await coo(msg.author, msg.author, "your mail has not been sent!")
+                    del composing[ind]
             except ValueError:
                 pass
 
@@ -553,7 +555,7 @@ the message that you want to send to the mods.""")
                             return m.channel == msg.author.dm_channel and m.author == msg.author
                         await coo(msg.author, msg.author, "are you sure you want to send that message? (yes|no)")
                         confirm = await bot.wait_for("message", check=dmcheck)
-                        if confirm.content.lower() == "yes" or confirm.content.lower() == 'y':
+                        if confirm.content == "yes" or 'y':
                             sendmail(" ".join(args[1:]), msg.author.name)
                             await coo(msg.author, msg.author, "your mail has been sent.")
                             for m in cfg["moderators"]:
@@ -561,7 +563,8 @@ the message that you want to send to the mods.""")
                         else:
                             await coo(msg.author, msg.author, "your mail has not been sent!")
                         for m in cfg["moderators"]:
-                            await bot.guilds[0].get_member(m).send("New modmail received from {}!\nHere is the content of the message:```{}```".format(msg.author.name, " ".join(args[1:])))
+                            if m not in cfg["modmail_notif_optout"]:
+                                await bot.guilds[0].get_member(m).send("New modmail received from {}!\nHere is the content of the message:```{}```".format(msg.author.name, " ".join(args[1:])))
                     # read unread mail
                     elif args[0] == "read":
                         if mod == True:
