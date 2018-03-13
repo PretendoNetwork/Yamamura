@@ -36,6 +36,8 @@ General:
     {cfg["prefix"]}help                                 : Shows this message
     {cfg["prefix"]}toggleupdates                        : Toggles the Updates role
     {cfg["prefix"]}authors                              : Shows the authors of the bot
+    {cfg["prefix"]}status                               : Check the status of the offical Pretendo servers
+    {cfg["prefix"]}toggleelsewhere                      : Toggles access to elsewhere. be careful!
 Tags:
     {cfg["prefix"]}tag <name>                           : Shows a tag's content
     {cfg["prefix"]}tag mk/make/create <name> <txt>      : Creates a tag (mods only)
@@ -49,7 +51,6 @@ Mail:
     {cfg["prefix"]}mail all                             : Read all mail (mods only)
     {cfg["prefix"]}mail clean                           : Clean mail read by all mods (mods only)
     {cfg["prefix"]}mail delete <id>                     : Delete mail by id (mods only)
-    {cfg["prefix"]}status                               : Check the status of the offical Pretendo servers
 ```"""
 
 # author message
@@ -526,6 +527,14 @@ try:
                     else:
                         await msg.author.add_roles(role("Updates"))
                         await coo(msg.channel, msg.author, "you now have the Updates role.")
+
+                elif command("toggleelsewhere", msg.content):
+                    if hasRole(msg.author, "elsewhere"):
+                        await msg.author.remove_roles(role("elsewhere"))
+                        await coo(msg.channel, msg.author, "you no longer have the elsewhere role. thank god")
+                    else:
+                        await msg.author.add_roles(role("elsewhere"))
+                        await coo(msg.channel, msg.author, "you now have the elsewhere role. be careful")
 
                 # prefix + authors
                 elif command("authors", msg.content):
