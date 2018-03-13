@@ -671,7 +671,8 @@ the message that you want to send to the mods.""")
                                 await coo(msg.channel, None, tag_list_msg)
                             else:
                                 await coo(msg.author, None, tag_list_msg)
-                                await coo(msg.channel, msg.author, "sent list in DMs")
+                                if type(msg.channel) != discord.DMChannel:
+                                    await coo(msg.channel, msg.author, "sent list in DMs")
                         else:
                             tag = get_tag(args[0])
 
