@@ -336,7 +336,7 @@ try:
 
         # checks if a command is at the start of a message
         def command(command, msg):
-            return re.match(r"^"+cfg["prefix"]+command, msg, re.MULTILINE)
+            return re.match("^" + cfg["prefix"] + command + "(?:\s|$)", msg, re.MULTILINE)
 
         # checks if the specified member has a role
         def hasRole(member, role):
@@ -510,7 +510,7 @@ try:
                     await msg.channel.send(fullret)
 
             # if the first character is the prefix
-            elif msg.content[0] == cfg["prefix"]:
+            elif msg.content.startswith(cfg["prefix"]):
 
                 # variable telling if the command user is eligible for mod commands
                 mod = is_mod(msg.author)
