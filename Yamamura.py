@@ -336,7 +336,7 @@ try:
 
         # checks if a command is at the start of a message
         def command(command, msg):
-            return re.match(r"^"+cfg["prefix"]+command+"\s|$", msg, re.MULTILINE)
+            return re.match(r"^"+cfg["prefix"]+command, msg, re.MULTILINE)
 
         # checks if the specified member has a role
         def hasRole(member, role):
