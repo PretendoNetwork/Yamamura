@@ -4,5 +4,6 @@
   "moderators" : [ user ID ],
   "modmail_notif_optout": [ user ID ]
   "spam_channels": [ channel ID ],
-  "voting_channels": [ channel ID ]
+  "voting_channels": [ channel ID ],
+  "nowplaying" : "playing beta testing"
 }
