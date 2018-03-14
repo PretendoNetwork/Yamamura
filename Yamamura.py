@@ -64,7 +64,9 @@ composing = []
 try:
     if cfg:
         # get the bot
-        bot = Bot(description="Yamamura by superwhiskers & friends", command_prefix=cfg["prefix"])
+        bot = Bot(
+            description="Yamamura by superwhiskers & friends",
+            command_prefix=cfg["prefix"])
 
         # useful functions
 
@@ -82,7 +84,7 @@ try:
         def parseMail(mail):
 
             # parse a list of mail
-            if type(mail) == list:
+            if isinstance(mail, list):
 
                 # the string to send to Discord
                 retstr = """Mail:
@@ -155,7 +157,7 @@ try:
 
             # open the modmail file
             with open("modmail.json", "r") as mailfile:
-                 mail = json.load(mailfile)
+                mail = json.load(mailfile)
 
             # constructed mail
             mailToSend = {}
@@ -200,7 +202,7 @@ try:
                         x["readBy"].index(mods[y])
                     except ValueError:
                         mailRead = False
-                if mailRead == True:
+                if mailRead:
                     indexesToDelete.append(mail.index(x))
 
             # then clean from the mail list the indexes to delete
@@ -232,7 +234,7 @@ try:
                     found = True
 
             # if we couldn't find the mail
-            if found == False:
+            if not found:
                 return None
 
             # then save the file
@@ -336,7 +338,13 @@ try:
 
         # checks if a command is at the start of a message
         def command(command, msg):
-            return re.match("^" + cfg["prefix"] + command + "(?:\s|$)", msg, re.MULTILINE)
+            return re.match(
+                "^" +
+                cfg["prefix"] +
+                command +
+                "(?:\s|$)",
+                msg,
+                re.MULTILINE)
 
         # checks if the specified member has a role
         def hasRole(member, role):
@@ -347,8 +355,7 @@ try:
             return hasRole
 
         def coo(channel, target_user, response):
-            target_part = f"{ target_user.mention }, " if target_user != None else ""
-
+            target_part = f"{ target_user.mention }, " if target_user is not None else ""
             return channel.send(f"Coo, { target_part }{ response }")
 
         @bot.event
@@ -360,16 +367,37 @@ try:
                 break
 
             # print some output
-            print(f"logged in as: { bot.user.name } (id:{ bot.user.id }) | connected to { str(len(bot.guilds)) } server(s)")
-            print(f"invite: https://discordapp.com/oauth2/authorize?bot_id={ bot.user.id }&scope=bot&permissions=8")
+            print(
+                f"logged in as: { bot.user.name } (id:{ bot.user.id }) | connected to { str(len(bot.guilds)) } server(s)")
+            print(
+                f"invite: https://discordapp.com/oauth2/authorize?bot_id={ bot.user.id }&scope=bot&permissions=8")
             await bot.change_presence(activity=discord.Game(name=cfg["nowplaying"]))
 
         # message handling
+
+        # log message edits
+        @bot.event
+        async def on_message_edit(msg):
+
+                # log-em, and do it on edits too
+            if not isinstance(msg.channel, discord.channel.DMChannel):
+                str = f"[{ msg.author.name } edited a message in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
+                printable = set(string.printable)
+                logstr = ''.join(filter(lambda x: x in string.printable, str))
+                log(logstr)
+            else:
+                str = f"[{ msg.author.name } edited a message in a DM with me]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
+                printable = set(string.printable)
+                logstr = ''.join(filter(lambda x: x in string.printable, str))
+                log(logstr)
+
+        # log actual messages too
         @bot.event
         async def on_message(msg):
 
-            # log-em, but first we gotta strip those nasty unicode characters! >:D
-            if type(msg.channel) != discord.channel.DMChannel:
+            # log-em, but first we gotta strip those nasty unicode characters!
+            # >:D
+            if not isinstance(msg.channel, discord.channel.DMChannel):
                 str = f"[{ msg.author.name } in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
                 printable = set(string.printable)
                 logstr = ''.join(filter(lambda x: x in string.printable, str))
@@ -380,14 +408,14 @@ try:
                 logstr = ''.join(filter(lambda x: x in string.printable, str))
                 log(logstr)
 
-            #no checkin yourself or the GitHub bot.
+            # no checkin yourself or the GitHub bot.
             if msg.author.bot:
                 return
 
             # check if the message is sent by a person who is composing
             try:
                 ind = composing.index(msg.author.name)
-                if type(msg.channel) == discord.DMChannel:
+                if isinstance(msg.channel, discord.DMChannel):
                     def dmcheck(m):
                         return m.channel == msg.author.dm_channel and m.author == msg.author
                     del composing[ind]
@@ -445,7 +473,6 @@ try:
                         sendgudmeme = True
                         break
 
-
                 # check to see if it is a good place to send it
                 if msg.channel.id not in cfg["spam_channels"]:
                     sendgudmeme = False
@@ -470,19 +497,23 @@ try:
 
                 # find the part of the string with 'ayy'
                 for x in range(0, len(splitmsg)):
-                    if re.match(r"^ay{1,}$", splitmsg[x].lower(), re.IGNORECASE & re.MULTILINE):
+                    if re.match(
+                        r"^ay{1,}$",
+                        splitmsg[x].lower(),
+                            re.IGNORECASE & re.MULTILINE):
                         msgayy = splitmsg[x]
                         slot = x
                         break
 
                 # if nothing was found, stop the handler
-                if msgayy != None:
+                if msgayy is not None:
 
                     # replacement string
                     ret = ""
 
                     # regexes don't work at all with this for some reason.
-                    # see commit cfa4e40d53b637132a7d120918aa03c52c04c720 if you want to fix it..
+                    # see commit cfa4e40d53b637132a7d120918aa03c52c04c720 if
+                    # you want to fix it..
                     for x in range(0, len(msgayy)):
                         if msgayy[x] == "y":
                             ret += "o"
@@ -512,7 +543,8 @@ try:
             # if the first character is the prefix
             elif msg.content.startswith(cfg["prefix"]):
 
-                # variable telling if the command user is eligible for mod commands
+                # variable telling if the command user is eligible for mod
+                # commands
                 mod = is_mod(msg.author)
 
                 # prefix + help
@@ -576,9 +608,9 @@ the message that you want to send to the mods.""")
                                 await bot.guilds[0].get_member(m).send("New modmail received from {}!\nHere is the content of the message:```{}```".format(msg.author.name, " ".join(args[1:])))
                     # read unread mail
                     elif args[0] == "read":
-                        if mod == True:
+                        if mod:
                             mail = readmail(msg.author.name)
-                            if mail == None:
+                            if mail is None:
                                 await coo(msg.author, msg.author, "you have no mail.")
                             else:
                                 await msg.author.send(mail)
@@ -586,9 +618,9 @@ the message that you want to send to the mods.""")
                             await coo(msg.channel, msg.author, "you aren't a mod.")
                     # read a specific message
                     elif args[0] == "readid":
-                        if mod == True:
+                        if mod:
                             mail = readsinglemail(args[1])
-                            if mail == None:
+                            if mail is None:
                                 await coo(msg.author, msg.author, "no mail found by that id.")
                             else:
                                 await msg.author.send(mail)
@@ -596,9 +628,9 @@ the message that you want to send to the mods.""")
                             await coo(msg.channel, msg.author, "you aren't a mod.")
                     # read all messages
                     elif args[0] == "all":
-                        if mod == True:
+                        if mod:
                             mail = listall()
-                            if mail == None:
+                            if mail is None:
                                 await coo(msg.author, msg.author, "there is no mail.")
                             else:
                                 await msg.author.send(mail)
@@ -606,7 +638,7 @@ the message that you want to send to the mods.""")
                             await coo(msg.channel, msg.author, "you aren't a mod.")
                     # clean mail
                     elif args[0] == "clean":
-                        if mod == True:
+                        if mod:
                             cleanmail()
                             await coo(msg.author, msg.author, "cleaned mail.")
                         else:
@@ -631,9 +663,9 @@ the message that you want to send to the mods.""")
                 elif command("tag", msg.content):
                     args = msg.content.split(" ")[1:]
                     args_len = len(args)
-                    create_subcmds = [ "mk", "make", "create" ]
-                    delete_subcmds = [ "rm", "del", "remove", "delete" ]
-                    list_subcmds = [ "ls", "list" ]
+                    create_subcmds = ["mk", "make", "create"]
+                    delete_subcmds = ["rm", "del", "remove", "delete"]
+                    list_subcmds = ["ls", "list"]
                     reserved_words = create_subcmds + delete_subcmds + list_subcmds
 
                     if args_len <= 0:
@@ -649,7 +681,8 @@ the message that you want to send to the mods.""")
                                     if tag_name in reserved_words:
                                         await coo(msg.channel, msg.author, "nice try but that's a reserved name.")
                                     else:
-                                        create_tag(tag_name, " ".join(args[2:]))
+                                        create_tag(
+                                            tag_name, " ".join(args[2:]))
                                         await coo(msg.channel, msg.author, f"tag { tag_name } created.")
                                 else:
                                     await coo(msg.channel, msg.author, "this command requires you give the tag a name and content.")
@@ -680,12 +713,13 @@ the message that you want to send to the mods.""")
                                 await coo(msg.channel, None, tag_list_msg)
                             else:
                                 await coo(msg.author, None, tag_list_msg)
-                                if type(msg.channel) != discord.DMChannel:
+                                if not isinstance(
+                                        msg.channel, discord.DMChannel):
                                     await coo(msg.channel, msg.author, "sent list in DMs")
                         else:
                             tag = get_tag(args[0])
 
-                            if tag == None:
+                            if tag is None:
                                 await coo(msg.channel, msg.author, f"\"{ args[0] }\" is not a tag or subcommand")
                             else:
                                 await msg.channel.send(tag['content'])
