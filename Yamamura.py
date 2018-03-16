@@ -411,6 +411,10 @@ try:
             if msg.author.bot:
                 return
 
+            game_role = role("uselesslypingme")
+            if game_role in msg.role_mentions and not game_role in msg.author.roles:
+                await msg.author.add_roles(game_role)
+
             # check if the message is sent by a person who is composing
             try:
                 ind = composing.index(msg.author.name)
