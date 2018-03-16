@@ -71,10 +71,12 @@ try:
         # useful functions
 
         # log to the message log
-        def log(string):
-            print(string)
-            with open("output.log", "a") as output:
-                output.write(string + "\n")
+        def log(str_to_log):
+            sanitized_str = ''.join(filter(lambda x: x in string.printable, str_to_log))
+            print(sanitized_str)
+
+            with open("output.log", "a", -1, "utf-8-sig") as output:
+                output.write(str_to_log + "\n")
 
         # return true if user is mod
         def is_mod(user):
@@ -342,7 +344,7 @@ try:
                 "^" +
                 cfg["prefix"] +
                 command +
-                "(?:\s|$)",
+                "(?:\\s+|$)",
                 msg,
                 re.MULTILINE)
 
@@ -357,6 +359,23 @@ try:
         def coo(channel, target_user, response):
             target_part = f"{ target_user.mention }, " if target_user is not None else ""
             return channel.send(f"Coo, { target_part }{ response }")
+
+        def log_message(message, is_edit=False):
+            result = f"[{ message.author.name } "
+
+            if is_edit:
+                result += f"edited a message "
+
+            result += "in "
+            
+            if isinstance(message.channel, discord.channel.DMChannel):
+                result += "a DM with me"
+            else:
+                result += message.channel.name
+
+            result += f"]: { message.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
+
+            log(result)
 
         @bot.event
         async def on_ready():
@@ -378,35 +397,15 @@ try:
         # log message edits
         @bot.event
         async def on_message_edit(prev, msg):
-
             # log-em, and do it on edits too
-            if not isinstance(msg.channel, discord.channel.DMChannel):
-                str = f"[{ msg.author.name } edited a message in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
-                printable = set(string.printable)
-                logstr = ''.join(filter(lambda x: x in string.printable, str))
-                log(logstr)
-            else:
-                str = f"[{ msg.author.name } edited a message in a DM with me]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
-                printable = set(string.printable)
-                logstr = ''.join(filter(lambda x: x in string.printable, str))
-                log(logstr)
+            log_message(msg, True)
+
 
         # log actual messages too
         @bot.event
         async def on_message(msg):
-
-            # log-em, but first we gotta strip those nasty unicode characters!
-            # >:D
-            if not isinstance(msg.channel, discord.channel.DMChannel):
-                str = f"[{ msg.author.name } in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
-                printable = set(string.printable)
-                logstr = ''.join(filter(lambda x: x in string.printable, str))
-                log(logstr)
-            else:
-                str = f"[DM with { msg.author.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
-                printable = set(string.printable)
-                logstr = ''.join(filter(lambda x: x in string.printable, str))
-                log(logstr)
+            # log-em
+            log_message(msg)
 
             # no checkin yourself or the GitHub bot.
             if msg.author.bot:
@@ -416,11 +415,11 @@ try:
             try:
                 ind = composing.index(msg.author.name)
                 if isinstance(msg.channel, discord.DMChannel):
-                    def dmcheck(m):
-                        return m.channel == msg.author.dm_channel and m.author == msg.author
                     del composing[ind]
                     await coo(msg.author, msg.author, "are you sure you want to send that message? (yes|no)")
-                    confirm = await bot.wait_for("message", check=dmcheck)
+                    confirm = await bot.wait_for("message", check=lambda new_msg:
+                        m.channel == msg.author.dm_channel and new_msg.author == msg.author
+                    )
                     if confirm.content == "yes" or 'y':
                         sendmail(msg.content, msg.author.name)
                         await coo(msg.author, msg.author, "your mail has been sent.")
