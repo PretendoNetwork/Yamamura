@@ -377,9 +377,9 @@ try:
 
         # log message edits
         @bot.event
-        async def on_message_edit(msg):
+        async def on_message_edit(prev, msg):
 
-                # log-em, and do it on edits too
+            # log-em, and do it on edits too
             if not isinstance(msg.channel, discord.channel.DMChannel):
                 str = f"[{ msg.author.name } edited a message in { msg.channel.name }]: { msg.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
                 printable = set(string.printable)
