@@ -344,7 +344,7 @@ try:
                 "^" +
                 cfg["prefix"] +
                 command +
-                "(?:\s|$)",
+                "(?:\\s+|$)",
                 msg,
                 re.MULTILINE)
 
