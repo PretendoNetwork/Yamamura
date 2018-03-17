@@ -414,6 +414,7 @@ try:
             game_role = role("uselesslypingme")
             if game_role in msg.role_mentions and not game_role in msg.author.roles:
                 await msg.author.add_roles(game_role)
+                await coo(msg.channel, msg.author, "welcome to the game.")
 
             # check if the message is sent by a person who is composing
             try:
