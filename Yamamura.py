@@ -63,6 +63,7 @@ try:
         bot = Bot(
             description="Yamamura by superwhiskers & friends",
             command_prefix=cfg["prefix"],
+            max_messages=1000
         )
 
         # useful functions
