@@ -63,7 +63,7 @@ try:
         bot = Bot(
             description="Yamamura by superwhiskers & friends",
             command_prefix=cfg["prefix"],
-            max_messages=1000
+            max_messages=1000,
         )
 
         # useful functions
@@ -323,7 +323,7 @@ try:
                 result += "a DM with me"
             else:
                 result += message.channel.name
-            result += f"]: { message.content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
+            result += f"]: { message.clean_content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
             log(result)
 
         @bot.event
@@ -458,15 +458,8 @@ try:
 
             # eh ayy?
             elif "ay" in msg.content.lower():
-                # no everyones
-                if msg.mention_everyone:
-                    await coo(
-                        msg.channel, msg.author, "no everyone pings in 'ayy' messages"
-                    )
-                    return
-
                 # split the message
-                splitmsg = msg.content.split(" ")
+                splitmsg = msg.clean_content.split(" ")
                 # the part of the string that contains the 'ayy'
                 msgayy = None
                 # find the part of the string with 'ayy'
