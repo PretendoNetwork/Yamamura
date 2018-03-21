@@ -311,10 +311,12 @@ try:
             target_part = f"{ target_user.mention }, " if target_user is not None else ""
             return channel.send(f"Coo, { target_part }{ response }")
 
-        def log_message(message, is_edit=False):
+        def log_message(message, is_edit=False, is_delet=False):
             result = f"[{ message.author.name } "
             if is_edit:
-                result += f"edited a message "
+                result += "edited a message "
+            if is_delet:
+                result += f"had their message deleted "
             result += "in "
             if isinstance(message.channel, discord.channel.DMChannel):
                 result += "a DM with me"
@@ -344,7 +346,12 @@ try:
         @bot.event
         async def on_message_edit(prev, msg):
             # log-em, and do it on edits too
-            log_message(msg, True)
+            log_message(msg, is_edit=True)
+
+        @bot.event
+        async def on_message_delete(msg):
+            # log the deleted message
+            log_message(msg, is_delet=True)
 
         # log actual messages too
         @bot.event
@@ -405,7 +412,11 @@ try:
                     await coo(
                         msg.channel, msg.author, "you now have the Real Devs role."
                     )
-                await msg.channel.delete_message(msg)
+                await msg.delete()
+            elif msg.channel.id in cfg["voting_channels"]:
+                # hopefully fixes this not working
+                await msg.add_reaction(u'\U0001F44D')
+                await msg.add_reaction(u'\U0001F44E')
             # i'd just like to interject for a moment...
             elif "linux" in msg.content.lower():
                 # make sure it is only linux
@@ -447,7 +458,7 @@ try:
             # eh ayy?
             elif "ay" in msg.content.lower():
                 # no everyones
-                if ("@everyone" in msg.content) or ("@here" in msg.content):
+                if msg.mention_everyone:
                     await coo(
                         msg.channel, msg.author, "no everyone pings in 'ayy' messages"
                     )
