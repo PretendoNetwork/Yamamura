@@ -5,14 +5,24 @@
 # license: gplv3 
 #
 
-"""
+import string
+
 # log to the message log
 def log(str_to_log):
+    # sanitize the string
     sanitized_str = ''.join(filter(lambda x: x in string.printable, str_to_log))
+    # log it to console
     print(sanitized_str)
     with open("output.log", "a", -1, "utf-8-sig") as output:
         output.write(str_to_log + "\n")
 
+class logger:
+    # initiate a logger
+    def __init__(self, serverInfo):
+        # 
+        pass
+
+"""
 # return true if user is mod
 def is_mod(user):
     return user.id in cfg["moderators"]
@@ -86,18 +96,4 @@ def hasRole(member, role):
 def coo(channel, target_user, response):
     target_part = f"{ target_user.mention }, " if target_user is not None else ""
     return channel.send(f"Coo, { target_part }{ response }")
-
-def log_message(message, is_edit=False, is_delet=False):
-    result = f"[{ message.author.name } "
-    if is_edit:
-        result += "edited a message "
-    if is_delet:
-        result += f"had their message deleted "
-    result += "in "
-    if isinstance(message.channel, discord.channel.DMChannel):
-        result += "a DM with me"
-    else:
-        result += message.channel.name
-    result += f"]: { message.clean_content } [{ strftime('%m/%d/%Y %H:%M:%S', gmtime()) }]"
-    log(result)
 """

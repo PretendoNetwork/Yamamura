@@ -7,16 +7,39 @@
 
 # import things
 import dataset  # modmail has never looked this good
+import time
 
 #
 # TODO: finish adding log messages, describe class better
+# refactor some things to match what doc.py says about them
 #
 
 #
 # modmail class
-#
 # 
-
+# -- creation
+# modmail_instance = modmail(self, serverInfo <dict, see doc 1>)
+# -- methods
+# modmail_instance.db
+# - an instance of dataset
+# 
+# modmail_instance.server
+# - serverinfo dict, see above
+# 
+# modmail_instance.parseMail(self, mail <dict, see doc 3>)
+# - parse a mail object
+# 
+# modmail_instance.readmail(self, mod <int, discord user id>)
+# - reads all unread mail for the user id
+# 
+# modmail_instance.sendmail(self, message <string>, sender <int, discord user id>)
+# - constructs a mail dict and saves it in db
+#
+# modmail_instance.cleanmail(self)
+# - wipes mail read by all mods from the db
+# 
+# modmail_instance.deletemail(self, sid <string, see doc 2>)
+# - deletes a message with a matching sid
 class modmail:
     # initiation function
     def __init__(self, serverInfo):
@@ -25,8 +48,8 @@ class modmail:
         self.db =     dataset.connect(self.server["dbPath"])  # the sqlite3 database object for the server
         # notify the sysadmin of the connection
         print(f"[yamamura::db::mail]: connected to { self.server['dbName'] }")
-        # display the current number of stored messages
-        print(f"[yamamura::db::mail/{ self.server['dbName'] }]: current number of messages: { len(self.db["mail"]) }")
+        # display the current number of stored message
+        print(f"[yamamura::db::mail/{ self.server['dbName'] }]: current number of messages: { len(self.db['mail']) }")
         # finish it...
         print(f"[yamamura::db::mail/{ self.server['dbname'] }]: finished loading...")
     # parse modmail to text
@@ -91,7 +114,7 @@ class modmail:
         self.db["mail"].insert(mailToSend)
         # tell the sysadmin the current number of messages in the db
         print(f"[yamamura::db::mail/{ self.server['dbName'] }]: { sender }'s mail has been sent")
-        print(f"[yamamura::db::mail/{ self.server['dbName'] }]: current number of messages: { len(self.db["mail"]) }")
+        print(f"[yamamura::db::mail/{ self.server['dbName'] }]: current number of messages: { len(self.db['mail']) }")
         # write the mail
         return True
     # clean mail
@@ -112,7 +135,7 @@ class modmail:
                 indexesToDelete.append(self.db["mail"].find(id=mail["id"]))
         # then clean from the mail list the indexes to delete
         for x in range(0, len(indexesToDelete)):
-            del self.db["mail"].delete(id=x)
+            self.db["mail"].delete(id=x)
         # return with nothing
         return
     # delete a specific message
@@ -134,13 +157,13 @@ class modmail:
         if self.db["mail"].all() == []:
             return None
         # the mail
-        return parseMail(mail)
+        return self.parseMail(self.db["mail"].all())
     # read a specific message
     def readsinglemail(self, sid):
         # find the single message
         for mail in self.db["mail"]:
             if mail["id"] == sid:
                 message = mail
-                return parseMail(message)
+                return self.parseMail(message)
         # return None if not found
         return None
