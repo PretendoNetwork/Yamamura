@@ -32,6 +32,7 @@ serverInfo = dict(
 )
 
 # this shows you the dict when this file is run
+print("-- testing serverInfo")
 print(serverInfo)
 
 """
@@ -67,6 +68,7 @@ def whiskerflake():
     return ( secondsSinceEpochHash + hopefullyRandInt )
 
 # test it for you
+print("-- testing whiskerflake")
 print(whiskerflake())
 
 """
@@ -83,4 +85,5 @@ mail = dict(
 )
 
 # this shows you what could be a mail dict once it is generated
+print("-- testing mail")
 print(mail)
