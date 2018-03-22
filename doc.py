@@ -28,7 +28,7 @@ respectively
 serverInfo = dict(
     dbName = "db" ,           # string, the name of the database file, excluding extension
     dbPath = "path/to/db.db", # string, the full path to the database file, starting from the Yamamura root folder
-    mods   = [ 0000, 0000 ]   # list, a list containing discord user ids for each of the mods in a server 
+    mods   = [ 1010, 1010 ]   # list, a list containing discord user ids for each of the mods in a server 
 )
 
 # this shows you the dict when this file is run
@@ -51,7 +51,7 @@ def whiskerflake():
         hash(
             abs(
                 random.choice(
-                     [(lambda: random.randint(1000, 9999))() for x in range(10)]
+                     [ random.randint(1000, 9999) for _ in range(10) ]
                 )
             )
         )
@@ -79,9 +79,9 @@ modmail is sent
 """
 mail = dict(
     id      = whiskerflake(),   # string, a whiskerflake. see #2
-    sender  = 0000,             # int, a discord user id for the sender
+    sender  = 1010,             # int, a discord user id for the sender
     message = "hey there mods", # string, a string containing the message the user sent
-    readBy  = [ 0000, 0000 ]    # list, a list containing discord user ids for each of the mods in a server 
+    readBy  = [ 1010, 1010 ]    # list, a list containing discord user ids for each of the mods in a server 
 )
 
 # this shows you what could be a mail dict once it is generated
