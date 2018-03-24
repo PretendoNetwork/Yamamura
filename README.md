@@ -10,15 +10,15 @@ this branch is not intended for normal use, i recommend that you **_do not use t
 
 here's what i have done right now:
 
-[ ] - *not started* - yamamura.py
+- [ ] - *not started* - yamamura.py
 
-[ ] - *ongoing*     - doc.py
+- [ ] - *ongoing*     - doc.py
 
-[ ] - *mostly done* - db.py
+- [ ] - *mostly done* - db.py
 
-[ ] - *not started* - cmd.py
+- [ ] - *not started* - cmd.py
 
-[ ] - *ongoing*     - utils.py
+- [ ] - *ongoing*     - utils.py
 
 *are you surprised?* you shouldn't be. not at all, since this is a pretty big ordeal to take on, considering the extremely large amount of new features to be implemented. expect minor progress updates every once in a while.
 

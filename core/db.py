@@ -4,10 +4,10 @@
 # author: superwhiskers
 # license: gplv3 
 #
-
 # import things
 import dataset  # modmail has never looked this good
-import utils    # import the utility module
+import utils  # import the utility module
+
 
 # the modmail class, should make programming easier for
 # you devs :)
