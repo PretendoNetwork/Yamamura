@@ -13,3 +13,6 @@
 # 
 
 # place any code you want to run on import here
+# 
+# print("hello, cruel world...")
+# 

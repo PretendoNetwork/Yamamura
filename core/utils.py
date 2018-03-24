@@ -5,7 +5,20 @@
 # license: gplv3 
 #
 
-import string
+# imported modules
+import string # string utilities
+import time   # getting seconds since epoch
+import random # random number generation
+
+# generate a unique identifier extremely quickly
+def whiskerflake():
+    """generate a uuid-like construct fairly quickly"""
+    # generate a list of 10 4-digit integers, and select one
+    randInt = str(hash(abs(random.choice( [ random.randint(1000, 9999) for _ in range(10) ] ))))
+    # generate a hash of the seconds since epoch
+    epochHash = str(hash(time.time()))
+    # add them and return
+    return ( epochHash + randInt )
 
 # log to the message log
 def log(str_to_log):
