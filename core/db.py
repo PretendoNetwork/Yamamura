@@ -20,16 +20,15 @@ class modmail:
         # set some variables to save these
         self.server = serverInfo  # server info, from a YAML file
         self.db = dataset.connect(
-            self.server["dbPath"]
-        )  # the sqlite3 database object for the server
-        # notify the sysadmin of the connection
-        print(f"[yamamura::db::mail]: connected to { self.server['dbName'] }")
-        # display the current number of stored message
-        print(
-            f"[yamamura::db::mail/{ self.server['dbName'] }]: current number of messages: { len(self.db['mail']) }"
+            self.server["dbPath"]  # the sqlite3 database object for the server
         )
+        self.log = utils.logger(f"db::mail { self.server['dbName'] }", "db.log")
+        # notify the sysadmin of the connection
+        self.log(f"connected to { self.server['dbName'] }")
+        # display the current number of stored message
+        self.log(f"current number of messages: { len(self.db['mail']) }")
         # finish it...
-        print(f"[yamamura::db::mail/{ self.server['dbname'] }]: finished loading...")
+        self.log(f"finished loading...")
 
     # parse modmail to text
     # this function doesn't change much
@@ -65,9 +64,7 @@ class modmail:
     def readmail(self, mod):
         """returns a generated parseMail string ready for sending to discord. takes one argument, a mod's discord id"""
         # tell the sysadmin that we're reading mail for a mod
-        print(
-            f"[yamamura::db::mail/{ self.server['dbName'] }]: reading mail for { mod }"
-        )
+        self.log(f"reading mail for { mod }")
         # the unread mail list
         unread = []
         # add all of the unread mail
@@ -88,9 +85,7 @@ class modmail:
     def sendmail(self, msg, sender):
         """send mail to mods. takes two arguments, a string for the message, and a discord id for the sender"""
         # tell the sysadmin that someone is sending mail
-        print(
-            f"[yamamura::db::mail/{ self.server['dbName'] }]: { sender } is sending modmail"
-        )
+        self.log(f"{ sender } is sending modmail")
         # constructed mail
         mailToSend = {}
         # construct the message
@@ -100,12 +95,8 @@ class modmail:
         # send the message
         self.db["mail"].insert(mailToSend)
         # tell the sysadmin the current number of messages in the db
-        print(
-            f"[yamamura::db::mail/{ self.server['dbName'] }]: { sender }'s mail has been sent"
-        )
-        print(
-            f"[yamamura::db::mail/{ self.server['dbName'] }]: current number of messages: { len(self.db['mail']) }"
-        )
+        self.log(f"{ sender }'s mail has been sent")
+        self.log(f"current number of messages: { len(self.db['mail']) }")
         # exit the function
         return
 
@@ -113,7 +104,7 @@ class modmail:
     def cleanmail(self):
         """wipe all mail that has been read by all of the mods. takes no arguments"""
         # tell the sysadmin that the mail is being cleaned
-        print(f"[yamamura::db::mail/{ self.server['dbName'] }]: cleaning mail...")
+        self.log(f"cleaning mail...")
         # list of moderator's usernames
         mods = self.server["mods"]
         # indexes of mail to delete
@@ -138,25 +129,20 @@ class modmail:
     def deletemail(self, sid):
         """deletes a specific message by it's identifier. takes one arguement, an identifier. returns none if not found, true if it was"""
         # tell the sysadmin that mail is being deleted
-        print(
-            f"[yamamura::db::mail/{ self.server['dbName'] }]: serching for mail id { sid }..."
-        )
+        self.log(f"serching for mail id { sid }...")
         # search the mail for a specific id
         found = False
         for mail in self.db["mail"]:
             if mail["id"] == sid:
                 # tell the sysadmin this
-                print(
-                    f"[yamamura::db::mail/{ self.server['dbName'] }]: deleting mail id { sid }..."
-                )
+                self.log(f"deleting mail id { sid }...")
                 self.db["mail"].delete(id=mail["id"])
                 found = True
         # if we couldn't find the mail
         if not found:
             # tell the sysadmin this too
-            print(
-                f"[yamamura::db::mail/{ self.server['dbName'] }]: could not find mail id { sid }..."
-            )
+            self.log(f"could not find mail id { sid }...")
+            # then return none because nothing was found
             return None
 
         # return at the end
@@ -166,9 +152,7 @@ class modmail:
     def listall(self):
         """lists all mail in the database. returns a parsed version of all of the mail"""
         # tell the sysadmin **everything**
-        print(
-            f"[yamamura::db::mail/{ self.server['dbName'] }]: listing all mail to someone..."
-        )
+        self.log(f"listing all mail to someone...")
         # this might happen
         if self.db["mail"].all() == []:
             return None
@@ -180,22 +164,16 @@ class modmail:
     def readsinglemail(self, sid):
         """read a specific message. takes one argument, an identifier for a message. returns none if not found, otherwise, it returns the message"""
         # might be useful for statistics or something
-        print(
-            f"[yamamura::db::mail/{ self.server['dbName'] }]: searching for mail id { sid }..."
-        )
+        self.log(f"searching for mail id { sid }...")
         # find the single message
         for mail in self.db["mail"]:
             # this too
-            print(
-                f"[yamamura::db::mail/{ self.server['dbName'] }]: found mail id { sid }..."
-            )
+            self.log(f"found mail id { sid }...")
             if mail["id"] == sid:
                 message = mail
                 return self.parseMail(message)
 
         # debugging???
-        print(
-            f"[yamamura::db::mail/{ self.server['dbName'] }]: could not find mail id { sid }..."
-        )
+        self.log(f" could not find mail id { sid }...")
         # return None if not found
         return None
