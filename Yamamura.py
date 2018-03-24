@@ -28,7 +28,7 @@ with open("tags.json", "a+") as tags_file:
     if tags_file.read() == "":
         tags_file.write("{}")
 # help msg
-helpmsg = f"""```
+helpmsg = f'''```
 Yamamura™, the Pretendo Discord bot
 
 General:
@@ -50,12 +50,12 @@ Mail:
     {cfg["prefix"]}mail all                             : Read all mail (mods only)
     {cfg["prefix"]}mail clean                           : Clean mail read by all mods (mods only)
     {cfg["prefix"]}mail delete <id>                     : Delete mail by id (mods only)
-```"""
+```'''
 # author message
-authors = """```
+authors = '''```
 superwhiskers (@!superwhiskers™#3210): bot concept and main developer
 Netux         (@Netux#2308): certain features and some regex work
-Pika          (@《ThatNerdyPikachu》#2849): features, rewrote bot to use newlib, and fixed the bot several times```"""
+Pika          (@《ThatNerdyPikachu》#2849): features, rewrote bot to use newlib, and fixed the bot several times```'''
 # currently composing people
 composing = []
 try:
@@ -176,7 +176,7 @@ try:
                 # interject
                 if interject is True:
                     await msg.channel.send(
-                        f"""I'd just like to interject for a moment, { msg.author.mention }. What you're referring to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux. Linux is not an operating system unto itself, but rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell utilities and vital system components comprising a full OS as defined by POSIX. Many computer users run a modified version of the GNU system every day, without realizing it. Through a peculiar turn of events, the version of GNU which is widely used today is often called "Linux", and many of its users are not aware that it is basically the GNU system, developed by the GNU Project. There really is a Linux, and these people are using it, but it is just a part of the system they use. Linux is the kernel: the program in the system that allocates the machine's resources to the other programs that you run. The kernel is an essential part of an operating system, but useless by itself; it can only function in the context of a complete operating system. Linux is normally used in combination with the GNU operating system: the whole system is basically GNU with Linux added, or GNU/Linux. All the so-called "Linux" distributions are really distributions of GNU/Linux."""
+                        f'''I'd just like to interject for a moment, { msg.author.mention }. What you're referring to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux. Linux is not an operating system unto itself, but rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell utilities and vital system components comprising a full OS as defined by POSIX. Many computer users run a modified version of the GNU system every day, without realizing it. Through a peculiar turn of events, the version of GNU which is widely used today is often called "Linux", and many of its users are not aware that it is basically the GNU system, developed by the GNU Project. There really is a Linux, and these people are using it, but it is just a part of the system they use. Linux is the kernel: the program in the system that allocates the machine's resources to the other programs that you run. The kernel is an essential part of an operating system, but useless by itself; it can only function in the context of a complete operating system. Linux is normally used in combination with the GNU operating system: the whole system is basically GNU with Linux added, or GNU/Linux. All the so-called "Linux" distributions are really distributions of GNU/Linux.'''
                     )
                     return
 
@@ -193,7 +193,7 @@ try:
                     sendgudmeme = False
                 if sendgudmeme is True:
                     await msg.channel.send(
-                        "Ahh, I remember the great ReduxRedstone incident of 2018. Everyone set their username to ReduxRedstone, which is RedDucks old name.\nhttps://www.youtube.com/user/halolink4\nhttps://www.github.com/ReduxRedstone\n(thank pika for this)"
+                        "Ahh, I remember the great ReduxRedstone incident of 2018. Everyone set their username to ReduxRedstone, which is RedDucks old name.\nhttps://www.youtube.com/user/halolink4\nhttps://www.github.com/ReduxRedstone"
                     )
                     return
 
@@ -302,8 +302,8 @@ try:
                         await coo(
                             msg.author,
                             msg.author,
-                            """send a message right here containing
-the message that you want to send to the mods.""",
+                            '''send a message right here containing
+the message that you want to send to the mods.''',
                         )
                         composing.append(msg.author.name)
                     # send mail with 1st argument as message
@@ -479,9 +479,9 @@ the message that you want to send to the mods.""",
                                 )
                         elif subcommand in list_subcmds:
                             tag_list = get_tags()
-                            tag_list_msg = f"""tags available: ```
+                            tag_list_msg = f'''tags available: ```
 { ", ".join(tag_list) if len(tag_list) > 0 else "<none>" }
-```"""
+```'''
                             if msg.channel.id in cfg["spam_channels"]:
                                 await coo(msg.channel, None, tag_list_msg)
                             else:
