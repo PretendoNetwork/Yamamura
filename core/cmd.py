@@ -6,6 +6,19 @@
 #
 
 """
+original method:
+
+```
+# checks if a command is at the start of a message
+def command(command, msg):
+    return re.match(
+        "^" + cfg["prefix"] + command + "(?:\\s+|$)", msg, re.MULTILINE
+    )
+```
+
+"""
+
+"""
 my plan for this...
 
 using decorators (you know, things like what will be shown below)

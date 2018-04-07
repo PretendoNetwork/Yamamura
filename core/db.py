@@ -177,3 +177,40 @@ class modmail:
         self.log(f" could not find mail id { sid }...")
         # return None if not found
         return None
+
+# somewhere over here will be a tags class
+"""
+# Tag helpers
+def get_tags():
+    with open("tags.json", "r") as tags_file:
+        return json.load(tags_file)
+
+def get_tag(tag_name):
+    tags = get_tags()
+    for name, tag in tags.items():
+        if name == tag_name:
+            return tag
+
+    return None
+
+def create_tag(name, content):
+    tags = get_tags()
+    tags[
+        name
+    ] = {
+        # support for future additions
+        'content': content
+    }
+    save_tags(tags)
+
+def delete_tag(name):
+    tags = get_tags()
+    del tags[name]
+    save_tags(tags)
+
+def save_tags(tags):
+    with open("tags.json", "w") as tags_file:
+        tags_file.seek(0)
+        tags_file.write(json.dumps(tags))
+        tags_file.truncate()
+"""
