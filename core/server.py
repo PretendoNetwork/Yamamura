@@ -12,7 +12,7 @@ import discord # dealing with some discord-related things
 # the server class
 # "it's really just another helper class"
 class server:
-    """a class for dealing with server data"""
+    """a class for dealing with server data. makes looking up users and roles and things easier"""
 
     # initiation function
     def __init__(self, serverInfo, serverObj):
@@ -20,11 +20,13 @@ class server:
         # set some variables to save these
         self.serverInfo = serverInfo  # server info, from a YAML file
         self.server = serverObj # the server object
-        self.log = utils.logger(f"server::server { self.server['dbName'] }", f"{ self.server['rootDir'] }/server.log")
+        self.log = utils.logger(f"utils::server { self.serverInfo['name'] }", f"{ self.serverInfo['rootDir'] }/server.log")
         # check if the server object is actually a server object
         if type(self.server) != discord.guild.Guild:
-            self.log(f"{ type(self.server) } is not a discord server object. i suggest you go fix that")
+            self.log(f"the { type(self.server) } type is not a discord server class. i suggest you go fix that")
             return None
+        # add a nice log message
+        self.log(f"initiated server class for { self.serverInfo['name'] }")
     # checking if a user is a mod
     def isMod(self, user):
         """returns true if user is a mod, false if they aren't"""

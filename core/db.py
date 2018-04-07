@@ -8,6 +8,9 @@
 import dataset  # modmail has never looked this good
 import utils  # import the utility module
 
+# 
+# TODO: finish tags class
+# 
 
 # the modmail class, should make programming easier for
 # you devs :)
@@ -22,11 +25,11 @@ class modmail:
         self.db = dataset.connect(
             self.server["dbPath"]  # the sqlite3 database object for the server
         )
-        self.log = utils.logger(f"db::mail { self.server['dbName'] }", f"{ self.server['rootDir'] }/db.log")
+        self.log = utils.logger(f"db::mail { self.server['dbName'] }", f"{ self.server['rootDir'] }/db_modmail.log")
         # notify the sysadmin of the connection
         self.log(f"connected to { self.server['dbName'] }")
         # display the current number of stored message
-        self.log(f"current number of messages: { len(self.db['mail']) }")
+        self.log(f"current number of messages in database: { len(self.db['mail']) }")
         # finish it...
         self.log(f"finished loading...")
 
@@ -178,39 +181,49 @@ class modmail:
         # return None if not found
         return None
 
-# somewhere over here will be a tags class
-"""
-# Tag helpers
-def get_tags():
-    with open("tags.json", "r") as tags_file:
-        return json.load(tags_file)
-
-def get_tag(tag_name):
-    tags = get_tags()
-    for name, tag in tags.items():
-        if name == tag_name:
-            return tag
-
-    return None
-
-def create_tag(name, content):
-    tags = get_tags()
-    tags[
-        name
-    ] = {
-        # support for future additions
-        'content': content
-    }
-    save_tags(tags)
-
-def delete_tag(name):
-    tags = get_tags()
-    del tags[name]
-    save_tags(tags)
-
-def save_tags(tags):
-    with open("tags.json", "w") as tags_file:
-        tags_file.seek(0)
-        tags_file.write(json.dumps(tags))
-        tags_file.truncate()
-"""
+# tag class for Netux's tags
+class tags:
+    """class for handling the tags system"""
+    def __init__(self, serverInfo):
+        """initiates the tags class. takes one argument, a serverinfo dict (doc.py #1)"""
+        # set some variables to save these
+        self.server = serverInfo  # server info, from a YAML file
+        self.db = dataset.connect(
+            self.server["dbPath"]  # the sqlite3 database object for the server
+        )
+        self.log = utils.logger(f"db::tags { self.server['dbName'] }", f"{ self.server['rootDir'] }/db_tags.log")
+        # notify the sysadmin of the connection
+        self.log(f"connected to { self.server['dbName'] }")
+        # finish it...
+        self.log(f"finished loading...")
+    # get the tags, all of them
+    def get_tags():
+        with open("tags.json", "r") as tags_file:
+            return json.load(tags_file)
+    # get a specific tag by name
+    def get_tag(tag_name):
+        tags = get_tags()
+        for name, tag in tags.items():
+            if name == tag_name:
+                return tag
+        return None
+    # create a tag
+    def create_tag(name, content):
+        tags = get_tags()
+        tags[
+            name
+        ] = {
+            # support for future additions
+            'content': content
+        }
+        save_tags(tags)
+    # delete a tag
+    def delete_tag(name):
+        tags = get_tags()
+        del tags[name]
+        save_tags(tags)
+    def save_tags(tags):
+        with open("tags.json", "w") as tags_file:
+            tags_file.seek(0)
+            tags_file.write(json.dumps(tags))
+            tags_file.truncate()
