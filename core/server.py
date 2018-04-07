@@ -31,7 +31,7 @@ class server:
         # do the check
         return user.id in self.serverInfo["mods"]
     # get a channel by an identifier
-    def channel(query):
+    def channel(self, query):
         """returns a discord channel object that is looked up by name or id"""
         # attempt to identify what the query is
         if type(query) == int:
@@ -41,7 +41,7 @@ class server:
         # otherwise, just return none because it isn't a valid search method
         return None
     # get a role by an identifier
-    def role(query):
+    def role(self, query):
         """return a discord role object that is looked up by name or id"""
         # attempt to identify what the query is
         if type(query) == int:
@@ -51,7 +51,7 @@ class server:
         # otherwise, just return none because it isn't identifiable
         return None
     # get a user by an identifier
-    def user(query):
+    def user(self, query):
         """return a discord member object that is looked up by name or id"""
         # attempt to identify what the query is
         if type(query) == int:
@@ -61,7 +61,7 @@ class server:
         # otherwise, just return none because it isn't identifiable
         return None
     # check if a member has a role
-    def hasRole(member, role):
+    def hasRole(self, member, role):
         """return if member has role. member can be either a discord role obj or an discord role id (int). same goes for role, except replace role obj with member obj"""
         # first, check if the passed role is a discord role object
         # or a role id (int)
