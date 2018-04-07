@@ -22,7 +22,7 @@ class modmail:
         self.db = dataset.connect(
             self.server["dbPath"]  # the sqlite3 database object for the server
         )
-        self.log = utils.logger(f"db::mail { self.server['dbName'] }", "db.log")
+        self.log = utils.logger(f"db::mail { self.server['dbName'] }", f"{ self.server['rootDir'] }/db.log")
         # notify the sysadmin of the connection
         self.log(f"connected to { self.server['dbName'] }")
         # display the current number of stored message
@@ -33,7 +33,7 @@ class modmail:
     # parse modmail to text
     # this function doesn't change much
     def parseMail(self, mail):
-        """parses a mail dict (doc.py #3.) intended to be used by the modmail class but may have other uses."""
+        """parses a mail dict (doc.py #3). intended to be used by the modmail class but may have other uses."""
         # parse a list of mail
         if isinstance(mail, list):
             # the string to send to Discord
