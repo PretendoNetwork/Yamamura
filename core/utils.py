@@ -13,19 +13,25 @@ import datetime  # easier method of getting timestamps
 
 # an extremely nice logging class, useful for
 # making logs consistent across modules
-class logger:
-    """a class for unifying logs accross parts of yamamura"""
+class Logger:
+    """
+    a class for unifying logs across parts of yamamura
+    """
 
     # initiate a logger
-    def __init__(self, module, ofile):
-        """initiates a logger class. expects a string as a module name"""
+    def __init__(self, module, output_file):
+        """
+        initiates a logger class. expects a string as a module name
+        """
         # initiate some variables
         self.module = module  # module name
-        self.file = ofile  # output file
+        self.file = output_file  # output file
 
     # when the class is called
     def __call__(self, message):
-        """prints out a log message to the console with the module name, and the current time and date"""
+        """
+        prints out a log message to the console with the module name, and the current time and date
+        """
         # construct a safe string
         printable = f"[yamamura::{ self.module }]: { message } [{ datetime.datetime.utcnow() }]"
         # print it
@@ -37,15 +43,18 @@ class logger:
 
 # generate a unique identifier extremely quickly
 def whiskerflake():
-    """generate a uuid-like construct fairly quickly"""
+    """
+    generate a uuid-like construct fairly quickly
+    """
     # generate a list of 10 4-digit integers, and select one
-    randInt = str(
+    rand_int = str(
         hash(abs(random.choice([random.randint(1000, 9999) for _ in range(10)])))
     )
     # generate a hash of the seconds since epoch
-    epochHash = str(hash(time.time()))
+    epoch_hash = str(hash(time.time()))
     # add them and return
-    return (epochHash + randInt)
+    return epoch_hash + rand_int
+
 
 """
 def coo(channel, target_user, response):

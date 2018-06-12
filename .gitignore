@@ -4,3 +4,4 @@ config.json
 modmail.json
 tags.json
 *.pyc
+.idea

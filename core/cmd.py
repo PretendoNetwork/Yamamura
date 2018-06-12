@@ -1,10 +1,9 @@
-#
+# 
 # core/cmd.py - command handling utilities
 # 
 # author: superwhiskers
 # license: gplv3 
 #
-
 """
 original method:
 
@@ -17,7 +16,6 @@ def command(command, msg):
 ```
 
 """
-
 """
 my plan for this...
 
