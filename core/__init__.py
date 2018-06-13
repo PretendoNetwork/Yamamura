@@ -9,7 +9,7 @@
 # core/
 #    - cmd.py:   command handling
 #    - db.py:    database-related things
-#    - utils.py: utilties
+#    - utils.py: utilities
 # 
 # place any code you want to run on import here
 # 

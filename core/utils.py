@@ -5,7 +5,6 @@
 # license: gplv3 
 #
 # imported modules
-import string  # string utilities
 import time  # getting seconds since epoch
 import random  # random number generation
 import datetime  # easier method of getting timestamps
@@ -21,7 +20,9 @@ class Logger:
     # initiate a logger
     def __init__(self, module, output_file):
         """
-        initiates a logger class. expects a string as a module name
+        initiates a Logger class
+        :param module: a unique name to be used for your module
+        :param output_file: the file to output your module's logs
         """
         # initiate some variables
         self.module = module  # module name
@@ -31,6 +32,7 @@ class Logger:
     def __call__(self, message):
         """
         prints out a log message to the console with the module name, and the current time and date
+        :param message: the message to log
         """
         # construct a safe string
         printable = f"[yamamura::{ self.module }]: { message } [{ datetime.datetime.utcnow() }]"
@@ -45,6 +47,7 @@ class Logger:
 def whiskerflake():
     """
     generate a uuid-like construct fairly quickly
+    :returns: it returns a whiskerflake
     """
     # generate a list of 10 4-digit integers, and select one
     rand_int = str(
@@ -54,6 +57,15 @@ def whiskerflake():
     epoch_hash = str(hash(time.time()))
     # add them and return
     return epoch_hash + rand_int
+
+# check for list overlap
+def list_overlap(list1, list2):
+    """
+    check if anything in list1 matches anything in list2
+    :param list1:
+    :param list2:
+    :returns: true if there is overlap, false if there is none
+    """
 
 
 """

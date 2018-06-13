@@ -5,8 +5,8 @@
 # license: gplv3 
 #
 # import things
+import core.utils as utils  # import the utility module
 import dataset  # modmail has never looked this good
-import utils  # import the utility module
 
 
 # 
@@ -29,7 +29,7 @@ class Modmail:
         self.db = dataset.connect(
             self.server["dbPath"]  # the sqlite3 database object for the server
         )
-        self.log = utils.logger(
+        self.log = utils.Logger(
             f"db::mail { self.server['dbName'] }",
             f"{ self.server['rootDir'] }/db_modmail.log",
         )
@@ -219,7 +219,7 @@ class tags:
         self.db = dataset.connect(
             self.server["dbPath"]  # the sqlite3 database object for the server
         )
-        self.log = utils.logger(
+        self.log = utils.Logger(
             f"db::tags { self.server['dbName'] }",
             f"{ self.server['rootDir'] }/db_tags.log",
         )

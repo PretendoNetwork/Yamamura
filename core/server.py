@@ -5,7 +5,7 @@
 # license: gplv3 
 #
 # imported modules
-import utils  # utilities for logging and stuff
+import core.utils as utils  # import the utility package
 import discord  # dealing with some discord-related things
 
 
@@ -22,25 +22,39 @@ class Server:
         # set some variables to save these
         self.serverInfo = server_info  # server info, from a YAML file
         self.server = server_object  # the server object
-        self.log = utils.logger(
+        self.log = utils.Logger(
             f"utils::server { self.serverInfo['name'] }",
             f"{ self.serverInfo['rootDir'] }/server.log",
         )
         # check if the server object is actually a server object
-        if type(self.server) != discord.guild.Guild:
+        if type(self.server) != discord.Guild:
             self.log(
-                f"the { type(self.server) } type is not a discord server class. i suggest you go fix that"
+                f"the { type(self.server) } type is not of the discord.Guild class. i suggest you go fix that"
             )
-            return None
+            raise TypeError(
+                f"the { type(self.server) } type is not of the discord.Guild class. i suggest you go fix that"
+            )
 
         # add a nice log message
         self.log(f"initiated server class for { self.serverInfo['name'] }")
 
-    # checking if a user is a mod
-    def is_mod(self, user):
-        """returns true if user is a mod, false if they aren't"""
+    # checking if a member is a mod
+    def is_mod(self, member):
+        """returns true if user is a mod, false if they aren't
+        :type member: a discord.Member to check for mod status on
+        """
+        # check if they are an instance of discord.Member
+        if type(member) != discord.Member:
+            self.log(f"{ type(member) } is not a discord.Member")
+            raise TypeError(f"{ type(member) } is not a discord.Member")
+        # place the ids of each of the member's roles into a list
+        user_role_ids = []
+        # loop over the roles
+        for role in member.roles:
+            # append the id
+            user_role_ids.append(str(role.id))
         # do the check
-        return user.id in self.serverInfo["mods"]
+        return member.id in self.serverInfo["mods"] or utils.list_overlap(self.serverInfo["modRoles"], user_role_ids)
 
     # get a channel by an identifier
     def channel(self, query):
@@ -82,8 +96,11 @@ class Server:
         return None
 
     # check if a member has a role
-    def hasRole(self, member, role):
-        """return if member has role. member can be either a discord role obj or an discord role id (int). same goes for role, except replace role obj with member obj"""
+    def has_role(self, member, role):
+        """
+        return if member has role. member can be either a discord role obj or an discord role id (int). same goes for
+        role, except replace role obj with member obj
+        """
         # first, check if the passed role is a discord role object
         # or a role id (int)
         # role object
@@ -109,12 +126,12 @@ class Server:
                 member = self.user(member)
         # everything is now a-okay!
         # variable for checking if they have it
-        hasRole = False
+        has_role = False
         # search for it on the member
         for x in range(0, len(member.roles)):
             # compare ids
             if role.id == member.roles[x].id:
                 # if they are the same, they have it!
-                hasRole = True
+                has_role = True
         # return the result
-        return hasRole
+        return has_role
