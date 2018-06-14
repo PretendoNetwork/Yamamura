@@ -1,8 +1,8 @@
-# 
+#
 # core/server.py - well, things for handling the discord servers
-# 
+#
 # author: superwhiskers
-# license: gplv3 
+# license: gplv3
 #
 # imported modules
 import core.utils as utils  # import the utility package
@@ -12,19 +12,23 @@ import discord  # dealing with some discord-related things
 # the server class
 # "it's really just another helper class"
 class Server:
-    """a class for dealing with server data. makes looking up users and roles and things easier"""
+    """
+    a class for dealing with server data. makes looking up users and roles and things easier
+    """
 
     # initiation function
     def __init__(self, server_info, server_object):
         """
         initiates the server class. takes two arguments, a serverinfo dict (doc.py #1), and a discord.py server object
+        :param server_info: a serverinfo dict
+        :param server_object: a discord.Guild class
         """
         # set some variables to save these
-        self.serverInfo = server_info  # server info, from a YAML file
+        self.server_info = server_info  # server info, from a YAML file
         self.server = server_object  # the server object
         self.log = utils.Logger(
-            f"utils::server { self.serverInfo['name'] }",
-            f"{ self.serverInfo['rootDir'] }/server.log",
+            f"utils::server { self.server_info['name'] }",
+            f"{ self.server_info['rootDir'] }/server.log",
         )
         # check if the server object is actually a server object
         if type(self.server) != discord.Guild:
@@ -36,17 +40,18 @@ class Server:
             )
 
         # add a nice log message
-        self.log(f"initiated server class for { self.serverInfo['name'] }")
+        self.log(f"initiated server class for { self.server_info['name'] }")
 
     # checking if a member is a mod
     def is_mod(self, member):
-        """returns true if user is a mod, false if they aren't
-        :type member: a discord.Member to check for mod status on
+        """
+        returns true if user is a mod, false if they aren't
+        :param member: a discord.Member to check for mod status on
+        :returns: it returns true if the user is a mod, false if they aren't. it returns none if a type mismatch occured
         """
         # check if they are an instance of discord.Member
         if type(member) != discord.Member:
-            self.log(f"{ type(member) } is not a discord.Member")
-            raise TypeError(f"{ type(member) } is not a discord.Member")
+            return None
         # place the ids of each of the member's roles into a list
         user_role_ids = []
         # loop over the roles
@@ -54,11 +59,17 @@ class Server:
             # append the id
             user_role_ids.append(str(role.id))
         # do the check
-        return member.id in self.serverInfo["mods"] or utils.list_overlap(self.serverInfo["modRoles"], user_role_ids)
+        return member.id in self.server_info["mods"] or utils.list_overlap(
+            self.server_info["modRoles"], user_role_ids
+        )
 
     # get a channel by an identifier
-    def channel(self, query):
-        """returns a discord channel object that is looked up by name or id"""
+    def text_channel(self, query):
+        """
+        returns a discord channel object that is looked up by name or id
+        :param query: a channel name or id to look up. note that the id must be an int if it is one
+        :returns: a discord.TextChannel with the name or id specified. it can also return None if the search method is invalid
+        """
         # attempt to identify what the query is
         if type(query) == int:
             return discord.utils.get(self.server.channels, id=query)
@@ -69,9 +80,30 @@ class Server:
         # otherwise, just return none because it isn't a valid search method
         return None
 
+    # get a voice channel by an identifier
+    def voice_channel(self, query):
+        """
+        returns a discord voice channel object that is looked up by name or id
+        :param query: a voice channel name or id to look up. note that the id must be an int if it is one
+        :returns: a discord.VoiceChannel with the name or id specified. it can also return None if the search method is invalid
+        """
+        # attempt to identify what the query is
+        if type(query) == int:
+            return discord.utils.get(self.server.voice_channels, id=query)
+
+        elif type(query) == str:
+            return discord.utils.get(self.server.voice_channels, name=query)
+
+        # otherwise, just return none because it isn't a valid search method
+        return None
+
     # get a role by an identifier
     def role(self, query):
-        """return a discord role object that is looked up by name or id"""
+        """
+        returns a discord role object that is looked up by name or id
+        :param query: a role name or id to look up. note that the id must be an int if it is one
+        :returns: a discord.Role with the name or id specified. it can also return None if the search method is invalid
+        """
         # attempt to identify what the query is
         if type(query) == int:
             return discord.utils.get(self.server.roles, id=query)
@@ -84,7 +116,11 @@ class Server:
 
     # get a user by an identifier
     def user(self, query):
-        """return a discord member object that is looked up by name or id"""
+        """
+        returns a discord member object that is looked up by name or id
+        :param query: a member name or id to look up. note that the id must be an int if it is one
+        :returns: a discord.Member with the name or id specified. it can also return None if the search method is invalid
+        """
         # attempt to identify what the query is
         if type(query) == int:
             return discord.utils.get(self.server.members, id=query)
@@ -98,8 +134,10 @@ class Server:
     # check if a member has a role
     def has_role(self, member, role):
         """
-        return if member has role. member can be either a discord role obj or an discord role id (int). same goes for
-        role, except replace role obj with member obj
+        return if a member has a role
+        :param member: a discord role obj or an discord role id. the member id must be of the int type
+        :param role: a discord member obj or an discord member id. the member id must be of the int type here too
+        :returns: it returns none if a type mismatch occured, otherwhise it returns true or false if they have it or not
         """
         # first, check if the passed role is a discord role object
         # or a role id (int)

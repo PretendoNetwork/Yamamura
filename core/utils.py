@@ -58,15 +58,23 @@ def whiskerflake():
     # add them and return
     return epoch_hash + rand_int
 
-# check for list overlap
+# check for list overlap between two lists
 def list_overlap(list1, list2):
     """
     check if anything in list1 matches anything in list2
-    :param list1:
-    :param list2:
+    :param list1: a list
+    :param list2: another list
     :returns: true if there is overlap, false if there is none
     """
-
+    # variable to tell if there is overlap
+    overlap = False
+    # loop over list1
+    for item in list1:
+        if item in list2:
+            overlap = True
+            break
+    # return if there is overlap
+    return overlap
 
 """
 def coo(channel, target_user, response):
