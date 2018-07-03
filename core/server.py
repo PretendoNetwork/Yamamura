@@ -6,6 +6,7 @@
 #
 # imported modules
 import core.utils as utils  # import the utility package
+import dataset  # database things
 import discord  # dealing with some discord-related things
 
 
@@ -17,18 +18,20 @@ class Server:
     """
 
     # initiation function
-    def __init__(self, server_info, server_object):
+    def __init__(self, server_object):
         """
-        initiates the server class. takes two arguments, a serverinfo dict (doc.py #1), and a discord.py server object
-        :param server_info: a serverinfo dict
+        initiates the server class
         :param server_object: a discord.Guild class
         """
         # set some variables to save these
-        self.server_info = server_info  # server info, from a YAML file
+        self.db = dataset.connect(
+            f"servers/{ server_object.id }/server.db"  # the database
+        )
+        self.server_settings = utils.KeyValueTable(self.db["settings"])
         self.server = server_object  # the server object
         self.log = utils.Logger(
-            f"utils::server { self.server_info['name'] }",
-            f"{ self.server_info['rootDir'] }/server.log",
+            f"utils::server ({ self.server.id }/{ self.server.name })",
+            f"servers/{ self.server.id }/server.log",
         )
         # check if the server object is actually a server object
         if type(self.server) != discord.Guild:
@@ -40,14 +43,14 @@ class Server:
             )
 
         # add a nice log message
-        self.log(f"initiated server class for { self.server_info['name'] }")
+        self.log(f"initiated server class for { self.server.id }/{ self.server.name }")
 
     # checking if a member is a mod
     def is_mod(self, member):
         """
         returns true if user is a mod, false if they aren't
         :param member: a discord.Member to check for mod status on
-        :returns: it returns true if the user is a mod, false if they aren't. it returns none if a type mismatch occured
+        :returns: it returns true if the user is a mod, false if they aren't. it returns none if a type mismatch occurred
         """
         # check if they are an instance of discord.Member
         if type(member) != discord.Member:
@@ -59,8 +62,8 @@ class Server:
             # append the id
             user_role_ids.append(str(role.id))
         # do the check
-        return member.id in self.server_info["mods"] or utils.list_overlap(
-            self.server_info["modRoles"], user_role_ids
+        return member.id in self.server_settings["mods"] or utils.list_overlap(
+            self.server_settings["mod_roles"], user_role_ids
         )
 
     # get a channel by an identifier
@@ -137,7 +140,7 @@ class Server:
         return if a member has a role
         :param member: a discord role obj or an discord role id. the member id must be of the int type
         :param role: a discord member obj or an discord member id. the member id must be of the int type here too
-        :returns: it returns none if a type mismatch occured, otherwhise it returns true or false if they have it or not
+        :returns: it returns none if a type mismatch occurred, otherwise it returns true or false if they have it or not
         """
         # first, check if the passed role is a discord role object
         # or a role id (int)
@@ -156,7 +159,7 @@ class Server:
         if type(member) != discord.member.Member:
             # member id (int)
             if type(member) != int:
-                # you idiot
+                # i guess it's neither
                 return None
 
             else:
