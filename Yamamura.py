@@ -502,6 +502,11 @@ try:
 
                     # SEND IT ALREADY!!!
                     await msg.channel.send(fullret)
+            #Yamamura is not a seagull!
+            elif "yamamura is a seagull" in msg.content.lower():
+                await coo(
+                    msg.channel, msg.author, "I'm not a seagull!"
+                )
             # if the first character is the prefix
             elif msg.content.startswith(cfg["prefix"]):
                 # variable telling if the command user is eligible for mod
