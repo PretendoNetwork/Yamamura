@@ -1,6 +1,6 @@
 /*
 
-yamamura - that one discord bot used in the pretendo discord serverOB
+yamamura - that one discord bot used in the pretendo discord server
 Copyright (C) 2018 superwhiskers <whiskerdev@protonmail.com>
 
 This program is free software: you can redistribute it and/or modify
