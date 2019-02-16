@@ -1,9 +1,8 @@
 {
-  "token" : "create a bot account at https://discordapp.com/developers/applications/me",
+  "token" : "token goes here",
   "prefix" : ".",
-  "moderators" : [ user ID ],
-  "modmail_notif_optout": [ user ID ]
-  "spam_channels": [ channel ID ],
-  "voting_channels": [ channel ID ],
-  "nowplaying" : "playing beta testing"
+  "moderators" : [ "moderator ids go here" ],
+  "modmail_notif_optout" : [ ],
+  "spam_channels" : [ "spam channel ids go here" ],
+  "voting_channels": [ "voting channel ids go here" ]
 }
