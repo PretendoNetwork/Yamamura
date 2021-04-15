@@ -38,26 +38,29 @@ bot.on('message', message => {
 	if (ayyRegex.test(message.content)) {
 
 		let messageArray = message.content.split(ayyRegex)
-
 		messageArray.forEach((entry, index) => {
-			
+
 			// Return if the entry doesn't contain anything to replace
 			if (!ayyRegex.test(entry)) return;
 
 			// Replace anything there is to replace
 			else {
 				messageArray[index] = messageArray[index]
-				.replace(/y/g, 'o')
-				.replace(/Y/g, 'O')
-				.replace('a', 'lma')
-				.replace('A', 'LMA')
+					.replace(/y/g, 'o')
+					.replace(/Y/g, 'O')
+					.replace('a', 'lma')
+					.replace('A', 'LMA')
 			}
-		})
+		});
 
-		// Send the lmaod message
-		message.channel.send(messageArray.join(''))
-
-	}
+		let lmaodMessage = messageArray.join('');
+		// Check if the message is too big to send
+		if (lmaodMessage.length < 2000) {
+			message.channel.send(lmaodMessage);
+		} else {
+			message.channel.send('The resulting message is too long :/');
+		}
+	};
 });
 
 bot.login(config.token).then(() => {
