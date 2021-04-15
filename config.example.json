@@ -1,8 +1,5 @@
 {
-  "token" : "token goes here",
-  "prefix" : ".",
-  "moderators" : [ "moderator ids go here" ],
-  "modmail_notif_optout" : [ ],
-  "spam_channels" : [ "spam channel ids go here" ],
-  "voting_channels": [ "voting channel ids go here" ]
+  "application_id": "",
+  "public_key": "",
+  "token": ""
 }
