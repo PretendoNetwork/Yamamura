@@ -9,7 +9,7 @@ const creator = new SlashCreator({
 	token: config.token,
 });
 
-const ToggleRoleCommand = require('./commands/toggleupdates');
+const ToggleRoleCommand = require('./commands/togglerole');
 
 creator
 	.withServer(
