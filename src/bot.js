@@ -10,6 +10,7 @@ const creator = new SlashCreator({
 });
 
 const ToggleRoleCommand = require('./commands/togglerole');
+const ayyRegex = new RegExp(/\b(ay+)\b/, 'i');
 
 creator
 	.withServer(
@@ -23,13 +24,39 @@ creator
 	.syncCommands();
 
 bot.on('message', message => {
+
 	// Ignore bot messages
 	if (message.author.bot) return;
 
 	// Check if the message is a command and handle it
 	if (message.content === '.toggleupdates') {
-		message.reply('Looks like you tried to use a legacy command! Try our new slash commands by just typing "/"!');
+		message.reply('looks like you tried to use a legacy command! Try our new slash commands by just typing "/"!');
 		return;
+	}
+
+	// Replace ays with lmaos
+	if (ayyRegex.test(message.content)) {
+
+		let messageArray = message.content.split(ayyRegex)
+
+		messageArray.forEach((entry, index) => {
+			
+			// Return if the entry doesn't contain anything to replace
+			if (!ayyRegex.test(entry)) return;
+
+			// Replace anything there is to replace
+			else {
+				messageArray[index] = messageArray[index]
+				.replace(/y/g, 'o')
+				.replace(/Y/g, 'O')
+				.replace('a', 'lma')
+				.replace('A', 'LMA')
+			}
+		})
+
+		// Send the lmaod message
+		message.channel.send(messageArray.join(''))
+
 	}
 });
 
