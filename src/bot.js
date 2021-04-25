@@ -10,7 +10,7 @@ const creator = new SlashCreator({
 });
 
 const ToggleRoleCommand = require('./commands/togglerole');
-const ayyRegex = new RegExp(/\b(ay+)\b/, 'i');
+const ayRegex = new RegExp(/\b(ay+)\b/, 'i');
 
 creator
 	.withServer(
@@ -35,27 +35,25 @@ bot.on('message', message => {
 	}
 
 	// Replace ays with lmaos
-	if (ayyRegex.test(message.content)) {
+	if (ayRegex.test(message.content)) {
 
-		let messageArray = message.content.split(ayyRegex)
+		let messageArray = message.content.split(ayRegex)
 		messageArray.forEach((entry, index) => {
 
 			// Return if the entry doesn't contain anything to replace
-			if (!ayyRegex.test(entry)) return;
+			if (!ayRegex.test(entry)) return;
 
-			// Replace anything there is to replace
-			else {
-				messageArray[index] = messageArray[index]
-					.replace(/y/g, 'o')
-					.replace(/Y/g, 'O')
-					.replace('a', 'lma')
-					.replace('A', 'LMA')
-			}
+			// Replace 'ay's with 'lmao's
+			messageArray[index] = messageArray[index]
+				.replace(/y/g, 'o')
+				.replace(/Y/g, 'O')
+				.replace('a', 'lma')
+				.replace('A', 'LMA');
 		});
 
-		let lmaodMessage = messageArray.join('');
-		// Check if the message is too big to send
-		if (lmaodMessage.length < 2000) {
+		const lmaodMessage = messageArray.join('');
+		// Check if the message is too long to be sent
+		if (lmaodMessage.length <= 2000) {
 			message.channel.send(lmaodMessage);
 		} else {
 			message.channel.send('The resulting message is too long :/');
