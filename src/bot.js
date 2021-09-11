@@ -95,7 +95,7 @@ bot.on('guildMemberAdd', member => {
 		}
 	]);
 
-	member.send('Thank you for joining the Pretendo Network Discord server! Check bloew for some server information and links', { embed });
+	member.send('Thank you for joining the Pretendo Network Discord server! Check below for some server information and links', { embed });
 });
 
 bot.login(config.token).then(() => {
