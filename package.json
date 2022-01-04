@@ -1,24 +1,8 @@
 {
-  "name": "yamamura",
-  "version": "1.0.0",
-  "description": "Official community bot for the Pretendo Discord server",
-  "main": "src/bot.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PretendoNetwork/Yamamura.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/PretendoNetwork/Yamamura/issues"
-  },
-  "homepage": "https://github.com/PretendoNetwork/Yamamura#readme",
   "dependencies": {
-    "discord.js": "^12.5.3",
-    "slash-create": "^3.0.1"
+    "@discordjs/builders": "^0.10.0",
+    "@discordjs/rest": "^0.2.0-canary.0",
+    "discord-api-types": "^0.26.0",
+    "discord.js": "^13.4.0"
   }
 }

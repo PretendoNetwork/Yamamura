@@ -1,0 +1,13 @@
+{
+    "length": 2,
+    "1": {
+        "Header": "MRTI",
+        "HCode": "678",
+        "CodeLength": 3
+    },
+    "2": {
+        "Header": "JXT",
+        "HCode": "598",
+        "CodeLength": 4
+    }
+}
