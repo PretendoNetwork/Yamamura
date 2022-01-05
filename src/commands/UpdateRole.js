@@ -22,26 +22,27 @@ module.exports = {
 
 		const user = await guild.members.cache.get(interaction.user.id)
 		const hasRole = await user.roles.cache.has(role.id);
+		var color = "#"+ role.color.toString(16).padStart(6, '0')
 		
 		//Checks if User has the Role
 		if (!hasRole) {
 			user.roles.add(role)
-			const Emb = await MakeEmbed(interaction.user,true,true,rolename)
+			const Emb = await MakeEmbed(interaction.user,true,true,rolename,color)
 		await interaction.reply({ embeds: [Emb] });
 		} else {
 			user.roles.remove(role)
-			const Emb = await MakeEmbed(interaction.user,true,false,rolename)
+			const Emb = await MakeEmbed(interaction.user,true,false,rolename,color)
 		await interaction.reply({ embeds: [Emb] });
 		}
 	},
 };
 //Creates the Embed for the Message
-function MakeEmbed(Author,IsSuccess,AddingRole,Role) {
+function MakeEmbed(Author,IsSuccess,AddingRole,Role,color) {
 	//Checks if it a Successfull Operation
 	if (IsSuccess){
 	const Embeded = new MessageEmbed()
 	.setAuthor({name: Author.username, iconURL:Author.avatarURL()})
-	.setColor("#380769")
+	.setColor(color)
 	.setTitle("Role Updated")
 
 	if (AddingRole){
