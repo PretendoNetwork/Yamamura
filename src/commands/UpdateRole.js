@@ -27,11 +27,11 @@ module.exports = {
 		//Checks if User has the Role
 		if (!hasRole) {
 			user.roles.add(role)
-			const Emb = await MakeEmbed(interaction.user,true,true,rolename,color)
+			const Emb = await MakeEmbed(interaction.user,true,true,role.id,color)
 		await interaction.reply({ embeds: [Emb] });
 		} else {
 			user.roles.remove(role)
-			const Emb = await MakeEmbed(interaction.user,true,false,rolename,color)
+			const Emb = await MakeEmbed(interaction.user,true,false,role.id,color)
 		await interaction.reply({ embeds: [Emb] });
 		}
 	},
@@ -46,12 +46,12 @@ function MakeEmbed(Author,IsSuccess,AddingRole,Role,color) {
 	.setTitle("Role Updated")
 
 	if (AddingRole){
-	Embeded.setDescription(`User has been given the @${Role} role!`)
+	Embeded.setDescription(`User has been given the <@&${Role}> role!`)
 	}
 
 	else
 	{
-	Embeded.setDescription(`User has removed the @${Role} role!`)
+	Embeded.setDescription(`User has removed the <@&${Role}> role!`)
 	}
 
 return Embeded
