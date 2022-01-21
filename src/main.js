@@ -33,7 +33,6 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.login(config.Token)
-
 //Sets the Slash Commands Automactically
 require('./deploy-commands.js').run()
 

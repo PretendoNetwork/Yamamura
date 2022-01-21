@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	//This Slash Command is for adding or removing the roles that a user can have
 	data: new SlashCommandBuilder()
-		.setName('updaterole')
+		.setName('togglerole')
 		.setDescription('Gives/Removes the role the user requested')
         .addStringOption(role => role.setName("role").setDescription("The Role Requested").addChoices([["Updates","Updates"],["Stream Ping","StreamPing"]]).setRequired(true)),
 		async execute(interaction) {
@@ -11,7 +11,6 @@ module.exports = {
 		const rolename = interaction.options.data[0].value
 		const guild = interaction.guild
 		const role = await guild.roles.cache.find(r => r.name === rolename);
-		
 		//Checks if the Role Exists
 		if (!role) {
 			console.log(`Could not find role ${rolename}!`);
