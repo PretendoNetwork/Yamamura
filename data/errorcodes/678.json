@@ -1,0 +1,81 @@
+{
+    "Type": "Martini Installer",
+    "Color": "#7f32a8",
+    "AlternateHeader": "MRTI",
+    "AlternateCode": {
+        "length": 3,
+        "RemoveStringPosition": 1
+    },
+    "Codes": {
+        "1000": {
+            "Name": "678-1000", 
+            "Description":   "Juxtapostion has been installed successfully",
+            "Solution": "N/A"
+        },
+        "1001": {
+            "Name": "678-1001", 
+            "Description":   "MCP Failure, May be caused by HaxchiFW",
+            "Solution": "Restart your Console"
+        },
+        "1002": {
+            "Name": "678-1002", 
+            "Description":   "Could Not Find Miiverse on your console",
+            "Solution": "N/A"
+        },
+        "1003": {
+            "Name": "678-1003", 
+            "Description":   "No Compatable CFW Found",
+            "Solution": "Please have Mocha running before opening Martini"
+        },
+        "1004": {
+            "Name": "678-1004", 
+            "Description":   "Failed to Mount IOSU",
+            "Solution": "Restart your console"
+        },
+        "1005": {
+            "Name": "678-1005", 
+            "Description":   "Could not find a clean version of Miiverse applet or recovery files",
+            "Solution": "N/A"
+        },
+        "1006": {
+            "Name": "678-1006", 
+            "Description":   "Could not find a clean version of NSSL Cert",
+            "Solution": "N/A"
+        },
+        "1007": {
+            "Name": "678-1007", 
+            "Description":   "Failed to Create a Backup",
+            "Solution": "Try Again?"
+        },
+        "1008": {
+            "Name": "678-1008", 
+            "Description":   "Failed to Patch Miiverse \n Your System has not been Modified",
+            "Solution": "Try Running Martini again."
+        },
+        "1009": {
+            "Name": "678-1009", 
+            "Description":   "Patch Created a Corrupted File \n Your System has not been Modified",
+            "Solution": "Try Running Martini again."
+        },
+        "1010": {
+            "Name": "678-1010", 
+            "Description":   ":warning: Patch Created a Corrupted File \n **YOUR SYSTEM HAS BEEN MODIFIED AND MAY BE IN AN UNSTABLE STATE**",
+            "Solution": "Contact a Developer Immendently."
+        },
+        "1011": {
+            "Name": "678-1011", 
+            "Description":   ":warning: **PATCH HAS FAILED TO REPLACE CERT \n YOUR SYSTEM MAY HAVE BRICKED**",
+            "Solution": "Contact a Developer Immendently."
+        },
+        "1012": {
+            "Name": "678-1012", 
+            "Description":   "Juxtapostion has been uninstalled successfully",
+            "Solution": "N/A"
+        },
+        "1013": {
+            "Name": "678-1013", 
+            "Description":   "Uninstalling Failed",
+            "Solution": "Try Again?"
+        }
+    }
+}

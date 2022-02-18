@@ -1,0 +1,1438 @@
+
+{
+    "Type": "Account",
+    "Color": "#1a7ae8",
+    "AlternateHeader": "ACT",
+    "Codes": {
+        "0000": {
+            "Name": "102-0000", 
+            "Description":   "MY_SUCCESS",
+            "Solution": "N/A"
+        },
+        "0001": {
+            "Name": "102-0001",
+            "Description":   "MAIL_ADDRESS_NOT_CONFIRMED",
+            "Solution": "Please Comfirm Your Mail Address"
+        },
+       "0500": {
+            "Name": "102-0500",
+            "Description":   "LIBRARY_ERROR",
+            "Solution": "N/A"
+        },
+        "0501": {
+            "Name": "102-0501",
+            "Description":   "NOT_INITIALIZED",
+            "Solution": "N/A"
+        },
+        "0502": {
+            "Name": "102-0502",
+            "Description":   "ALREADY_INITIALIZED",
+            "Solution": "N/A"
+        },
+        "0511": {
+            "Name": "102-0511",
+            "Description":   "BUSY",
+            "Solution": "N/A"
+        },
+        "0591": {
+            "Name": "102-0591",
+            "Description":   "NOT_IMPLEMENTED",
+            "Solution": "N/A"
+        },
+        "0592": {
+            "Name": "102-0592",
+            "Description":   "DEPRECATED",
+            "Solution": "N/A"
+        },
+        "0593": {
+            "Name": "102-0593",
+            "Description":   "DEVELOPMENT_ONLY",
+            "Solution": "N/A"
+        },
+        "0600": {
+            "Name": "102-0600",
+            "Description":   "INVALID_ARGUMENT",
+            "Solution": "N/A"
+        },
+        "0601": {
+            "Name": "102-0601",
+            "Description":   "INVALID_POINTER",
+            "Solution": "N/A"
+        },
+        "0602": {
+            "Name": "102-0602",
+            "Description":   "OUT_OF_RANGE",
+            "Solution": "N/A"
+        },
+        "0603": {
+            "Name": "102-0603",
+            "Description":   "INVALID_SIZE",
+            "Solution": "N/A"
+        },
+        "0604": {
+            "Name": "102-0604",
+            "Description":   "INVALID_FORMAT",
+            "Solution": "N/A"
+        },
+        "0605": {
+            "Name": "102-0605",
+            "Description":   "INVALID_HANDLE",
+            "Solution": "N/A"
+        },
+        "0606": {
+            "Name": "102-0606",
+            "Description":   "INVALID_VALUE",
+            "Solution": "N/A"
+        },
+        "0700": {
+            "Name": "102-0700",
+            "Description":   "INTERNAL_ERROR",
+            "Solution": "N/A"
+        },
+        "0701": {
+            "Name": "102-0701",
+            "Description":   "END_OF_STREAM",
+            "Solution": "N/A"
+        },
+        "0710": {
+            "Name": "102-0710",
+            "Description":   "FILE_ERROR",
+            "Solution": "N/A"
+        },
+        "0711": {
+            "Name": "102-0711",
+            "Description":   "FILE_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "0712": {
+            "Name": "102-0712",
+            "Description":   "FILE_VERSION_MISMATCH",
+            "Solution": "N/A"
+        },
+        "0713": {
+            "Name": "102-0713",
+            "Description":   "FILE_IO_ERROR",
+            "Solution": "N/A"
+        },
+        "0714": {
+            "Name": "102-0714",
+            "Description":   "FILE_TYPE_MISMATCH",
+            "Solution": "N/A"
+        },
+        "0730": {
+            "Name": "102-0730",
+            "Description":   "OUT_OF_RESOURCE",
+            "Solution": "N/A"
+        },
+        "0731": {
+            "Name": "102-0731",
+            "Description":   "SHORT_OF_BUFFER",
+            "Solution": "N/A"
+        },
+        "0740": {
+            "Name": "102-0740",
+            "Description":   "OUT_OF_MEMORY",
+            "Solution": "N/A"
+        },
+        "0741": {
+            "Name": "102-0741",
+            "Description":   "OUT_OF_GLOBAL_HEAP",
+            "Solution": "N/A"
+        },
+        "0742": {
+            "Name": "102-0742",
+            "Description":   "OUT_OF_CROSS_PROCESS_HEAP",
+            "Solution": "N/A"
+        },
+        "0743": {
+            "Name": "102-0743",
+            "Description":   "OUT_OF_PROCESS_LOCAL_HEAP",
+            "Solution": "N/A"
+        },
+        "0744": {
+            "Name": "102-0744",
+            "Description":   "OUT_OF_MXML_HEAP",
+            "Solution": "N/A"
+        },
+        "0800": {
+            "Name": "102-0800",
+            "Description":   "UC_ERROR",
+            "Solution": "N/A"
+        },
+        "0801": {
+            "Name": "102-0801",
+            "Description":   "UC_OPEN_ERROR",
+            "Solution": "N/A"
+        },
+        "0802": {
+            "Name": "102-0802",
+            "Description":   "UC_READ_SYS_CONFIG_ERROR",
+            "Solution": "N/A"
+        },
+        "0810": {
+            "Name": "102-0810",
+            "Description":   "MCP_ERROR",
+            "Solution": "N/A"
+        },
+        "0811": {
+            "Name": "102-0811",
+            "Description":   "MCP_OPEN_ERROR",
+            "Solution": "N/A"
+        },
+        "0812": {
+            "Name": "102-0812",
+            "Description":   "MCP_GET_INFO_ERROR",
+            "Solution": "N/A"
+        },
+        "0820": {
+            "Name": "102-0820",
+            "Description":   "ISO_ERROR",
+            "Solution": "N/A"
+        },
+        "0821": {
+            "Name": "102-0821",
+            "Description":   "ISO_INIT_FAILURE",
+            "Solution": "N/A"
+        },
+        "0822": {
+            "Name": "102-0822",
+            "Description":   "ISO_GET_COUNTRY_CODE_FAILURE",
+            "Solution": "N/A"
+        },
+        "0823": {
+            "Name": "102-0823",
+            "Description":   "ISO_GET_LANGUAGE_CODE_FAILURE",
+            "Solution": "N/A"
+        },
+        "0850": {
+            "Name": "102-0850",
+            "Description":   "MXML_ERROR",
+            "Solution": "N/A"
+        },
+        "0900": {
+            "Name": "102-0900",
+            "Description":   "IOS_ERROR",
+            "Solution": "N/A"
+        },
+        "0901": {
+            "Name": "102-0901",
+            "Description":   "IOS_OPEN_ERROR",
+            "Solution": "N/A"
+        },
+        "1000": {
+            "Name": "102-1000",
+            "Description":   "ACCOUNT_MANAGEMENT_ERROR",
+            "Solution": "N/A"
+        },
+        "1001": {
+            "Name": "102-1001",
+            "Description":   "ACCOUNT_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "1002": {
+            "Name": "102-1002",
+            "Description":   "SLOTS_FULL",
+            "Solution": "Free up slots be deleting some users"
+        },
+        "1011": {
+            "Name": "102-1011",
+            "Description":   "ACCOUNT_NOT_LOADED",
+            "Solution": "N/A"
+        },
+        "1012": {
+            "Name": "102-1012",
+            "Description":   "ACCOUNT_ALREADY_LOADED",
+            "Solution": "N/A"
+        },
+        "1013": {
+            "Name": "102-1013",
+            "Description":   "ACCOUNT_LOCKED",
+            "Solution": "N/A"
+        },
+        "1021": {
+            "Name": "102-1021",
+            "Description":   "NOT_NETWORK_ACCOUNT",
+            "Solution": "N/A"
+        },
+        "1022": {
+            "Name": "102-1022",
+            "Description":   "NOT_LOCAL_ACCOUNT",
+            "Solution": "N/A"
+        },
+        "1023": {
+            "Name": "102-1023",
+            "Description":   "ACCOUNT_NOT_COMMITTED",
+            "Solution": "N/A"
+        },
+        "1101": {
+            "Name": "102-1101",
+            "Description":   "NETWORK_CLOCK_INVALID",
+            "Solution": "N/A"
+        },
+        "2000": {
+            "Name": "102-2000",
+            "Description":   "AUTHENTICATION_ERROR",
+            "Solution": "N/A"
+        },
+        "2100": {
+            "Name": "102-2100",
+            "Description":   "HTTP_ERROR",
+            "Solution": "N/A"
+        },
+        "2101": {
+            "Name": "102-2101",
+            "Description":   "HTTP_UNSUPPORTED_PROTOCOL",
+            "Solution": "N/A"
+        },
+        "2102": {
+            "Name": "102-2102",
+            "Description":   "HTTP_FAILED_INIT",
+            "Solution": "N/A"
+        },
+        "2103": {
+            "Name": "102-2103",
+            "Description":   "HTTP_URL_MALFORMAT",
+            "Solution": "N/A"
+        },
+        "2104": {
+            "Name": "102-2104",
+            "Description":   "HTTP_NOT_BUILT_IN",
+            "Solution": "N/A"
+        },
+        "2105": {
+            "Name": "102-2105",
+            "Description":   "HTTP_COULDNT_RESOLVE_PROXY",
+            "Solution": "N/A"
+        },
+        "2106": {
+            "Name": "102-2106",
+            "Description":   "HTTP_COULDNT_RESOLVE_HOST",
+            "Solution": "N/A"
+        },
+        "2107": {
+            "Name": "102-2107",
+            "Description":   "HTTP_COULDNT_CONNECT",
+            "Solution": "N/A"
+        },
+        "2108": {
+            "Name": "102-2108",
+            "Description":   "HTTP_FTP_WEIRD_SERVER_REPLY",
+            "Solution": "N/A"
+        },
+        "2109": {
+            "Name": "102-2109",
+            "Description":   "HTTP_REMOTE_ACCESS_DENIED",
+            "Solution": "N/A"
+        },
+        "2110": {
+            "Name": "102-2110",
+            "Description":   "HTTP_OBSOLETE10",
+            "Solution": "N/A"
+        },
+        "2111": {
+            "Name": "102-2111",
+            "Description":   "HTTP_FTP_WEIRD_PASS_REPLY",
+            "Solution": "N/A"
+        },
+        "2112": {
+            "Name": "102-2112",
+            "Description":   "HTTP_OBSOLETE12",
+            "Solution": "N/A"
+        },
+        "2113": {
+            "Name": "102-2113",
+            "Description":   "HTTP_FTP_WEIRD_PASV_REPLY",
+            "Solution": "N/A"
+        },
+        "2114": {
+            "Name": "102-2114",
+            "Description":   "HTTP_FTP_WEIRD_227_FORMAT",
+            "Solution": "N/A"
+        },
+        "2115": {
+            "Name": "102-2115",
+            "Description":   "HTTP_FTP_CANT_GET_HOST",
+            "Solution": "N/A"
+        },
+        "2116": {
+            "Name": "102-2116",
+            "Description":   "HTTP_OBSOLETE16",
+            "Solution": "N/A"
+        },
+        "2117": {
+            "Name": "102-2117",
+            "Description":   "HTTP_FTP_COULDNT_SET_TYPE",
+            "Solution": "N/A"
+        },
+        "2118": {
+            "Name": "102-2118",
+            "Description":   "HTTP_PARTIAL_FILE",
+            "Solution": "N/A"
+        },
+        "2119": {
+            "Name": "102-2119",
+            "Description":   "HTTP_FTP_COULDNT_RETR_FILE",
+            "Solution": "N/A"
+        },
+        "2120": {
+            "Name": "102-2120",
+            "Description":   "HTTP_OBSOLETE20",
+            "Solution": "N/A"
+        },
+        "2121": {
+            "Name": "102-2121",
+            "Description":   "HTTP_QUOTE_ERROR",
+            "Solution": "N/A"
+        },
+        "2122": {
+            "Name": "102-2122",
+            "Description":   "HTTP_HTTP_RETURNED_ERROR",
+            "Solution": "N/A"
+        },
+        "2123": {
+            "Name": "102-2123",
+            "Description":   "HTTP_WRITE_ERROR",
+            "Solution": "N/A"
+        },
+        "2124": {
+            "Name": "102-2124",
+            "Description":   "HTTP_OBSOLETE24",
+            "Solution": "N/A"
+        },
+        "2125": {
+            "Name": "102-2125",
+            "Description":   "HTTP_UPLOAD_FAILED",
+            "Solution": "N/A"
+        },
+        "2126": {
+            "Name": "102-2126",
+            "Description":   "HTTP_READ_ERROR",
+            "Solution": "N/A"
+        },
+        "2127": {
+            "Name": "102-2127",
+            "Description":   "HTTP_OUT_OF_MEMORY",
+            "Solution": "N/A"
+        },
+        "2128": {
+            "Name": "102-2128",
+            "Description":   "HTTP_OPERATION_TIMEDOUT",
+            "Solution": "N/A"
+        },
+        "2129": {
+            "Name": "102-2129",
+            "Description":   "HTTP_OBSOLETE29",
+            "Solution": "N/A"
+        },
+        "2130": {
+            "Name": "102-2130",
+            "Description":   "HTTP_FTP_PORT_FAILED",
+            "Solution": "N/A"
+        },
+        "2131": {
+            "Name": "102-2131",
+            "Description":   "HTTP_FTP_COULDNT_USE_REST",
+            "Solution": "N/A"
+        },
+        "2132": {
+            "Name": "102-2132",
+            "Description":   "HTTP_OBSOLETE32",
+            "Solution": "N/A"
+        },
+        "2133": {
+            "Name": "102-2133",
+            "Description":   "HTTP_RANGE_ERROR",
+            "Solution": "N/A"
+        },
+        "2134": {
+            "Name": "102-2134",
+            "Description":   "HTTP_HTTP_POST_ERROR",
+            "Solution": "N/A"
+        },
+        "2135": {
+            "Name": "102-2135",
+            "Description":   "HTTP_SSL_CONNECT_ERROR",
+            "Solution": "N/A"
+        },
+        "2136": {
+            "Name": "102-2136",
+            "Description":   "HTTP_BAD_DOWNLOAD_RESUME",
+            "Solution": "N/A"
+        },
+        "2137": {
+            "Name": "102-2137",
+            "Description":   "HTTP_FILE_COULDNT_READ_FILE",
+            "Solution": "N/A"
+        },
+        "2138": {
+            "Name": "102-2138",
+            "Description":   "HTTP_LDAP_CANNOT_BIND",
+            "Solution": "N/A"
+        },
+        "2139": {
+            "Name": "102-2139",
+            "Description":   "HTTP_LDAP_SEARCH_FAILED",
+            "Solution": "N/A"
+        },
+        "2140": {
+            "Name": "102-2140",
+            "Description":   "HTTP_OBSOLETE40",
+            "Solution": "N/A"
+        },
+        "2141": {
+            "Name": "102-2141",
+            "Description":   "HTTP_FUNCTION_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2142": {
+            "Name": "102-2142",
+            "Description":   "HTTP_ABORTED_BY_CALLBACK",
+            "Solution": "N/A"
+        },
+        "2143": {
+            "Name": "102-2143",
+            "Description":   "HTTP_BAD_FUNCTION_ARGUMENT",
+            "Solution": "N/A"
+        },
+        "2144": {
+            "Name": "102-2144",
+            "Description":   "HTTP_OBSOLETE44",
+            "Solution": "N/A"
+        },
+        "2145": {
+            "Name": "102-2145",
+            "Description":   "HTTP_INTERFACE_FAILED",
+            "Solution": "N/A"
+        },
+        "2146": {
+            "Name": "102-2146",
+            "Description":   "HTTP_OBSOLETE46",
+            "Solution": "N/A"
+        },
+        "2147": {
+            "Name": "102-2147",
+            "Description":   "HTTP_TOO_MANY_REDIRECTS",
+            "Solution": "N/A"
+        },
+        "2148": {
+            "Name": "102-2148",
+            "Description":   "HTTP_UNKNOWN_OPTION",
+            "Solution": "N/A"
+        },
+        "2149": {
+            "Name": "102-2149",
+            "Description":   "HTTP_TELNET_OPTION_SYNTAX",
+            "Solution": "N/A"
+        },
+        "2150": {
+            "Name": "102-2150",
+            "Description":   "HTTP_OBSOLETE50",
+            "Solution": "N/A"
+        },
+        "2151": {
+            "Name": "102-2151",
+            "Description":   "HTTP_PEER_FAILED_VERIFICATION",
+            "Solution": "N/A"
+        },
+        "2152": {
+            "Name": "102-2152",
+            "Description":   "HTTP_GOT_NOTHING",
+            "Solution": "N/A"
+        },
+        "2153": {
+            "Name": "102-2153",
+            "Description":   "HTTP_SSL_ENGINE_NOTFOUND",
+            "Solution": "N/A"
+        },
+        "2154": {
+            "Name": "102-2154",
+            "Description":   "HTTP_SSL_ENGINE_SETFAILED",
+            "Solution": "N/A"
+        },
+        "2155": {
+            "Name": "102-2155",
+            "Description":   "HTTP_SEND_ERROR",
+            "Solution": "N/A"
+        },
+        "2156": {
+            "Name": "102-2156",
+            "Description":   "HTTP_RECV_ERROR",
+            "Solution": "N/A"
+        },
+        "2157": {
+            "Name": "102-2157",
+            "Description":   "HTTP_OBSOLETE57",
+            "Solution": "N/A"
+        },
+        "2158": {
+            "Name": "102-2158",
+            "Description":   "HTTP_SSL_CERTPROBLEM",
+            "Solution": "N/A"
+        },
+        "2159": {
+            "Name": "102-2159",
+            "Description":   "HTTP_SSL_CIPHER",
+            "Solution": "N/A"
+        },
+        "2160": {
+            "Name": "102-2160",
+            "Description":   "HTTP_SSL_CACERT",
+            "Solution": "N/A"
+        },
+        "2161": {
+            "Name": "102-2161",
+            "Description":   "HTTP_BAD_CONTENT_ENCODING",
+            "Solution": "N/A"
+        },
+        "2162": {
+            "Name": "102-2162",
+            "Description":   "HTTP_LDAP_INVALID_URL",
+            "Solution": "N/A"
+        },
+        "2163": {
+            "Name": "102-2163",
+            "Description":   "HTTP_FILESIZE_EXCEEDED",
+            "Solution": "N/A"
+        },
+        "2164": {
+            "Name": "102-2164",
+            "Description":   "HTTP_USE_SSL_FAILED",
+            "Solution": "N/A"
+        },
+        "2165": {
+            "Name": "102-2165",
+            "Description":   "HTTP_SEND_FAIL_REWIND",
+            "Solution": "N/A"
+        },
+        "2166": {
+            "Name": "102-2166",
+            "Description":   "HTTP_SSL_ENGINE_INITFAILED",
+            "Solution": "N/A"
+        },
+        "2167": {
+            "Name": "102-2167",
+            "Description":   "HTTP_LOGIN_DENIED",
+            "Solution": "N/A"
+        },
+        "2168": {
+            "Name": "102-2168",
+            "Description":   "HTTP_TFTP_NOTFOUND",
+            "Solution": "N/A"
+        },
+        "2169": {
+            "Name": "102-2169",
+            "Description":   "HTTP_TFTP_PERM",
+            "Solution": "N/A"
+        },
+        "2170": {
+            "Name": "102-2170",
+            "Description":   "HTTP_REMOTE_DISK_FULL",
+            "Solution": "N/A"
+        },
+        "2171": {
+            "Name": "102-2171",
+            "Description":   "HTTP_TFTP_ILLEGAL",
+            "Solution": "N/A"
+        },
+        "2172": {
+            "Name": "102-2172",
+            "Description":   "HTTP_TFTP_UNKNOWNID",
+            "Solution": "N/A"
+        },
+        "2173": {
+            "Name": "102-2173",
+            "Description":   "HTTP_REMOTE_FILE_EXISTS",
+            "Solution": "N/A"
+        },
+        "2174": {
+            "Name": "102-2174",
+            "Description":   "HTTP_TFTP_NOSUCHUSER",
+            "Solution": "N/A"
+        },
+        "2175": {
+            "Name": "102-2175",
+            "Description":   "HTTP_CONV_FAILED",
+            "Solution": "N/A"
+        },
+        "2176": {
+            "Name": "102-2176",
+            "Description":   "HTTP_CONV_REQD",
+            "Solution": "N/A"
+        },
+        "2177": {
+            "Name": "102-2177",
+            "Description":   "HTTP_SSL_CACERT_BADFILE",
+            "Solution": "N/A"
+        },
+        "2178": {
+            "Name": "102-2178",
+            "Description":   "HTTP_REMOTE_FILE_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2179": {
+            "Name": "102-2179",
+            "Description":   "HTTP_SSH",
+            "Solution": "N/A"
+        },
+        "2180": {
+            "Name": "102-2180",
+            "Description":   "HTTP_SSL_SHUTDOWN_FAILED",
+            "Solution": "N/A"
+        },
+        "2181": {
+            "Name": "102-2181",
+            "Description":   "HTTP_AGAIN",
+            "Solution": "N/A"
+        },
+        "2182": {
+            "Name": "102-2182",
+            "Description":   "HTTP_SSL_CRL_BADFILE",
+            "Solution": "N/A"
+        },
+        "2183": {
+            "Name": "102-2183",
+            "Description":   "HTTP_SSL_ISSUER_ERROR",
+            "Solution": "N/A"
+        },
+        "2184": {
+            "Name": "102-2184",
+            "Description":   "HTTP_FTP_PRET_FAILED",
+            "Solution": "N/A"
+        },
+        "2185": {
+            "Name": "102-2185",
+            "Description":   "HTTP_RTSP_CSEQ_ERROR",
+            "Solution": "N/A"
+        },
+        "2186": {
+            "Name": "102-2186",
+            "Description":   "HTTP_RTSP_SESSION_ERROR",
+            "Solution": "N/A"
+        },
+        "2187": {
+            "Name": "102-2187",
+            "Description":   "HTTP_FTP_BAD_FILE_LIST",
+            "Solution": "N/A"
+        },
+        "2188": {
+            "Name": "102-2188",
+            "Description":   "HTTP_CHUNK_FAILED",
+            "Solution": "N/A"
+        },
+        "2189": {
+            "Name": "102-2189",
+            "Description":   "HTTP_NSSL_NO_CTX",
+            "Solution": "N/A"
+        },
+        "2210": {
+            "Name": "102-2210",
+            "Description":   "SO_ERROR",
+            "Solution": "N/A"
+        },
+        "2211": {
+            "Name": "102-2211",
+            "Description":   "SO_SELECT_ERROR",
+            "Solution": "N/A"
+        },
+        "2400": {
+            "Name": "102-2400",
+            "Description":   "REQUEST_ERROR",
+            "Solution": "N/A"
+        },
+        "2401": {
+            "Name": "102-2401",
+            "Description":   "BAD_FORMAT_PARAMETER",
+            "Solution": "N/A"
+        },
+        "2402": {
+            "Name": "102-2402",
+            "Description":   "BAD_FORMAT_REQUEST",
+            "Solution": "N/A"
+        },
+        "2403": {
+            "Name": "102-2403",
+            "Description":   "REQUEST_PARAMETER_MISSING",
+            "Solution": "N/A"
+        },
+        "2404": {
+            "Name": "102-2404",
+            "Description":   "WRONG_HTTP_METHOD",
+            "Solution": "N/A"
+        },
+        "2420": {
+            "Name": "102-2420",
+            "Description":   "RESPONSE_ERROR",
+            "Solution": "N/A"
+        },
+        "2421": {
+            "Name": "102-2421",
+            "Description":   "BAD_FORMAT_RESPONSE",
+            "Solution": "N/A"
+        },
+        "2422": {
+            "Name": "102-2422",
+            "Description":   "RESPONSE_ITEM_MISSING",
+            "Solution": "N/A"
+        },
+        "2423": {
+            "Name": "102-2423",
+            "Description":   "RESPONSE_TOO_LARGE",
+            "Solution": "N/A"
+        },
+        "2441": {
+            "Name": "102-2441",
+            "Description":   "NOT_MODIFIED",
+            "Solution": "N/A"
+        },
+        "2450": {
+            "Name": "102-2450",
+            "Description":   "INVALID_COMMON_PARAMETER",
+            "Solution": "N/A"
+        },
+        "2451": {
+            "Name": "102-2451",
+            "Description":   "INVALID_PLATFORM_ID",
+            "Solution": "N/A"
+        },
+        "2452": {
+            "Name": "102-2452",
+            "Description":   "UNAUTHORIZED_DEVICE",
+            "Solution": "N/A"
+        },
+        "2453": {
+            "Name": "102-2453",
+            "Description":   "INVALID_SERIAL_ID",
+            "Solution": "N/A"
+        },
+        "2454": {
+            "Name": "102-2454",
+            "Description":   "INVALID_MAC_ADDRESS",
+            "Solution": "N/A"
+        },
+        "2455": {
+            "Name": "102-2455",
+            "Description":   "INVALID_REGION",
+            "Solution": "N/A"
+        },
+        "2456": {
+            "Name": "102-2456",
+            "Description":   "INVALID_COUNTRY",
+            "Solution": "N/A"
+        },
+        "2457": {
+            "Name": "102-2457",
+            "Description":   "INVALID_LANGUAGE",
+            "Solution": "N/A"
+        },
+        "2458": {
+            "Name": "102-2458",
+            "Description":   "UNAUTHORIZED_CLIENT",
+            "Solution": "N/A"
+        },
+        "2459": {
+            "Name": "102-2459",
+            "Description":   "DEVICE_ID_EMPTY",
+            "Solution": "N/A"
+        },
+        "2460": {
+            "Name": "102-2460",
+            "Description":   "SERIAL_ID_EMPTY",
+            "Solution": "N/A"
+        },
+        "2461": {
+            "Name": "102-2461",
+            "Description":   "PLATFORM_ID_EMPTY",
+            "Solution": "N/A"
+        },
+        "2471": {
+            "Name": "102-2471",
+            "Description":   "INVALID_UNIQUE_ID",
+            "Solution": "N/A"
+        },
+        "2472": {
+            "Name": "102-2472",
+            "Description":   "INVALID_CLIENT_ID",
+            "Solution": "N/A"
+        },
+        "2473": {
+            "Name": "102-2473",
+            "Description":   "INVALID_CLIENT_KEY",
+            "Solution": "N/A"
+        },
+        "2481": {
+            "Name": "102-2481",
+            "Description":   "INVALID_NEX_CLIENT_ID",
+            "Solution": "N/A"
+        },
+        "2482": {
+            "Name": "102-2482",
+            "Description":   "INVALID_GAME_SERVER_ID",
+            "Solution": "N/A"
+        },
+        "2483": {
+            "Name": "102-2483",
+            "Description":   "GAME_SERVER_ID_ENVIRONMENT_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2484": {
+            "Name": "102-2484",
+            "Description":   "GAME_SERVER_ID_UNIQUE_ID_NOT_LINKED",
+            "Solution": "N/A"
+        },
+        "2485": {
+            "Name": "102-2485",
+            "Description":   "CLIENT_ID_UNIQUE_ID_NOT_LINKED",
+            "Solution": "N/A"
+        },
+        "2501": {
+            "Name": "102-2501",
+            "Description":   "DEVICE_MISMATCH",
+            "Solution": "N/A"
+        },
+        "2502": {
+            "Name": "102-2502",
+            "Description":   "COUNTRY_MISMATCH",
+            "Solution": "N/A"
+        },
+        "2503": {
+            "Name": "102-2503",
+            "Description":   "EULA_NOT_ACCEPTED",
+            "Solution": "N/A"
+        },
+        "2510": {
+            "Name": "102-2510",
+            "Description":   "UPDATE_REQUIRED",
+            "Solution": "N/A"
+        },
+        "2511": {
+            "Name": "102-2511",
+            "Description":   "SYSTEM_UPDATE_REQUIRED",
+            "Solution": "N/A"
+        },
+        "2512": {
+            "Name": "102-2512",
+            "Description":   "APPLICATION_UPDATE_REQUIRED",
+            "Solution": "N/A"
+        },
+        "2520": {
+            "Name": "102-2520",
+            "Description":   "UNAUTHORIZED_REQUEST",
+            "Solution": "N/A"
+        },
+        "2522": {
+            "Name": "102-2522",
+            "Description":   "REQUEST_FORBIDDEN",
+            "Solution": "N/A"
+        },
+        "2530": {
+            "Name": "102-2530",
+            "Description":   "RESOURCE_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2531": {
+            "Name": "102-2531",
+            "Description":   "PID_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2532": {
+            "Name": "102-2532",
+            "Description":   "NEX_ACCOUNT_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2533": {
+            "Name": "102-2533",
+            "Description":   "GENERATE_TOKEN_FAILURE",
+            "Solution": "N/A"
+        },
+        "2534": {
+            "Name": "102-2534",
+            "Description":   "REQUEST_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2535": {
+            "Name": "102-2535",
+            "Description":   "MASTER_PIN_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2536": {
+            "Name": "102-2536",
+            "Description":   "MAIL_TEXT_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2537": {
+            "Name": "102-2537",
+            "Description":   "SEND_MAIL_FAILURE",
+            "Solution": "N/A"
+        },
+        "2538": {
+            "Name": "102-2538",
+            "Description":   "APPROVAL_ID_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2540": {
+            "Name": "102-2540",
+            "Description":   "INVALID_EULA_PARAMETER",
+            "Solution": "N/A"
+        },
+        "2541": {
+            "Name": "102-2541",
+            "Description":   "INVALID_EULA_COUNTRY",
+            "Solution": "N/A"
+        },
+        "2542": {
+            "Name": "102-2542",
+            "Description":   "INVALID_EULA_COUNTRY_AND_VERSION",
+            "Solution": "N/A"
+        },
+        "2543": {
+            "Name": "102-2543",
+            "Description":   "EULA_NOT_FOUND",
+            "Solution": "N/A"
+        },
+        "2570": {
+            "Name": "102-2570",
+            "Description":   "PHRASE_NOT_ACCEPTABLE",
+            "Solution": "N/A"
+        },
+        "2571": {
+            "Name": "102-2571",
+            "Description":   "ACCOUNT_ID_ALREADY_EXISTS",
+            "Solution": "N/A"
+        },
+        "2572": {
+            "Name": "102-2572",
+            "Description":   "ACCOUNT_ID_NOT_ACCEPTABLE",
+            "Solution": "N/A"
+        },
+        "2573": {
+            "Name": "102-2573",
+            "Description":   "ACCOUNT_PASSWORD_NOT_ACCEPTABLE",
+            "Solution": "N/A"
+        },
+        "2574": {
+            "Name": "102-2574",
+            "Description":   "MII_NAME_NOT_ACCEPTABLE",
+            "Solution": "N/A"
+        },
+        "2575": {
+            "Name": "102-2575",
+            "Description":   "MAIL_ADDRESS_NOT_ACCEPTABLE",
+            "Solution": "N/A"
+        },
+        "2576": {
+            "Name": "102-2576",
+            "Description":   "ACCOUNT_ID_FORMAT_INVALID",
+            "Solution": "N/A"
+        },
+        "2577": {
+            "Name": "102-2577",
+            "Description":   "ACCOUNT_ID_PASSWORD_SAME",
+            "Solution": "N/A"
+        },
+        "2578": {
+            "Name": "102-2578",
+            "Description":   "ACCOUNT_ID_CHAR_NOT_ACCEPTABLE",
+            "Solution": "N/A"
+        },
+        "2579": {
+            "Name": "102-2579",
+            "Description":   "ACCOUNT_ID_SUCCESSIVE_SYMBOL",
+            "Solution": "N/A"
+        },
+        "2580": {
+            "Name": "102-2580",
+            "Description":   "ACCOUNT_ID_SYMBOL_POSITION_NOT_ACCEPTABLE",
+            "Solution": "N/A"
+        },
+        "2581": {
+            "Name": "102-2581",
+            "Description":   "ACCOUNT_ID_TOO_MANY_DIGIT",
+            "Solution": "N/A"
+        },
+        "2582": {
+            "Name": "102-2582",
+            "Description":   "ACCOUNT_PASSWORD_CHAR_NOT_ACCEPTABLE",
+            "Solution": "N/A"
+        },
+        "2583": {
+            "Name": "102-2583",
+            "Description":   "ACCOUNT_PASSWORD_TOO_FEW_CHAR_TYPES",
+            "Solution": "N/A"
+        },
+        "2584": {
+            "Name": "102-2584",
+            "Description":   "ACCOUNT_PASSWORD_SUCCESSIVE_SAME_CHAR",
+            "Solution": "N/A"
+        },
+        "2585": {
+            "Name": "102-2585",
+            "Description":   "MAIL_ADDRESS_DOMAIN_NAME_NOT_ACCEPTABLE",
+            "Solution": "N/A"
+        },
+        "2586": {
+            "Name": "102-2586",
+            "Description":   "MAIL_ADDRESS_DOMAIN_NAME_NOT_RESOLVED",
+            "Solution": "N/A"
+        },
+        "2591": {
+            "Name": "102-2591",
+            "Description":   "REACHED_ASSOCIATION_LIMIT",
+            "Solution": "N/A"
+        },
+        "2592": {
+            "Name": "102-2592",
+            "Description":   "REACHED_REGISTRATION_LIMIT",
+            "Solution": "N/A"
+        },
+        "2593": {
+            "Name": "102-2593",
+            "Description":   "COPPA_NOT_ACCEPTED",
+            "Solution": "N/A"
+        },
+        "2594": {
+            "Name": "102-2594",
+            "Description":   "PARENTAL_CONTROLS_REQUIRED",
+            "Solution": "N/A"
+        },
+        "2595": {
+            "Name": "102-2595",
+            "Description":   "MII_NOT_REGISTERED",
+            "Solution": "N/A"
+        },
+        "2596": {
+            "Name": "102-2596",
+            "Description":   "DEVICE_EULA_COUNTRY_MISMATCH",
+            "Solution": "N/A"
+        },
+        "2597": {
+            "Name": "102-2597",
+            "Description":   "PENDING_MIGRATION",
+            "Solution": "N/A"
+        },
+        "2610": {
+            "Name": "102-2610",
+            "Description":   "WRONG_USER_INPUT",
+            "Solution": "N/A"
+        },
+        "2611": {
+            "Name": "102-2611",
+            "Description":   "WRONG_ACCOUNT_PASSWORD",
+            "Solution": "N/A"
+        },
+        "2612": {
+            "Name": "102-2612",
+            "Description":   "WRONG_MAIL_ADDRESS",
+            "Solution": "N/A"
+        },
+        "2613": {
+            "Name": "102-2613",
+            "Description":   "WRONG_ACCOUNT_PASSWORD_OR_MAIL_ADDRESS",
+            "Solution": "N/A"
+        },
+        "2614": {
+            "Name": "102-2614",
+            "Description":   "WRONG_CONFIRMATION_CODE",
+            "Solution": "N/A"
+        },
+        "2615": {
+            "Name": "102-2615",
+            "Description":   "WRONG_BIRTH_DATE_OR_MAIL_ADDRESS",
+            "Solution": "N/A"
+        },
+        "2616": {
+            "Name": "102-2616",
+            "Description":   "WRONG_ACCOUNT_MAIL",
+            "Solution": "N/A"
+        },
+        "2631": {
+            "Name": "102-2631",
+            "Description":   "ACCOUNT_ALREADY_DELETED",
+            "Solution": "N/A"
+        },
+        "2632": {
+            "Name": "102-2632",
+            "Description":   "ACCOUNT_ID_CHANGED",
+            "Solution": "N/A"
+        },
+        "2633": {
+            "Name": "102-2633",
+            "Description":   "AUTHENTICATION_LOCKED",
+            "Solution": "N/A"
+        },
+        "2634": {
+            "Name": "102-2634",
+            "Description":   "DEVICE_INACTIVE",
+            "Solution": "N/A"
+        },
+        "2635": {
+            "Name": "102-2635",
+            "Description":   "COPPA_AGREEMENT_CANCELED",
+            "Solution": "N/A"
+        },
+        "2636": {
+            "Name": "102-2636",
+            "Description":   "DOMAIN_ACCOUNT_ALREADY_EXISTS",
+            "Solution": "N/A"
+        },
+        "2641": {
+            "Name": "102-2641",
+            "Description":   "ACCOUNT_TOKEN_EXPIRED",
+            "Solution": "N/A"
+        },
+        "2642": {
+            "Name": "102-2642",
+            "Description":   "INVALID_ACCOUNT_TOKEN",
+            "Solution": "N/A"
+        },
+        "2643": {
+            "Name": "102-2643",
+            "Description":   "AUTHENTICATION_REQUIRED",
+            "Solution": "N/A"
+        },
+        "2651": {
+            "Name": "102-2651",
+            "Description":   "CONFIRMATION_CODE_EXPIRED",
+            "Solution": "N/A"
+        },
+        "2661": {
+            "Name": "102-2661",
+            "Description":   "MAIL_ADDRESS_NOT_VALIDATED",
+            "Solution": "N/A"
+        },
+        "2662": {
+            "Name": "102-2662",
+            "Description":   "EXCESSIVE_MAIL_SEND_REQUEST",
+            "Solution": "N/A"
+        },
+        "2670": {
+            "Name": "102-2670",
+            "Description":   "CREDIT_CARD_ERROR",
+            "Solution": "N/A"
+        },
+        "2671": {
+            "Name": "102-2671",
+            "Description":   "CREDIT_CARD_GENERAL_FAILURE",
+            "Solution": "N/A"
+        },
+        "2672": {
+            "Name": "102-2672",
+            "Description":   "CREDIT_CARD_DECLINED",
+            "Solution": "N/A"
+        },
+        "2673": {
+            "Name": "102-2673",
+            "Description":   "CREDIT_CARD_BLACKLISTED",
+            "Solution": "N/A"
+        },
+        "2674": {
+            "Name": "102-2674",
+            "Description":   "INVALID_CREDIT_CARD_NUMBER",
+            "Solution": "N/A"
+        },
+        "2675": {
+            "Name": "102-2675",
+            "Description":   "INVALID_CREDIT_CARD_DATE",
+            "Solution": "N/A"
+        },
+        "2676": {
+            "Name": "102-2676",
+            "Description":   "INVALID_CREDIT_CARD_PIN",
+            "Solution": "N/A"
+        },
+        "2677": {
+            "Name": "102-2677",
+            "Description":   "INVALID_POSTAL_CODE",
+            "Solution": "N/A"
+        },
+        "2678": {
+            "Name": "102-2678",
+            "Description":   "INVALID_LOCATION",
+            "Solution": "N/A"
+        },
+        "2679": {
+            "Name": "102-2679",
+            "Description":   "CREDIT_CARD_DATE_EXPIRED",
+            "Solution": "N/A"
+        },
+        "2680": {
+            "Name": "102-2680",
+            "Description":   "CREDIT_CARD_NUMBER_WRONG",
+            "Solution": "N/A"
+        },
+        "2681": {
+            "Name": "102-2681",
+            "Description":   "CREDIT_CARD_PIN_WRONG",
+            "Solution": "N/A"
+        },
+        "2800": {
+            "Name": "102-2800",
+            "Description":   "BANNED",
+            "Solution": "N/A"
+        },
+        "2801": {
+            "Name": "102-2801",
+            "Description":   "BANNED_ACCOUNT",
+            "Solution": "N/A"
+        },
+        "2802": {
+            "Name": "102-2802",
+            "Description":   "BANNED_ACCOUNT_ALL",
+            "Solution": "N/A"
+        },
+        "2803": {
+            "Name": "102-2803",
+            "Description":   "BANNED_ACCOUNT_IN_APPLICATION",
+            "Solution": "N/A"
+        },
+        "2804": {
+            "Name": "102-2804",
+            "Description":   "BANNED_ACCOUNT_IN_NEX_SERVICE",
+            "Solution": "N/A"
+        },
+        "2805": {
+            "Name": "102-2805",
+            "Description":   "BANNED_ACCOUNT_IN_INDEPENDENT_SERVICE",
+            "Solution": "N/A"
+        },
+        "2811": {
+            "Name": "102-2801",
+            "Description":   "BANNED_DEVICE",
+            "Solution": "N/A"
+        },
+        "2812": {
+            "Name": "102-2802",
+            "Description":   "BANNED_DEVICE_ALL",
+            "Solution": "N/A"
+        },
+        "2813": {
+            "Name": "102-2803",
+            "Description":   "BANNED_DEVICE_IN_APPLICATION",
+            "Solution": "N/A"
+        },
+        "2814": {
+            "Name": "102-2804",
+            "Description":   "BANNED_DEVICE_IN_NEX_SERVICE",
+            "Solution": "N/A"
+        },
+        "2815": {
+            "Name": "102-2805",
+            "Description":   "BANNED_DEVICE_IN_INDEPENDENT_SERVICE",
+            "Solution": "N/A"
+        },
+        "2821": {
+            "Name": "102-2821",
+            "Description":   "BANNED_ACCOUNT_TEMPORARILY",
+            "Solution": "N/A"
+        },
+        "2822": {
+            "Name": "102-2822",
+            "Description":   "BANNED_ACCOUNT_ALL_TEMPORARILY",
+            "Solution": "N/A"
+        },
+        "2823": {
+            "Name": "102-2823",
+            "Description":   "BANNED_ACCOUNT_IN_APPLICATION_TEMPORARILY",
+            "Solution": "N/A"
+        },
+        "2824": {
+            "Name": "102-2824",
+            "Description":   "BANNED_ACCOUNT_IN_NEX_SERVICE_TEMPORARILY",
+            "Solution": "N/A"
+        },
+        "2825": {
+            "Name": "102-2825",
+            "Description":   "BANNED_ACCOUNT_IN_INDEPENDENT_SERVICE_TEMPORARILY",
+            "Solution": "N/A"
+        },
+        "2831": {
+            "Name": "102-2831",
+            "Description":   "BANNED_DEVICE_TEMPORARILY",
+            "Solution": "N/A"
+        },
+        "2832": {
+            "Name": "102-2832",
+            "Description":   "BANNED_DEVICE_ALL_TEMPORARILY",
+            "Solution": "N/A"
+        },
+        "2833": {
+            "Name": "102-2833",
+            "Description":   "BANNED_DEVICE_IN_APPLICATION_TEMPORARILY",
+            "Solution": "N/A"
+        },
+        "2834": {
+            "Name": "102-2834",
+            "Description":   "BANNED_DEVICE_IN_NEX_SERVICE_TEMPORARILY",
+            "Solution": "N/A"
+        },
+        "2835": {
+            "Name": "102-2835",
+            "Description":   "BANNED_DEVICE_IN_INDEPENDENT_SERVICE_TEMPORARILY",
+            "Solution": "N/A"
+        },
+        "2880": {
+            "Name": "102-2880",
+            "Description":   "SERVICE_NOT_PROVIDED",
+            "Solution": "N/A"
+        },
+        "2881": {
+            "Name": "102-2881",
+            "Description":   "UNDER_MAINTENANCE",
+            "Solution": "N/A"
+        },
+        "2882": {
+            "Name": "102-2882",
+            "Description":   "SERVICE_CLOSED",
+            "Solution": "N/A"
+        },
+        "2883": {
+            "Name": "102-2883",
+            "Description":   "NINTENDO_NETWORK_CLOSED",
+            "Solution": "N/A"
+        },
+        "2884": {
+            "Name": "102-2884",
+            "Description":   "NOT_PROVIDED_COUNTRY",
+            "Solution": "N/A"
+        },
+        "2900": {
+            "Name": "102-2900",
+            "Description":   "RESTRICTION_ERROR",
+            "Solution": "N/A"
+        },
+        "2901": {
+            "Name": "102-2901",
+            "Description":   "RESTRICTED_BY_AGE",
+            "Solution": "N/A"
+        },
+        "2910": {
+            "Name": "102-2910",
+            "Description":   "RESTRICTED_BY_PARENTAL_CONTROLS",
+            "Solution": "N/A"
+        },
+        "2911": {
+            "Name": "102-2911",
+            "Description":   "ON_GAME_INTERNET_COMMUNICATION_RESTRICTED",
+            "Solution": "N/A"
+        },
+        "2931": {
+            "Name": "102-2931",
+            "Description":   "INTERNAL_SERVER_ERROR",
+            "Solution": "N/A"
+        },
+        "2932": {
+            "Name": "102-2932",
+            "Description":   "UNKNOWN_SERVER_ERROR",
+            "Solution": "N/A"
+        },
+        "2998": {
+            "Name": "102-2998",
+            "Description":   "UNAUTHENTICATED_AFTER_SALVAGE",
+            "Solution": "N/A"
+        },
+        "2999": {
+            "Name": "102-2999",
+            "Description":   "AUTHENTICATION_FAILURE_UNKNOWN",
+            "Solution": "N/A"
+        }
+    }
+}
