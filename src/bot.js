@@ -4,7 +4,10 @@ const guildMemberAddHandler = require('./events/guildMemberAddHandler');
 const messageHandler = require('./events/message');
 const config = require('../config.json');
 
-const intents = ['GUILDS', 'GUILD_MEMBERS'];
+const intents = [
+	Discord.Intents.FLAGS.GUILDS,
+	Discord.Intents.FLAGS.GUILD_MESSAGES
+];
 const bot = new Discord.Client({
 	intents: intents,
 	ws: {

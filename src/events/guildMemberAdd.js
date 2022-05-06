@@ -5,17 +5,17 @@ const Discord = require('discord.js');
  * @param {Discord.GuildMember} member
  */
 function guildMemberAddHandler(member) {
-	const embed = new Discord.MessageEmbed();
+	const welcomeEmbed = new Discord.MessageEmbed();
 
-	embed.setColor(0x1B1F3B);
-	embed.setTitle('Pretendo Network');
-	embed.setURL('https://pretendo.network');
-	embed.setDescription('\u200b');
-	embed.setThumbnail('https://i.imgur.com/8clyKqx.png');
-	embed.setImage('https://i.imgur.com/CF7qgW1.png');
-	embed.addFields([
+	welcomeEmbed.setColor(0x1B1F3B);
+	welcomeEmbed.setTitle('Pretendo Network');
+	welcomeEmbed.setURL('https://pretendo.network');
+	welcomeEmbed.setDescription('\u200b');
+	welcomeEmbed.setThumbnail('https://i.imgur.com/8clyKqx.png');
+	welcomeEmbed.setImage('https://i.imgur.com/CF7qgW1.png');
+	welcomeEmbed.addFields([
 		{
-			name: '📃 Social Media',
+			name: ':desktop: Social Media',
 			value: '\u200b'
 		},
 		{
@@ -39,7 +39,7 @@ function guildMemberAddHandler(member) {
 			value: '\u200b'
 		},
 		{
-			name: '<:rulestext:886254514141806643> Rules',
+			name: '<:rulestext:886254514141806643> General Rules',
 			value: '\u200b'
 		},
 		{
@@ -48,7 +48,7 @@ function guildMemberAddHandler(member) {
 		},
 		{
 			name: ':two:',
-			value: 'Do not share anything illegal. This includes illegal game/fw dumps, any console SDK, etc. We are unsure as to what is illegal to share, so keep all that to the DMs just to be safe'
+			value: 'Do not share anything illegal. This includes game/firmware dumps, any console SDK or tools/documents protected under an NDA, etc. If you are unsure as to what is illegal to share, err on the side of caution and don\'t'
 		},
 		{
 			name: ':three:',
@@ -60,7 +60,10 @@ function guildMemberAddHandler(member) {
 		}
 	]);
 
-	member.send('Thank you for joining the Pretendo Network Discord server! Check below for some server information and links', { embed });
+	member.send({
+		content: 'Thank you for joining the Pretendo Network Discord server! Check below for some server information and links',
+		embeds: [welcomeEmbed]
+	});
 }
 
 module.exports = guildMemberAddHandler;

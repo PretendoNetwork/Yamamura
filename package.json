@@ -18,7 +18,12 @@
   },
   "homepage": "https://github.com/PretendoNetwork/Yamamura#readme",
   "dependencies": {
-    "discord.js": "^12.5.3",
+    "discord-api-types": "^0.31.2",
+    "discord.js": "^13.6.0",
     "slash-create": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.14.0",
+    "eslint-plugin-jsdoc": "^39.2.9"
   }
 }
