@@ -12,6 +12,7 @@
 	},
 	"extends": "eslint:recommended",
 	"rules": {
+		"jsdoc/no-undefined-types": 1,
 		"require-atomic-updates": "warn",
 		"no-case-declarations": "off",
 		"no-empty": "off",
@@ -39,5 +40,8 @@
 			"error",
 			"always"
 		]
-	}
+	},
+	"plugins": [
+		"jsdoc"
+	]
 }
