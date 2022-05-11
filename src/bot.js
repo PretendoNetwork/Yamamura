@@ -1,41 +1,36 @@
-const { SlashCreator, GatewayServer } = require('slash-create');
 const Discord = require('discord.js');
-const guildMemberAddHandler = require('./events/guildMemberAddHandler');
-const messageHandler = require('./events/message');
+const discordModals = require('discord-modals');
+const setupGuild = require('./setup-guild');
+const guildMemberAddHandler = require('./events/guildMemberAdd');
+const modalSubmitHandler = require('./events/modalSubmit');
+const messageCreateHandler = require('./events/messageCreate');
+const interactionCreateHandler = require('./events/interactionCreate');
 const config = require('../config.json');
 
-const intents = [
-	Discord.Intents.FLAGS.GUILDS,
-	Discord.Intents.FLAGS.GUILD_MESSAGES
-];
-const bot = new Discord.Client({
-	intents: intents,
-	ws: {
-		intents: intents
+const client = new Discord.Client({
+	intents: [
+		Discord.Intents.FLAGS.GUILDS,
+		Discord.Intents.FLAGS.GUILD_MESSAGES,
+		Discord.Intents.FLAGS.GUILD_MEMBERS,
+	]
+});
+
+discordModals(client);
+
+client.on('ready', async () => {
+	const guilds = await client.guilds.fetch();
+
+	for (let guild of guilds) {
+		guild = await guild[1].fetch();
+		setupGuild(guild);
 	}
-});
-const creator = new SlashCreator({
-	applicationID: config.application_id,
-	publicKey: config.public_key,
-	token: config.token,
+
+	console.log(`Logged in as ${client.user.tag}!`);
 });
 
-const ToggleRoleCommand = require('./commands/togglerole');
+client.on('guildMemberAdd', guildMemberAddHandler);
+client.on('modalSubmit', modalSubmitHandler);
+client.on('messageCreate', messageCreateHandler);
+client.on('interactionCreate', interactionCreateHandler);
 
-creator
-	.withServer(
-		new GatewayServer(
-			(handler) => bot.ws.on('INTERACTION_CREATE', handler)
-		)
-	)
-	.registerCommands([
-		new ToggleRoleCommand(bot, creator)
-	])
-	.syncCommands();
-
-bot.on('guildMemberAdd', guildMemberAddHandler);
-bot.on('message', messageHandler);
-
-bot.login(config.token).then(() => {
-	console.log('ready');
-});
+client.login(config.bot_token);

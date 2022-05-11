@@ -4,7 +4,9 @@
   "description": "Official community bot for the Pretendo Discord server",
   "main": "src/bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "./node_modules/.bin/eslint .",
+    "start": "node ./src/bot",
+    "start:dev": "NODE_ENV=development node ./src/bot"
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,9 @@
   },
   "homepage": "https://github.com/PretendoNetwork/Yamamura#readme",
   "dependencies": {
+    "@discordjs/rest": "^0.4.1",
     "discord-api-types": "^0.31.2",
+    "discord-modals": "^1.3.5",
     "discord.js": "^13.6.0",
     "slash-create": "^3.0.1"
   },
