@@ -1,62 +1,57 @@
-const { SlashCommand } = require('slash-create');
+const Discord = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
-const allowedRoles = [
-	{
-		name: 'Updates',
-		value: 'Updates'
-	},
-	{
-		name: 'Stream Ping',
-		value: 'StreamPing',
-	}
-];
+/**
+ *
+ * @param {Discord.CommandInteraction} interaction
+ */
+async function toggleroleHandler(interaction) {
+	interaction.deferReply({
+		ephemeral: true
+	});
 
-class ToggleRoleCommand extends SlashCommand {
-	constructor(bot, creator) {
-		super(creator, {
-			name: 'togglerole',
-			description: 'Toggle the provided role',
-			options: [
-				{
-					name: 'role',
-					description: 'Role name',
-					required: true,
-					type: 3,
-					choices: allowedRoles
-				}
-			]
+	const roleName = interaction.options.getString('role');
+	const member = interaction.member;
+	const guild = await interaction.guild.fetch();
+	const roles = await guild.roles.fetch();
+	const role = roles.find(role => role.name.toLowerCase() === roleName);
+	
+	if (!role) {
+		await interaction.followUp({
+			content: 'Unable to find the requested role. Contact and admin as soon as possible',
+			ephemeral: true
 		});
 
-		this.bot = bot;
-
-		this.filePath = __filename;
+		return;
 	}
 
-	async run(ctx) {
-		const bot = this.bot;
-
-		const guild = await bot.guilds.fetch(ctx.data.guild_id, true);
-		const user = await guild.members.fetch(ctx.data.member.user.id, true);
-		const role = await guild.roles.cache.find(r => r.name === ctx.options.role);
-
-		if (!role) {
-			return `Could not find role ${ctx.options.role}!`;
-		}
-		
-		const hasRole = await user.roles.cache.find(r => r.name === ctx.options.role);
-		
-		if (hasRole) {
-			await user.roles.remove(role);
-		} else {
-			await user.roles.add(role);
-		}
-
-		return `Toggling role ${ctx.options.role} [${hasRole ? 'REMOVED' : 'ADDED'}]!`;
+	const hasRole = member.roles.cache.has(role.id);
+	
+	if (hasRole) {
+		await member.roles.remove(role);
+	} else {
+		await member.roles.add(role);
 	}
 
-	onError(err) {
-		console.log(err);
-	}
+	await interaction.followUp({
+		content: `Toggling role ${role.name} [${hasRole ? 'REMOVED' : 'ADDED'}]!`,
+		ephemeral: true
+	});
 }
 
-module.exports = ToggleRoleCommand;
+const command = new SlashCommandBuilder()
+	.setDefaultPermission(true)
+	.setName('togglerole')
+	.setDescription('Toggle user roles')
+	.addStringOption(option => {
+		return option.setName('role')
+			.setDescription('Role to toggle')
+			.setRequired(true)
+			.addChoice('@Updates', 'updates')
+			.addChoice('@StreamPing', 'streamping');
+	});
+
+module.exports = {
+	handler: toggleroleHandler,
+	deploy: command.toJSON()
+};

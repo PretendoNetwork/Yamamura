@@ -3,11 +3,13 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { bot_token: botToken } = require('../config.json');
 const verifyCommand = require('./commands/verify');
+const toggleroleCommand = require('./commands/togglerole');
 
 const rest = new REST({ version: '9' }).setToken(botToken);
 
 const commandsDeploy = [
 	verifyCommand.deploy,
+	toggleroleCommand.deploy,
 ];
 
 /**

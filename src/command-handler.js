@@ -1,8 +1,10 @@
 const Discord = require('discord.js');
 const verifyHandler = require('./commands/verify').handler;
+const toggleroleHandler = require('./commands/togglerole').handler;
 
 const commands = {
 	verify: verifyHandler,
+	togglerole: toggleroleHandler,
 };
 
 /**
