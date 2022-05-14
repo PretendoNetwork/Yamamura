@@ -39,17 +39,20 @@ async function toggleroleHandler(interaction) {
 	});
 }
 
-const command = new SlashCommandBuilder()
-	.setDefaultPermission(true)
-	.setName('togglerole')
-	.setDescription('Toggle user roles')
-	.addStringOption(option => {
-		return option.setName('role')
-			.setDescription('Role to toggle')
-			.setRequired(true)
-			.addChoice('@Updates', 'updates')
-			.addChoice('@StreamPing', 'streamping');
-	});
+const command = new SlashCommandBuilder();
+
+command.setDefaultPermission(true);
+command.setName('togglerole');
+command.setDescription('Toggle user roles');
+command.addStringOption(option => {
+	option.setName('role');
+	option.setDescription('Role to toggle');
+	option.setRequired(true);
+	option.addChoice('@Updates', 'updates');
+	option.addChoice('@StreamPing', 'streamping');
+
+	return option;
+});
 
 module.exports = {
 	handler: toggleroleHandler,
