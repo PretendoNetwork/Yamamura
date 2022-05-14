@@ -2,15 +2,11 @@ const Discord = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { bot_token: botToken } = require('../config.json');
-const verifyCommand = require('./commands/verify');
-const toggleroleCommand = require('./commands/togglerole');
+const commands = require('./commands-manager');
 
 const rest = new REST({ version: '9' }).setToken(botToken);
 
-const commandsDeploy = [
-	verifyCommand.deploy,
-	toggleroleCommand.deploy,
-];
+const commandsDeploy = Object.keys(commands).map(name => commands[name].deploy);
 
 /**
  * 
@@ -30,9 +26,7 @@ async function setupGuild(guild) {
 	// names should explain what they do
 	await setupPretendoCategory(guild);
 	await setupReadmeChannel(guild);
-	await setupUnverifiedRole(guild);
-	await setupMemberRole(guild);
-	await assignUnverifiedRole(guild);
+	await setupRulesChannel(guild);
 }
 
 /**
@@ -41,6 +35,22 @@ async function setupGuild(guild) {
  */
 async function deployCommands(guild) {
 	await rest.put(Routes.applicationGuildCommands(guild.me.id, guild.id), { body: commandsDeploy });
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ * @returns {Discord.CategoryChannel} category
+ */
+async function setupPretendoCategory(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
+
+	if (!category) {
+		await guild.channels.create('pretendo', {
+			type: 'GUILD_CATEGORY'
+		});
+	}
 }
 
 /**
@@ -59,8 +69,7 @@ async function setupReadmeChannel(guild) {
 				{
 					id: guild.roles.everyone,
 					allow: [
-						Discord.Permissions.FLAGS.VIEW_CHANNEL,
-						Discord.Permissions.FLAGS.USE_APPLICATION_COMMANDS
+						Discord.Permissions.FLAGS.VIEW_CHANNEL
 					],
 					deny: [
 						Discord.Permissions.FLAGS.SEND_MESSAGES
@@ -224,6 +233,41 @@ async function setupReadmeChannel(guild) {
 		// TODO: Check if old message equals current message data?
 		await message2.edit(message2Content);
 	}
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupRulesChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
+	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'rules');
+
+	if (!channel) {
+		channel = await guild.channels.create('rules', {
+			type: 'GUILD_TEXT',
+			permissionOverwrites: [
+				{
+					id: guild.roles.everyone,
+					allow: [
+						Discord.Permissions.FLAGS.VIEW_CHANNEL
+					],
+					deny: [
+						Discord.Permissions.FLAGS.SEND_MESSAGES
+					]
+				}
+			]
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	const messages = await channel.messages.fetch();
+	let botMessages = messages.filter(message => message.author.id === guild.me.id);
+	botMessages = botMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
 
 	const rulesEmbed = new Discord.MessageEmbed();
 	rulesEmbed.setTitle('Rules');
@@ -240,158 +284,36 @@ async function setupReadmeChannel(guild) {
 		},
 		{
 			'name': '3: No spam',
-			'value': 'No spam or self-promotion (server invites, advertisements, etc) without permission from a Senior Dev. This includes DMing fellow members.'
+			'value': 'No spam or self-promotion (server invites, advertisements, etc) without permission from a developer/staff member, unless otherwise allowed by the channel.'
 		},
 		{
-			'name': '4: Code blocks',
-			'value': 'Small snippets of code (1-20 lines) are advised to be in `code blocks` for readability'
+			'name': '4: Respect channel topics',
+			'value': 'Keep all conversations relevant to the channel topic. Spam, memes, offtopic discussions, etc should not be happening outside their respective channels.'
 		},
 		{
-			'name': '5: Respect channel topics',
-			'value': 'Keep all shitposting and memes to either the offtopic or memes channels. Those channels are there for a reason.'
-		},
-		{
-			'name': '6: No piracy',
+			'name': '5: No piracy',
 			'value': 'Do not share anything illegal. This includes game/firmware dumps, any console SDK, etc. If it feels illegal, it probably is. If you aren\'t sure, don\'t share it. Do not share downloads or links to tools which promote piracy. Do not discuss piracy or offer to help with piracy'
 		},
 		{
-			'name': '7: No unsolicited DMs',
+			'name': '6: No unsolicited DMs',
 			'value': 'Don\'t DM the Developers unless absolutely necessary.'
+		},
+		{
+			'name': '7: Punishments',
+			'value': 'Staff are free to delivery punishments as they see fit. If you believe you were punished incorrectly, contact another staff member or developer.'
 		}
 	]);
 
-	const punishmentsEmbed = new Discord.MessageEmbed();
-	punishmentsEmbed.setTitle('Punishments');
-	punishmentsEmbed.setDescription('Information on how punishments work');
-	punishmentsEmbed.setColor(0x1B1F3B);
-	punishmentsEmbed.setFields([
-		{
-			'name': 'Warnings',
-			'value': 'Warnings are the most harmless punisment. If you are warned 3 times, you will be automatically kicked. If you are warned a 4th time, you will be automatically banned'
-		},
-		{
-			'name': 'Kicks',
-			'value': 'Kicks indicate that punishment had to be given but you are welcome back if you decide to follow the rules. If you are kicked 3 times, you will be automatically banned'
-		},
-		{
-			'name': 'Bans',
-			'value': 'Bans indicate you have either broken too many rules or have broken a serve enough rule to warrent being removed from the community and are not welcome back'
-		},
-		{
-			'name': 'Past Punisments',
-			'value': 'Whenever a kick or ban is issued, you are DMed a copy of all your past punishments as well as the current punishment being issued in order to avoid confusion as to why the punishment happened'
-		}
-	]);
+	const messageContent = { embeds: [rulesEmbed] };
 
-	const message3Content = { embeds: [rulesEmbed, punishmentsEmbed] };
+	const message = botMessages.at(0);
 
-	const message3 = botMessages.at(2);
-
-	if (!message3) {
-		await channel.send(message3Content);
+	if (!message) {
+		await channel.send(messageContent);
 	} else {
 		// TODO: Check if old message equals current message data?
-		await message3.edit(message3Content);
+		await message.edit(messageContent);
 	}
-}
-
-/**
- *
- * @param {Discord.Guild} guild
- * @returns {Discord.CategoryChannel} category
- */
-async function setupPretendoCategory(guild) {
-	const channels = await guild.channels.fetch();
-	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
-	
-	if (!category) {
-		await guild.channels.create('pretendo', {
-			type: 'GUILD_CATEGORY'
-		});
-	}
-}
-
-/**
- *
- * @param {Discord.Guild} guild
- */
-async function setupUnverifiedRole(guild) {
-	const roles = await guild.roles.fetch();
-	let unverifiedRole = roles.find(role => role.name === 'unverified');
-
-	if (!unverifiedRole) {
-		unverifiedRole = await guild.roles.create({
-			name: 'unverified',
-			mentionable: false,
-			color: 0xFFFFFF,
-			reason: 'Role for unverified users'
-		});
-	}
-
-	const channels = await guild.channels.fetch();
-
-	await Promise.all(channels.map(async channel => {
-		const permissions = {
-			SEND_MESSAGES: false,
-			MANAGE_MESSAGES: false,
-			ADD_REACTIONS: false,
-			SPEAK: false,
-			VIEW_CHANNEL: false,
-			READ_MESSAGE_HISTORY: true,
-			USE_APPLICATION_COMMANDS: false,
-		};
-
-		if (channel.name === 'readme' && channel.type === 'GUILD_TEXT' && channel.parent?.name === 'pretendo') {
-			permissions.VIEW_CHANNEL = true;
-			permissions.USE_APPLICATION_COMMANDS = true;
-			permissions.SEND_MESSAGES = true; // need this to send commands. Manually delete messages later
-		}
-
-		await channel.permissionOverwrites.edit(unverifiedRole, permissions);
-	}));
-}
-
-
-/**
- *
- * @param {Discord.Guild} guild
- */
-async function setupMemberRole(guild) {
-	const roles = await guild.roles.fetch();
-	const memberRole = roles.find(role => role.name === 'member');
-
-	if (!memberRole) {
-		await guild.roles.create({
-			name: 'member',
-			mentionable: false,
-			color: 0xFFFFFF,
-			reason: 'Role for verified users'
-		});
-	}
-
-	const channels = await guild.channels.fetch();
-	const readmeChannel = channels.find(channel => channel.name === 'readme' && channel.type === 'GUILD_TEXT' && channel.parent?.name === 'pretendo');
-	
-	await readmeChannel.permissionOverwrites.edit(memberRole, {
-		SEND_MESSAGES: false
-	});
-}
-
-/**
- *
- * @param {Discord.Guild} guild
- */
-async function assignUnverifiedRole(guild) {
-	const members = await guild.members.fetch();
-	const roles = await guild.roles.fetch();
-	const memberRole = roles.find(role => role.name === 'member');
-	const unverifiedRole = roles.find(role => role.name === 'unverified');
-	
-	await Promise.all(members.map(async member => {
-		if (!member.roles.cache.has(memberRole.id) && !member.roles.cache.has(unverifiedRole.id) ) {
-			await member.roles.add(unverifiedRole);
-		}
-	}));
 }
 
 module.exports = setupGuild;

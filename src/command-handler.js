@@ -1,11 +1,5 @@
 const Discord = require('discord.js');
-const verifyHandler = require('./commands/verify').handler;
-const toggleroleHandler = require('./commands/togglerole').handler;
-
-const commands = {
-	verify: verifyHandler,
-	togglerole: toggleroleHandler,
-};
+const commands = require('./commands-manager');
 
 /**
  * 
@@ -23,7 +17,7 @@ async function commandHandler(interaction) {
 	}
 
 	// run the command
-	commands[commandName](interaction);
+	commands[commandName].handler(interaction);
 }
 
 module.exports = commandHandler;
