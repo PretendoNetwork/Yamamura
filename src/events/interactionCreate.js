@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const commandHandler = require('../command-handler');
+const buttonHandler = require('../button-handler');
 
 /**
  * 
@@ -8,6 +9,10 @@ const commandHandler = require('../command-handler');
 async function interactionCreateHander(interaction) {
 	if (interaction.isCommand()) {
 		await commandHandler(interaction);
+	}
+
+	if (interaction.isButton()) {
+		await buttonHandler(interaction);
 	}
 }
 

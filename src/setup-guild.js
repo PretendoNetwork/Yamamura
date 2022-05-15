@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { Routes } = require('discord-api-types/v10');
 const { bot_token: botToken } = require('../config.json');
 const commands = require('./commands-manager');
 
-const rest = new REST({ version: '9' }).setToken(botToken);
+const rest = new REST({ version: '10' }).setToken(botToken);
 
 const commandsDeploy = Object.keys(commands).map(name => commands[name].deploy);
 
@@ -24,9 +24,8 @@ async function setupGuild(guild) {
 
 	// If anyone has a better way of doing this I'm all ears
 	// names should explain what they do
-	await setupPretendoCategory(guild);
-	await setupReadmeChannel(guild);
-	await setupRulesChannel(guild);
+	await setupCategories(guild);
+	await setupTextChannels(guild);
 }
 
 /**
@@ -35,6 +34,25 @@ async function setupGuild(guild) {
  */
 async function deployCommands(guild) {
 	await rest.put(Routes.applicationGuildCommands(guild.me.id, guild.id), { body: commandsDeploy });
+}
+
+/**
+ * 
+ * @param {Discord.Guild} guild
+ */
+async function setupCategories(guild) {
+	await setupPretendoCategory(guild);
+	await setupModeratorCategory(guild);
+}
+
+/**
+ * 
+ * @param {Discord.Guild} guild
+ */
+async function setupTextChannels(guild) {
+	await setupReadmeChannel(guild);
+	await setupRulesChannel(guild);
+	await setupModApplicationsChannel(guild);
 }
 
 /**
@@ -314,6 +332,78 @@ async function setupRulesChannel(guild) {
 		// TODO: Check if old message equals current message data?
 		await message.edit(messageContent);
 	}
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ * @returns {Discord.CategoryChannel} category
+ */
+async function setupModeratorCategory(guild) {
+	const channels = await guild.channels.fetch();
+	let category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'moderator');
+
+	if (!category) {
+		category = await guild.channels.create('moderator', {
+			type: 'GUILD_CATEGORY'
+		});
+	}
+
+	const roles = await guild.roles.fetch();
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		deny: Discord.Permissions.ALL
+	}];
+
+	roles.forEach(role => {
+		if (role.permissions.has(Discord.Permissions.FLAGS.MODERATE_MEMBERS)) {
+			permissionOverwrites.push({
+				type: 'role',
+				id: role.id,
+				allow: Discord.Permissions.ALL
+			});
+		}
+	});
+
+	await category.permissionOverwrites.set(permissionOverwrites);
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupModApplicationsChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'moderator');
+	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'mod-applications');
+
+	if (!channel) {
+		channel = await guild.channels.create('mod-applications', {
+			type: 'GUILD_TEXT',
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	const roles = await guild.roles.fetch();
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		deny: Discord.Permissions.ALL
+	}];
+
+	roles.forEach(role => {
+		if (role.permissions.has(Discord.Permissions.FLAGS.MODERATE_MEMBERS)) {
+			permissionOverwrites.push({
+				type: 'role',
+				id: role.id,
+				allow: Discord.Permissions.ALL
+			});
+		}
+	});
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
 }
 
 module.exports = setupGuild;

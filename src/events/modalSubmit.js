@@ -1,20 +1,21 @@
 const { ModalSubmitInteraction } = require('discord-modals');
-const verifyModalSubmitHandler = require('../modals/verify');
+const modals = require('../modals-manager');
 
 /**
  * 
- * @param {ModalSubmitInteraction} modal
+ * @param {ModalSubmitInteraction} interaction
  */
-async function modalSubmitHandler(modal) {
-	switch (modal.customId) {
-		case 'verify':
-			await verifyModalSubmitHandler(modal);
-			break;
-	
-		default:
-			await modal.reply(`Missing modal submit handler for \`${modal.customId}\``);
-			break;
+async function modalSubmitHandler(interaction) {
+	const { customId } = interaction;
+
+	// do nothing if no command
+	if (!modals[customId]) {
+		interaction.reply(`Missing modal handler for \`${customId}\``);
+		return;
 	}
+
+	// run the command
+	modals[customId].handler(interaction);
 }
 
 module.exports = modalSubmitHandler;

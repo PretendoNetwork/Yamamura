@@ -3,11 +3,9 @@ const commands = require('./commands-manager');
 
 /**
  * 
- * @param {Discord.Interaction} interaction
+ * @param {Discord.CommandInteraction} interaction
  */
 async function commandHandler(interaction) {
-	if (!interaction.isCommand()) return;
-
 	const { commandName } = interaction;
 
 	// do nothing if no command

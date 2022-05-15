@@ -1,5 +1,3 @@
 {
-  "application_id": "",
-  "public_key": "",
-  "token": ""
+	"bot_token": "TOKEN"
 }
