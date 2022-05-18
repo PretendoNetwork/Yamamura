@@ -115,6 +115,45 @@ async function setupPretendoCategory(guild) {
  *
  * @param {Discord.Guild} guild
  */
+async function setupModeratorCategory(guild) {
+	const channels = await guild.channels.fetch();
+	let category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'moderator');
+
+	if (!category) {
+		category = await guild.channels.create('moderator', {
+			type: 'GUILD_CATEGORY'
+		});
+	}
+
+	const roles = await guild.roles.fetch();
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		deny: Discord.Permissions.ALL
+	}];
+
+	roles.forEach(role => {
+		if (role.permissions.has(Discord.Permissions.FLAGS.MODERATE_MEMBERS)) {
+			permissionOverwrites.push({
+				type: 'role',
+				id: role.id,
+				allow: Discord.Permissions.ALL
+			});
+		}
+	});
+
+	await category.permissionOverwrites.set(permissionOverwrites);
+}
+
+/***********************
+ *                     *
+ *    TEXT CHANNELS    *
+ *                     *
+ ***********************/
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
 async function setupReadmeChannel(guild) {
 	const channels = await guild.channels.fetch();
 	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
@@ -293,12 +332,6 @@ async function setupReadmeChannel(guild) {
 	}
 }
 
-/***********************
- *                     *
- *    TEXT CHANNELS    *
- *                     *
- ***********************/
-
 /**
  *
  * @param {Discord.Guild} guild
@@ -378,39 +411,6 @@ async function setupRulesChannel(guild) {
 		// TODO: Check if old message equals current message data?
 		await message.edit(messageContent);
 	}
-}
-
-/**
- *
- * @param {Discord.Guild} guild
- */
-async function setupModeratorCategory(guild) {
-	const channels = await guild.channels.fetch();
-	let category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'moderator');
-
-	if (!category) {
-		category = await guild.channels.create('moderator', {
-			type: 'GUILD_CATEGORY'
-		});
-	}
-
-	const roles = await guild.roles.fetch();
-	const permissionOverwrites = [{
-		id: guild.roles.everyone,
-		deny: Discord.Permissions.ALL
-	}];
-
-	roles.forEach(role => {
-		if (role.permissions.has(Discord.Permissions.FLAGS.MODERATE_MEMBERS)) {
-			permissionOverwrites.push({
-				type: 'role',
-				id: role.id,
-				allow: Discord.Permissions.ALL
-			});
-		}
-	});
-
-	await category.permissionOverwrites.set(permissionOverwrites);
 }
 
 /**
