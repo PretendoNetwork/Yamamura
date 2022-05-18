@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const discordModals = require('discord-modals');
 const setupGuild = require('./setup-guild');
 const guildMemberAddHandler = require('./events/guildMemberAdd');
+const guildMemberRemoveHandler = require('./events/guildMemberRemove');
 const interactionCreateHandler = require('./events/interactionCreate');
 const messageCreateHandler = require('./events/messageCreate');
 const modalSubmitHandler = require('./events/modalSubmit');
@@ -29,9 +30,9 @@ client.on('ready', async () => {
 });
 
 client.on('guildMemberAdd', guildMemberAddHandler);
+client.on('guildMemberRemove', guildMemberRemoveHandler);
 client.on('interactionCreate', interactionCreateHandler);
 client.on('messageCreate', messageCreateHandler);
 client.on('modalSubmit', modalSubmitHandler);
-
 
 client.login(config.bot_token);

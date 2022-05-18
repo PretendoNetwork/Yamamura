@@ -3,6 +3,7 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
 const { bot_token: botToken } = require('../config.json');
 const commands = require('./commands-manager');
+const util = require('./util');
 
 const rest = new REST({ version: '10' }).setToken(botToken);
 
@@ -26,6 +27,9 @@ async function setupGuild(guild) {
 	// names should explain what they do
 	await setupCategories(guild);
 	await setupTextChannels(guild);
+	await setupVoiceChannels(guild);
+
+	await util.updateMemberCountChannels(guild);
 }
 
 /**
@@ -41,6 +45,7 @@ async function deployCommands(guild) {
  * @param {Discord.Guild} guild
  */
 async function setupCategories(guild) {
+	await setupStatsCategory(guild);
 	await setupPretendoCategory(guild);
 	await setupModeratorCategory(guild);
 }
@@ -56,9 +61,44 @@ async function setupTextChannels(guild) {
 }
 
 /**
+ * 
+ * @param {Discord.Guild} guild
+ */
+async function setupVoiceChannels(guild) {
+	await setupMembersCountChannel(guild);
+	await setupPeopleCountChannel(guild);
+	await setupBotsCountChannel(guild);
+}
+
+
+/***************************
+ *                         *
+ *    CATEGORY CHANNELS    *
+ *                         *
+ ***************************/
+
+/**
  *
  * @param {Discord.Guild} guild
- * @returns {Discord.CategoryChannel} category
+ */
+async function setupStatsCategory(guild) {
+	const channels = await guild.channels.fetch();
+	let category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'stats');
+
+	if (!category) {
+		category = await guild.channels.create('stats', {
+			type: 'GUILD_CATEGORY'
+		});
+	}
+
+	if (category.position !== 0) {
+		await category.setPosition(0);
+	}
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
  */
 async function setupPretendoCategory(guild) {
 	const channels = await guild.channels.fetch();
@@ -253,6 +293,12 @@ async function setupReadmeChannel(guild) {
 	}
 }
 
+/***********************
+ *                     *
+ *    TEXT CHANNELS    *
+ *                     *
+ ***********************/
+
 /**
  *
  * @param {Discord.Guild} guild
@@ -337,7 +383,6 @@ async function setupRulesChannel(guild) {
 /**
  *
  * @param {Discord.Guild} guild
- * @returns {Discord.CategoryChannel} category
  */
 async function setupModeratorCategory(guild) {
 	const channels = await guild.channels.fetch();
@@ -402,6 +447,111 @@ async function setupModApplicationsChannel(guild) {
 			});
 		}
 	});
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+}
+
+/************************
+ *                      *
+ *    VOICE CHANNELS    *
+ *                      *
+ ************************/
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupMembersCountChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'stats');
+	let channel = channels.find(channel => channel.type === 'GUILD_VOICE' && channel.name.startsWith('Members'));
+
+	if (!channel) {
+		channel = await guild.channels.create('Members - 0', {
+			type: 'GUILD_VOICE',
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	if (channel.position !== 0) {
+		await channel.setPosition(0);
+	}
+
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		deny: [
+			Discord.Permissions.FLAGS.CONNECT
+		]
+	}];
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupPeopleCountChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'stats');
+	let channel = channels.find(channel => channel.type === 'GUILD_VOICE' && channel.name.startsWith('People'));
+
+	if (!channel) {
+		channel = await guild.channels.create('People - 0', {
+			type: 'GUILD_VOICE',
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	if (channel.position !== 1) {
+		await channel.setPosition(1);
+	}
+
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		deny: [
+			Discord.Permissions.FLAGS.CONNECT
+		]
+	}];
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupBotsCountChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'stats');
+	let channel = channels.find(channel => channel.type === 'GUILD_VOICE' && channel.name.startsWith('Bots'));
+
+	if (!channel) {
+		channel = await guild.channels.create('Bots - 0', {
+			type: 'GUILD_VOICE',
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	if (channel.position !== 2) {
+		await channel.setPosition(2);
+	}
+
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		deny: [
+			Discord.Permissions.FLAGS.CONNECT
+		]
+	}];
 
 	await channel.permissionOverwrites.set(permissionOverwrites);
 }

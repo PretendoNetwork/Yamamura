@@ -1,10 +1,11 @@
 const Discord = require('discord.js');
+const util = require('../util');
 
 /**
  * 
  * @param {Discord.GuildMember} member
  */
-function guildMemberAddHandler(member) {
+async function guildMemberAddHandler(member) {
 	const welcomeEmbed = new Discord.MessageEmbed();
 
 	welcomeEmbed.setColor(0x1B1F3B);
@@ -60,10 +61,12 @@ function guildMemberAddHandler(member) {
 		}
 	]);
 
-	member.send({
+	await member.send({
 		content: 'Thank you for joining the Pretendo Network Discord server! Check below for some server information and links',
 		embeds: [welcomeEmbed]
 	});
+
+	await util.updateMemberCountChannels(member.guild);
 }
 
 module.exports = guildMemberAddHandler;
