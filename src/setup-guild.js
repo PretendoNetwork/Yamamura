@@ -28,6 +28,7 @@ async function setupGuild(guild) {
 	await setupCategories(guild);
 	await setupTextChannels(guild);
 	await setupVoiceChannels(guild);
+	
 
 	await util.updateMemberCountChannels(guild);
 }
@@ -161,18 +162,7 @@ async function setupReadmeChannel(guild) {
 
 	if (!channel) {
 		channel = await guild.channels.create('readme', {
-			type: 'GUILD_TEXT',
-			permissionOverwrites: [
-				{
-					id: guild.roles.everyone,
-					allow: [
-						Discord.Permissions.FLAGS.VIEW_CHANNEL
-					],
-					deny: [
-						Discord.Permissions.FLAGS.SEND_MESSAGES
-					]
-				}
-			]
+			type: 'GUILD_TEXT'
 		});
 	}
 
@@ -180,9 +170,52 @@ async function setupReadmeChannel(guild) {
 		await channel.setParent(category);
 	}
 
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		allow: [
+			Discord.Permissions.FLAGS.VIEW_CHANNEL
+		],
+		deny: [
+			Discord.Permissions.FLAGS.SEND_MESSAGES
+		]
+	}];
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+
 	const messages = await channel.messages.fetch();
 	let botMessages = messages.filter(message => message.author.id === guild.me.id);
 	botMessages = botMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+
+	const socialMediaEmbed = new Discord.MessageEmbed();
+	socialMediaEmbed.setTitle(':desktop: Social Media');
+	socialMediaEmbed.setDescription('Where to find us online');
+	socialMediaEmbed.setColor(0x1B1F3B);
+	socialMediaEmbed.setFields([
+		{
+			'name': ':globe_with_meridians: Website',
+			'value': 'https://pretendo.network'
+		},
+		{
+			'name': '<:git:415206315703533569> GitHub',
+			'value': 'https://github.com/PretendoNetwork'
+		},
+		{
+			'name': '<:patreonlogo:886254233786138635> Patreon',
+			'value': 'https://patreon.com/PretendoNetwork'
+		},
+		{
+			'name': '<:twitterlogo:886254233962291241> Twitter',
+			'value': 'https://twitter.com/PretendoNetwork'
+		},
+		{
+			'name': '<:twitchlogo:886254234201362473> Twitch',
+			'value': 'https://twitch.tv/PretendoNetwork'
+		},
+		{
+			'name': '<:youtubelogo:886254234226528337> YouTube',
+			'value': 'https://youtube.com/c/PretendoNetwork'
+		}
+	]);
 
 	const introductionEmbed = new Discord.MessageEmbed();
 	introductionEmbed.setTitle(':wave: Introduction');
@@ -229,32 +262,9 @@ async function setupReadmeChannel(guild) {
 		}
 	]);
 
-	const socialMediaEmbed = new Discord.MessageEmbed();
-	socialMediaEmbed.setTitle(':desktop: Social Media');
-	socialMediaEmbed.setDescription('Where to find us online');
-	socialMediaEmbed.setColor(0x1B1F3B);
-	socialMediaEmbed.setFields([
-		{
-			'name': '<:patreonlogo:886254233786138635>  Patreon',
-			'value': 'https://patreon.com/PretendoNetwork'
-		},
-		{
-			'name': '<:twitterlogo:886254233962291241>  Twitter',
-			'value': 'https://twitter.com/PretendoNetwork'
-		},
-		{
-			'name': '<:twitchlogo:886254234201362473>  Twitch',
-			'value': 'https://twitch.tv/PretendoNetwork'
-		},
-		{
-			'name': '<:youtubelogo:886254234226528337> YouTube',
-			'value': 'https://youtube.com/c/PretendoNetwork'
-		}
-	]);
-
 	const message1Content = {
-		content: 'Welcome to the Pretendo Network server :smile:\n\nBefore you continue please read this channel completely. It contains all the information needed to ensure you, and your fellow community members, have a good and civilized time along with instructions at the very end on how to gain full access to the server. Thank you for joining!\n\nWebsite: https://pretendo.network\n\nDiscord invite:  https://invite.gg/pretendo \n\n(If you joined previously and are seeing this message we apologize for the inconvenience)',
-		embeds: [introductionEmbed, socialMediaEmbed]
+		content: 'Welcome to the Pretendo Network server :smile:\n\nBefore you continue please read this channel completely. It contains all the information needed to ensure you, and your fellow community members, have a good and civilized time. Thank you for joining!\n\nDiscord invite:  https://invite.gg/pretendo\n\n',
+		embeds: [socialMediaEmbed, introductionEmbed]
 	};
 
 	const message1 = botMessages.at(0);
