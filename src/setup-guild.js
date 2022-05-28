@@ -356,24 +356,25 @@ async function setupRulesChannel(guild) {
 
 	if (!channel) {
 		channel = await guild.channels.create('rules', {
-			type: 'GUILD_TEXT',
-			permissionOverwrites: [
-				{
-					id: guild.roles.everyone,
-					allow: [
-						Discord.Permissions.FLAGS.VIEW_CHANNEL
-					],
-					deny: [
-						Discord.Permissions.FLAGS.SEND_MESSAGES
-					]
-				}
-			]
+			type: 'GUILD_TEXT'
 		});
 	}
 
 	if (channel.parentId !== category.id) {
 		await channel.setParent(category);
 	}
+	
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		allow: [
+			Discord.Permissions.FLAGS.VIEW_CHANNEL
+		],
+		deny: [
+			Discord.Permissions.FLAGS.SEND_MESSAGES
+		]
+	}];
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
 
 	const messages = await channel.messages.fetch();
 	let botMessages = messages.filter(message => message.author.id === guild.me.id);
