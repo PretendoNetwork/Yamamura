@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const discordModals = require('discord-modals');
-const setupGuild = require('./setup-guild');
+const readyHandler = require('./events/ready');
 const guildMemberAddHandler = require('./events/guildMemberAdd');
 const guildMemberRemoveHandler = require('./events/guildMemberRemove');
 const interactionCreateHandler = require('./events/interactionCreate');
@@ -18,17 +18,7 @@ const client = new Discord.Client({
 
 discordModals(client);
 
-client.on('ready', async () => {
-	const guilds = await client.guilds.fetch();
-
-	for (let guild of guilds) {
-		guild = await guild[1].fetch();
-		await setupGuild(guild);
-	}
-
-	console.log(`Logged in as ${client.user.tag}!`);
-});
-
+client.on('ready', readyHandler);
 client.on('guildMemberAdd', guildMemberAddHandler);
 client.on('guildMemberRemove', guildMemberRemoveHandler);
 client.on('interactionCreate', interactionCreateHandler);
