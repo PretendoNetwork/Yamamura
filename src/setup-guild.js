@@ -1,9 +1,11 @@
 const Discord = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
-const { bot_token: botToken } = require('../config.json');
-const commands = require('./commands-manager');
 const util = require('./util');
+const { select_menu: roleSelectMenu } = require('./select-menus/role-self-assign');
+const commands = require('./commands-manager');
+const { bot_token: botToken } = require('../config.json');
+
 
 const rest = new REST({ version: '10' }).setToken(botToken);
 
@@ -58,6 +60,7 @@ async function setupCategories(guild) {
 async function setupTextChannels(guild) {
 	await setupReadmeChannel(guild);
 	await setupRulesChannel(guild);
+	await setupRolesChannel(guild);
 	await setupModApplicationsChannel(guild);
 }
 
@@ -412,6 +415,59 @@ async function setupRulesChannel(guild) {
 	]);
 
 	const messageContent = { embeds: [rulesEmbed] };
+
+	const message = botMessages.at(0);
+
+	if (!message) {
+		await channel.send(messageContent);
+	} else {
+		// TODO: Check if old message equals current message data?
+		await message.edit(messageContent);
+	}
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupRolesChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
+	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'roles');
+
+	if (!channel) {
+		channel = await guild.channels.create('roles', {
+			type: 'GUILD_TEXT'
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		allow: [
+			Discord.Permissions.FLAGS.VIEW_CHANNEL
+		],
+		deny: [
+			Discord.Permissions.FLAGS.SEND_MESSAGES
+		]
+	}];
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+
+	const messages = await channel.messages.fetch();
+	let botMessages = messages.filter(message => message.author.id === guild.me.id);
+	botMessages = botMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+
+	const row = new Discord.MessageActionRow();
+	row.addComponents([roleSelectMenu]);
+
+	const messageContent = {
+		content: 'Self-assign certain roles!\nCan also be toggled using the `/togglerole` command',
+		components: [row]
+	};
 
 	const message = botMessages.at(0);
 
