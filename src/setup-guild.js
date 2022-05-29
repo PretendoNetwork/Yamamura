@@ -194,7 +194,7 @@ async function setupRulesChannel(guild) {
 
 	const rulesEmbed = new Discord.MessageEmbed();
 	rulesEmbed.setTitle('Rules');
-	rulesEmbed.setDescription('Rules of the server. Once they have been read, use the `/verify` command to verify you have read the rules');
+	rulesEmbed.setDescription('Rules of the server');
 	rulesEmbed.setColor(0x1B1F3B);
 	rulesEmbed.setFields([
 		{
@@ -203,7 +203,7 @@ async function setupRulesChannel(guild) {
 		},
 		{
 			'name': '2: Family friendly',
-			'value': 'No NSFW or obscene content. This includes text, images, or links featuring nudity, sex, hard violence, or other graphically disturbing content. Swearing and other strong language is allowed as long as it is not over used or used in a way to insult/harm others'
+			'value': 'No NSFW or obscene content. This includes text, images, or links featuring nudity, sex, hard violence, or other graphically disturbing content. Swearing and other strong language is allowed as long as it is not over used or used in a way to insult/harm others.'
 		},
 		{
 			'name': '3: No spam',
@@ -215,7 +215,7 @@ async function setupRulesChannel(guild) {
 		},
 		{
 			'name': '5: No piracy',
-			'value': 'Do not share anything illegal. This includes game/firmware dumps, any console SDK, etc. If it feels illegal, it probably is. If you aren\'t sure, don\'t share it. Do not share downloads or links to tools which promote piracy. Do not discuss piracy or offer to help with piracy'
+			'value': 'Do not share anything illegal. This includes game/firmware dumps, any console SDK, etc. If it feels illegal, it probably is. If you aren\'t sure, don\'t share it. Do not share downloads or links to tools which promote piracy. Do not discuss piracy or offer to help with piracy.'
 		},
 		{
 			'name': '6: No unsolicited DMs',
