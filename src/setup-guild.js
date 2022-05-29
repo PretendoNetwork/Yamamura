@@ -582,19 +582,6 @@ async function setupReadmeChannel(guild) {
 	let botMessages = messages.filter(message => message.author.id === guild.me.id);
 	botMessages = botMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
 
-	const introductionEmbed = new Discord.MessageEmbed();
-	introductionEmbed.setTitle(':wave: Introduction');
-	introductionEmbed.setDescription('Information about the project');
-	introductionEmbed.setColor(0x1B1F3B);
-	introductionEmbed.setThumbnail('https://i.imgur.com/8clyKqx.png');
-	introductionEmbed.setImage('https://i.imgur.com/CF7qgW1.png');
-	introductionEmbed.setFields([
-		{
-			'name': 'What is this place?',
-			'value': '_Pretendo Network_ is a free, open-source, Nintendo Network replacement for the Wii U and 3DS family of consoles'
-		}
-	]);
-
 	const discordButton = new Discord.MessageButton();
 	discordButton.setEmoji('<:discord:314003252830011395>');
 	discordButton.setLabel('Discord Invite');
