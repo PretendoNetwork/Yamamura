@@ -11,7 +11,7 @@ const { modal: reportUserModal } = require('../modals/report-user');
 async function reportUserHandler(interaction) {
 	const { targetId } = interaction;
 
-	if (targetId=== interaction.user.id) {
+	if (targetId === interaction.user.id) {
 		await interaction.reply({
 			content: 'Cannot report yourself',
 			ephemeral: true
@@ -29,7 +29,7 @@ async function reportUserHandler(interaction) {
 		return;
 	}
 
-	reportUserModal.setCustomId(`${reportUserModal.customId}-${interaction.targetId}`);
+	reportUserModal.setCustomId(`${reportUserModal.customId}-${targetId}`);
 	reportUserModal.setTitle(`Reporting ${targetMember.user.tag}`);
 
 	showModal(reportUserModal, {
