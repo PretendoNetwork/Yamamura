@@ -5,8 +5,8 @@ const { button: acceptButton } = require('../buttons/mod-application-accept');
 const { button: denyButton } = require('../buttons/mod-application-deny');
 
 const inServerSince = new TextInputComponent()
-	.setCustomId('in-server-since')
-	.setLabel('How long have you been in the server?')
+	.setCustomId('experience')
+	.setLabel('Do you have prior experience and if so, what?')
 	.setStyle('SHORT')
 	.setRequired(true);
 
@@ -50,7 +50,7 @@ async function modApplicationHandler(interaction) {
 		ephemeral: true
 	});
 
-	const inServerSince = interaction.getTextInputValue('in-server-since');
+	const experience = interaction.getTextInputValue('experience');
 	const timezone = interaction.getTextInputValue('timezone');
 	const availablity = interaction.getTextInputValue('availablity');
 	const why = interaction.getTextInputValue('why');
@@ -75,8 +75,8 @@ async function modApplicationHandler(interaction) {
 	});
 	modApplicationEmbed.setFields([
 		{
-			name: 'How long have you been in the server?',
-			value: inServerSince
+			name: 'Do you have prior experience and if so, what?',
+			value: experience
 		},
 		{
 			name: 'What is your timezone?',
