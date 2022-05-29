@@ -13,7 +13,7 @@ async function selectMenuHandler(interaction) {
 
 	// do nothing if no selectMenu
 	if (!selectMenu) {
-		interaction.reply(`Missing selectMenu handler for \`${customId}\``);
+		interaction.reply(`Missing select menu handler for \`${customId}\``);
 		return;
 	}
 

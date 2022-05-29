@@ -10,7 +10,7 @@ async function modalSubmitHandler(interaction) {
 
 	/** @type {Discord.Collection} */
 	const modals = interaction.client.modals;
-	const modal = modals.get(customId);
+	const modal = modals.find(modal => customId.startsWith(modal.name)); // hack to be able to append extra metadata to modals
 
 	// do nothing if no modal
 	if (!modal) {

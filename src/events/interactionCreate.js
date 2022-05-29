@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
-const commandHandler = require('../handlers/command-handler');
 const buttonHandler = require('../handlers/button-handler');
+const commandHandler = require('../handlers/command-handler');
+const contextMenuHandler = require('../handlers/context-menu-handler');
 const selectMenuHandler = require('../handlers/select-menu-handler');
 
 /**
@@ -18,6 +19,10 @@ async function interactionCreateHander(interaction) {
 
 	if (interaction.isSelectMenu()) {
 		await selectMenuHandler(interaction);
+	}
+
+	if (interaction.isContextMenu()) {
+		await contextMenuHandler(interaction);
 	}
 }
 

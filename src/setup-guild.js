@@ -34,16 +34,19 @@ async function setupGuild(guild) {
  * @param {Discord.Guild} guild
  */
 async function deployCommands(guild) {
+	const deploy = [];
+
+	guild.client.commands.forEach(command => {
+		deploy.push(command.deploy);
+	});
+
+	guild.client.contextMenus.forEach(contextMenu => {
+		deploy.push(contextMenu.deploy);
+	});
+
 	const rest = new REST({ version: '10' }).setToken(botToken);
 
-	/** @type {Discord.Collection} */
-	const commands = guild.client.commands;
-	
-	const commandsDeploy = commands.map(command => command.deploy);
-
-	console.log(commandsDeploy);
-
-	await rest.put(Routes.applicationGuildCommands(guild.me.id, guild.id), { body: commandsDeploy });
+	await rest.put(Routes.applicationGuildCommands(guild.me.id, guild.id), { body: deploy });
 }
 
 /**
@@ -68,6 +71,7 @@ async function setupTextChannels(guild) {
 	await setupFAQChannel(guild);
 	await setupAnnouncementsChannel(guild);
 	await setupModApplicationsChannel(guild);
+	await setupReportsChannel(guild);
 }
 
 /**
@@ -616,19 +620,19 @@ async function setupReadmeChannel(guild) {
 	patreonButton.setURL('https://patreon.com/PretendoNetwork');
 
 	const twitterButton = new Discord.MessageButton();
-	twitterButton.setEmoji(':twitterlogo:886254233962291241>');
-	twitterButton.setLabel('<Twitter');
+	twitterButton.setEmoji('<:twitterlogo:886254233962291241>');
+	twitterButton.setLabel('Twitter');
 	twitterButton.setStyle('LINK');
 	twitterButton.setURL('https://twitter.com/PretendoNetwork');
 
 	const twitchButton = new Discord.MessageButton();
-	twitchButton.setEmoji(':twitchlogo:886254234201362473>');
+	twitchButton.setEmoji('<:twitchlogo:886254234201362473>');
 	twitchButton.setLabel('Twitch');
 	twitchButton.setStyle('LINK');
 	twitchButton.setURL('https://twitch.tv/PretendoNetwork');
 
 	const youtubeButton = new Discord.MessageButton();
-	youtubeButton.setEmoji(':youtubelogo:886254234226528337>');
+	youtubeButton.setEmoji('<:youtubelogo:886254234226528337>');
 	youtubeButton.setLabel('YouTube');
 	youtubeButton.setStyle('LINK');
 	youtubeButton.setURL('https://youtube.com/c/PretendoNetwork');
@@ -675,6 +679,44 @@ async function setupModApplicationsChannel(guild) {
 
 	if (!channel) {
 		channel = await guild.channels.create('mod-applications', {
+			type: 'GUILD_TEXT',
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	const roles = await guild.roles.fetch();
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		deny: Discord.Permissions.ALL
+	}];
+
+	roles.forEach(role => {
+		if (role.permissions.has(Discord.Permissions.FLAGS.MODERATE_MEMBERS)) {
+			permissionOverwrites.push({
+				type: 'role',
+				id: role.id,
+				allow: Discord.Permissions.ALL
+			});
+		}
+	});
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupReportsChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'moderator');
+	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'reports');
+
+	if (!channel) {
+		channel = await guild.channels.create('reports', {
 			type: 'GUILD_TEXT',
 		});
 	}

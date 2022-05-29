@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
-const { ModalSubmitInteraction } = require('discord-modals');
-const { Modal, TextInputComponent } = require('discord-modals');
+const { Modal, TextInputComponent, ModalSubmitInteraction } = require('discord-modals');
 const { button: acceptButton } = require('../buttons/mod-application-accept');
 const { button: denyButton } = require('../buttons/mod-application-deny');
 
