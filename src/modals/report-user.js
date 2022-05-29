@@ -12,7 +12,7 @@ const transcriptCount = new TextInputComponent()
 	.setCustomId('transcript-count')
 	.setLabel('Transcript')
 	.setStyle('SHORT')
-	.setPlaceholder('Number of messages to inlucde. 0-100. Default 20');
+	.setPlaceholder('Number of messages to include. 0-100. Default 20');
 
 const reportUserModal = new Modal()
 	.setCustomId('report-user')
