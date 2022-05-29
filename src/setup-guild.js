@@ -58,10 +58,12 @@ async function setupCategories(guild) {
  * @param {Discord.Guild} guild
  */
 async function setupTextChannels(guild) {
-	await setupReadmeChannel(guild);
 	await setupRulesChannel(guild);
 	await setupRolesChannel(guild);
 	await setupFAQChannel(guild);
+	await setupAnnouncementsChannel(guild);
+	await setupGitHubChannel(guild);
+	await setupReadmeChannel(guild);
 	await setupModApplicationsChannel(guild);
 }
 
@@ -154,126 +156,6 @@ async function setupModeratorCategory(guild) {
  *    TEXT CHANNELS    *
  *                     *
  ***********************/
-
-/**
- *
- * @param {Discord.Guild} guild
- */
-async function setupReadmeChannel(guild) {
-	const channels = await guild.channels.fetch();
-	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
-	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'readme');
-
-	if (!channel) {
-		channel = await guild.channels.create('readme', {
-			type: 'GUILD_TEXT'
-		});
-	}
-
-	if (channel.parentId !== category.id) {
-		await channel.setParent(category);
-	}
-
-	const permissionOverwrites = [{
-		id: guild.roles.everyone,
-		allow: [
-			Discord.Permissions.FLAGS.VIEW_CHANNEL
-		],
-		deny: [
-			Discord.Permissions.FLAGS.SEND_MESSAGES
-		]
-	}];
-
-	await channel.permissionOverwrites.set(permissionOverwrites);
-
-	const messages = await channel.messages.fetch();
-	let botMessages = messages.filter(message => message.author.id === guild.me.id);
-	botMessages = botMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
-
-	const socialMediaEmbed = new Discord.MessageEmbed();
-	socialMediaEmbed.setTitle(':desktop: Social Media');
-	socialMediaEmbed.setDescription('Where to find us online');
-	socialMediaEmbed.setColor(0x1B1F3B);
-	socialMediaEmbed.setFields([
-		{
-			'name': ':globe_with_meridians: Website',
-			'value': 'https://pretendo.network'
-		},
-		{
-			'name': '<:git:415206315703533569> GitHub',
-			'value': 'https://github.com/PretendoNetwork'
-		},
-		{
-			'name': '<:patreonlogo:886254233786138635> Patreon',
-			'value': 'https://patreon.com/PretendoNetwork'
-		},
-		{
-			'name': '<:twitterlogo:886254233962291241> Twitter',
-			'value': 'https://twitter.com/PretendoNetwork'
-		},
-		{
-			'name': '<:twitchlogo:886254234201362473> Twitch',
-			'value': 'https://twitch.tv/PretendoNetwork'
-		},
-		{
-			'name': '<:youtubelogo:886254234226528337> YouTube',
-			'value': 'https://youtube.com/c/PretendoNetwork'
-		}
-	]);
-
-	const introductionEmbed = new Discord.MessageEmbed();
-	introductionEmbed.setTitle(':wave: Introduction');
-	introductionEmbed.setDescription('Information about the project');
-	introductionEmbed.setColor(0x1B1F3B);
-	introductionEmbed.setThumbnail('https://i.imgur.com/8clyKqx.png');
-	introductionEmbed.setImage('https://i.imgur.com/CF7qgW1.png');
-	introductionEmbed.setFields([
-		{
-			'name': 'What is this place?',
-			'value': '_Pretendo Network_ is a free, open-source, Nintendo Network replacement for the Wii U and 3DS family of consoles'
-		}
-	]);
-
-	const message1Payload = {
-		content: 'Welcome to the Pretendo Network server :smile:\n\nBefore you continue please read this channel completely. It contains all the information needed to ensure you, and your fellow community members, have a good and civilized time. Thank you for joining!\n\nDiscord invite:  https://invite.gg/pretendo\n\n',
-		embeds: [socialMediaEmbed, introductionEmbed]
-	};
-
-	const message1 = botMessages.at(0);
-
-	if (!message1) {
-		await channel.send(message1Payload);
-	} else {
-		// TODO: Check if old message equals current message data?
-		await message1.edit(message1Payload);
-	}
-
-	const botsEmbed = new Discord.MessageEmbed();
-	botsEmbed.setTitle('Bots');
-	botsEmbed.setDescription('The bots and what they do');
-	botsEmbed.setColor(0x1B1F3B);
-	botsEmbed.setFields([
-		{
-			'name': '<:yamamura:416804930838331402> Yamamura',
-			'value': 'Hey that\'s me! I\'m Yamamura, the community helper bot! My job is to help interact with the community in useful ways and make everyone\'s stay here a little bit funner. I provide information about Pretendo as well as several /commands to help you along the way'
-		},
-		{
-			'name': '<:chubby:909396252167389265> Chubby',
-			'value': 'My good friend Chubby is pretty serious. His job is to be used by the moderation team and developers to enforce the rules of the server. He provides several /commands to issue things such as warnings, kicks and bans'
-		}
-	]);
-
-	const message2Payload = { embeds: [botsEmbed] };
-
-	const message2 = botMessages.at(1);
-
-	if (!message2) {
-		await channel.send(message2Payload);
-	} else {
-		// TODO: Check if old message equals current message data?
-		await message2.edit(message2Payload);
-	}
-}
 
 /**
  *
@@ -583,6 +465,197 @@ async function setupFAQChannel(guild) {
 		// TODO: Check if old message equals current message data?
 		await message3.edit(message3Payload);
 	}
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupReadmeChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
+	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'readme');
+
+	if (!channel) {
+		channel = await guild.channels.create('readme', {
+			type: 'GUILD_TEXT'
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		allow: [
+			Discord.Permissions.FLAGS.VIEW_CHANNEL
+		],
+		deny: [
+			Discord.Permissions.FLAGS.SEND_MESSAGES
+		]
+	}];
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+
+	const messages = await channel.messages.fetch();
+	let botMessages = messages.filter(message => message.author.id === guild.me.id);
+	botMessages = botMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+
+	const introductionEmbed = new Discord.MessageEmbed();
+	introductionEmbed.setTitle(':wave: Introduction');
+	introductionEmbed.setDescription('Information about the project');
+	introductionEmbed.setColor(0x1B1F3B);
+	introductionEmbed.setThumbnail('https://i.imgur.com/8clyKqx.png');
+	introductionEmbed.setImage('https://i.imgur.com/CF7qgW1.png');
+	introductionEmbed.setFields([
+		{
+			'name': 'What is this place?',
+			'value': '_Pretendo Network_ is a free, open-source, Nintendo Network replacement for the Wii U and 3DS family of consoles'
+		}
+	]);
+
+	const discordButton = new Discord.MessageButton();
+	discordButton.setEmoji('<:discord:314003252830011395>');
+	discordButton.setLabel('Discord Invite');
+	discordButton.setStyle('LINK');
+	discordButton.setURL('https://invite.gg/pretendo');
+
+	const websiteButton = new Discord.MessageButton();
+	websiteButton.setEmoji('🌐');
+	websiteButton.setLabel('Website');
+	websiteButton.setStyle('LINK');
+	websiteButton.setURL('https://pretendo.network');
+
+	const githubButton = new Discord.MessageButton();
+	githubButton.setEmoji('<:git:415206315703533569>');
+	githubButton.setLabel('GitHub');
+	githubButton.setStyle('LINK');
+	githubButton.setURL('https://patreon.com/PretendoNetwork');
+
+	const patreonButton = new Discord.MessageButton();
+	patreonButton.setEmoji('<:patreonlogo:886254233786138635>');
+	patreonButton.setLabel('Patreon');
+	patreonButton.setStyle('LINK');
+	patreonButton.setURL('https://patreon.com/PretendoNetwork');
+
+	const twitterButton = new Discord.MessageButton();
+	twitterButton.setEmoji(':twitterlogo:886254233962291241>');
+	twitterButton.setLabel('<Twitter');
+	twitterButton.setStyle('LINK');
+	twitterButton.setURL('https://twitter.com/PretendoNetwork');
+
+	const twitchButton = new Discord.MessageButton();
+	twitchButton.setEmoji(':twitchlogo:886254234201362473>');
+	twitchButton.setLabel('Twitch');
+	twitchButton.setStyle('LINK');
+	twitchButton.setURL('https://twitch.tv/PretendoNetwork');
+
+	const youtubeButton = new Discord.MessageButton();
+	youtubeButton.setEmoji(':youtubelogo:886254234226528337>');
+	youtubeButton.setLabel('YouTube');
+	youtubeButton.setStyle('LINK');
+	youtubeButton.setURL('https://youtube.com/c/PretendoNetwork');
+
+	const row1 = new Discord.MessageActionRow();
+	row1.addComponents([discordButton]);
+
+	const row2 = new Discord.MessageActionRow();
+	row2.addComponents([websiteButton, githubButton, patreonButton]);
+
+	const row3 = new Discord.MessageActionRow();
+	row3.addComponents([twitterButton, twitchButton, youtubeButton]);
+
+	const rulesChannel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'rules');
+	const faqChannel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'faq');
+	const rolesChannel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'roles');
+	const githubChannel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'github');
+	const announcementsChannel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'announcements');
+
+	const messagePayload = {
+		content: `Welcome to the Pretendo Network server :smile:\n\n_Pretendo Network_ is a free, open-source, Nintendo Network replacement for the Wii U and 3DS family of consoles. Please refer to the <#${rulesChannel.id}>, <#${faqChannel.id}>, and <#${rolesChannel.id}> channels for further information about the server. For updates about the project and its services, refer to <#${githubChannel.id}> and <#${announcementsChannel.id}>`,
+		embeds: [],
+		components: [row1, row2, row3]
+	};
+
+	const message = botMessages.at(0);
+
+	if (!message) {
+		await channel.send(messagePayload);
+	} else {
+		// TODO: Check if old message equals current message data?
+		await message.edit(messagePayload);
+	}
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupAnnouncementsChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
+	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'announcements');
+
+	if (!channel) {
+		channel = await guild.channels.create('announcements', {
+			type: 'GUILD_TEXT',
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	const roles = await guild.roles.fetch();
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		deny: Discord.Permissions.ALL
+	}];
+
+	roles.forEach(role => {
+		if (role.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
+			permissionOverwrites.push({
+				type: 'role',
+				id: role.id,
+				allow: Discord.Permissions.ALL
+			});
+		}
+	});
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupGitHubChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
+	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'github');
+
+	if (!channel) {
+		channel = await guild.channels.create('github', {
+			type: 'GUILD_TEXT',
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		allow: [
+			Discord.Permissions.FLAGS.VIEW_CHANNEL
+		],
+		deny: [
+			Discord.Permissions.FLAGS.SEND_MESSAGES
+		]
+	}];
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
 }
 
 /**
