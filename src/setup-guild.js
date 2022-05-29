@@ -598,7 +598,7 @@ async function setupReadmeChannel(guild) {
 	githubButton.setEmoji('<:git:415206315703533569>');
 	githubButton.setLabel('GitHub');
 	githubButton.setStyle('LINK');
-	githubButton.setURL('https://patreon.com/PretendoNetwork');
+	githubButton.setURL('https://github.com/PretendoNetwork');
 
 	const patreonButton = new Discord.MessageButton();
 	patreonButton.setEmoji('<:patreonlogo:886254233786138635>');
