@@ -58,12 +58,12 @@ async function setupCategories(guild) {
  * @param {Discord.Guild} guild
  */
 async function setupTextChannels(guild) {
+	await setupGitHubChannel(guild);
+	await setupReadmeChannel(guild);
 	await setupRulesChannel(guild);
 	await setupRolesChannel(guild);
 	await setupFAQChannel(guild);
 	await setupAnnouncementsChannel(guild);
-	await setupGitHubChannel(guild);
-	await setupReadmeChannel(guild);
 	await setupModApplicationsChannel(guild);
 }
 
@@ -156,6 +156,76 @@ async function setupModeratorCategory(guild) {
  *    TEXT CHANNELS    *
  *                     *
  ***********************/
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupAnnouncementsChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
+	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'announcements');
+
+	if (!channel) {
+		channel = await guild.channels.create('announcements', {
+			type: 'GUILD_TEXT',
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	const roles = await guild.roles.fetch();
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		deny: Discord.Permissions.ALL
+	}];
+
+	roles.forEach(role => {
+		if (role.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
+			permissionOverwrites.push({
+				type: 'role',
+				id: role.id,
+				allow: Discord.Permissions.ALL
+			});
+		}
+	});
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupGitHubChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
+	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'github');
+
+	if (!channel) {
+		channel = await guild.channels.create('github', {
+			type: 'GUILD_TEXT',
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		allow: [
+			Discord.Permissions.FLAGS.VIEW_CHANNEL
+		],
+		deny: [
+			Discord.Permissions.FLAGS.SEND_MESSAGES
+		]
+	}];
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+}
 
 /**
  *
@@ -406,6 +476,9 @@ async function setupFAQChannel(guild) {
 	let botMessages = messages.filter(message => message.author.id === guild.me.id);
 	botMessages = botMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
 
+	const githubChannel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'github');
+	const announcementsChannel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'announcements');
+
 	let message1Content = '_**How can I use Pretendo?**_\n';
 	message1Content += 'At the moment Pretendo is in closed beta. The servers are too unstable for mass use for long periods of time, though we do open the servers up to the public for stress testing and special events for short periods of time. Official testers also have access to the beta servers.\n\n';
 
@@ -413,7 +486,7 @@ async function setupFAQChannel(guild) {
 	message1Content += 'Yes! There are 2 main ways to become a tester:\n\n- A developer may select a community member for any reason to become a tester for any period of time. These people are chosen at the developers discretion and there are no set rules to be picked\n- A donation to the projects Patreon will grant you access to the closed beta. You will also have access to beta servers even after the public release to test new features before they are laucnhed publicly. A donation also gives you read-only access to select development channels\n\n';
 
 	message1Content += '_**Is there an ETA for the public release?**_\n';
-	message1Content += 'No. Due to the size and complexity of the project it is difficult to give an exact ETA. Every day we find new issues to fix, new features to add, and new discoveries which need research. All of these things bring drive the ETA further and further back. To best keep up with progress check out the #github and #announcements channels as well as the progress page on our website, <https://pretendo.network/progress>. You may also assign yourself the `@updates` role to be notified of updates\n\n';
+	message1Content += `No. Due to the size and complexity of the project it is difficult to give an exact ETA. Every day we find new issues to fix, new features to add, and new areas which need research. All of these things drive the ETA further and further back. To best keep up with progress check out the <#${githubChannel.id}> and <#${announcementsChannel.id}> channels as well as the progress page on our website, <https://pretendo.network/progress>. You may also assign yourself the \`@updates\` role to be notified of updates\n\n`;
 
 	message1Content += '_**Why is development slow/Why have there been no updates recently?**_\n';
 	message1Content += 'Development may seem slow but we are almost always hard at work working on some feature for the network. Whether that be spending some time just researching and testing, only pushing out bug fixes, or simply working on the bots, just because no new major feature updates happen does not mean work is not being done. Pretendo is being worked on by a very small team of volunteers in our free time. If you would like to help make Pretendo development a full time job consider donating to the projects Patreon\n\n';
@@ -586,76 +659,6 @@ async function setupReadmeChannel(guild) {
 		// TODO: Check if old message equals current message data?
 		await message.edit(messagePayload);
 	}
-}
-
-/**
- *
- * @param {Discord.Guild} guild
- */
-async function setupAnnouncementsChannel(guild) {
-	const channels = await guild.channels.fetch();
-	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
-	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'announcements');
-
-	if (!channel) {
-		channel = await guild.channels.create('announcements', {
-			type: 'GUILD_TEXT',
-		});
-	}
-
-	if (channel.parentId !== category.id) {
-		await channel.setParent(category);
-	}
-
-	const roles = await guild.roles.fetch();
-	const permissionOverwrites = [{
-		id: guild.roles.everyone,
-		deny: Discord.Permissions.ALL
-	}];
-
-	roles.forEach(role => {
-		if (role.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
-			permissionOverwrites.push({
-				type: 'role',
-				id: role.id,
-				allow: Discord.Permissions.ALL
-			});
-		}
-	});
-
-	await channel.permissionOverwrites.set(permissionOverwrites);
-}
-
-/**
- *
- * @param {Discord.Guild} guild
- */
-async function setupGitHubChannel(guild) {
-	const channels = await guild.channels.fetch();
-	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
-	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'github');
-
-	if (!channel) {
-		channel = await guild.channels.create('github', {
-			type: 'GUILD_TEXT',
-		});
-	}
-
-	if (channel.parentId !== category.id) {
-		await channel.setParent(category);
-	}
-
-	const permissionOverwrites = [{
-		id: guild.roles.everyone,
-		allow: [
-			Discord.Permissions.FLAGS.VIEW_CHANNEL
-		],
-		deny: [
-			Discord.Permissions.FLAGS.SEND_MESSAGES
-		]
-	}];
-
-	await channel.permissionOverwrites.set(permissionOverwrites);
 }
 
 /**
