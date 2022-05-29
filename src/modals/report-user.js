@@ -62,8 +62,13 @@ async function reportUserHandler(interaction) {
 			inline: true
 		},
 		{
+			name: '\u200b',
+			value: '\u200b'
+		},
+		{
 			name: 'Reporting User',
-			value: `<@${interaction.member.id}>`
+			value: `<@${interaction.member.id}>`,
+			inline: true
 		},
 		{
 			name: 'Reporting User ID',
@@ -71,8 +76,13 @@ async function reportUserHandler(interaction) {
 			inline: true
 		},
 		{
+			name: '\u200b',
+			value: '\u200b'
+		},
+		{
 			name: 'Channel Tag',
-			value: `<#${interaction.channelId}>`
+			value: `<#${interaction.channelId}>`,
+			inline: true
 		},
 		{
 			name: 'Channel Name',
