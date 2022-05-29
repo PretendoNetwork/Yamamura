@@ -125,7 +125,7 @@ async function reportUserHandler(interaction) {
 	});
 
 	await interaction.editReply({
-		content: 'Application submitted!',
+		content: 'Report Submitted',
 		ephemeral: true
 	});
 }
