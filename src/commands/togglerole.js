@@ -6,7 +6,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
  * @param {Discord.CommandInteraction} interaction
  */
 async function toggleroleHandler(interaction) {
-	interaction.deferReply({
+	await interaction.deferReply({
 		ephemeral: true
 	});
 
@@ -56,6 +56,7 @@ command.addStringOption(option => {
 
 module.exports = {
 	name: command.name,
+	help: 'Toggle on/off a given user role.\n```\nUsage: /togglerole <role>\n```',
 	handler: toggleroleHandler,
 	deploy: command.toJSON()
 };

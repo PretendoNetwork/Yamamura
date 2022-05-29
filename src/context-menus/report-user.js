@@ -46,6 +46,7 @@ contextMenu.setType(ApplicationCommandType.User);
 
 module.exports = {
 	name: contextMenu.name,
+	help: 'Report a user. Report will include your provided reason as well as a transcript of a set number of messages in the channel the report was made from.\n```\nUsage: Right click a user and navigate to \'Apps > Report User\'\n```',
 	handler: reportUserHandler,
 	deploy: contextMenu.toJSON()
 };

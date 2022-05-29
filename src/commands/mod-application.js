@@ -21,6 +21,7 @@ const command = new SlashCommandBuilder()
 
 module.exports = {
 	name: command.name,
+	help: 'Displays a popup modal to apply for a moderator position.\n```\nUsage: /mod-application\n```',
 	handler: modApplicationHandler,
 	deploy: command.toJSON()
 };

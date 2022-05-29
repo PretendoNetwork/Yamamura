@@ -640,7 +640,7 @@ async function setupReadmeChannel(guild) {
 	const announcementsChannel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'announcements');
 
 	const messagePayload = {
-		content: `Welcome to the Pretendo Network server :smile:\n\n_Pretendo Network_ is a free, open-source, Nintendo Network replacement for the Wii U and 3DS family of consoles. Please refer to the <#${rulesChannel.id}>, <#${faqChannel.id}>, and <#${rolesChannel.id}> channels for further information about the server. For updates about the project and its services, refer to <#${githubChannel.id}> and <#${announcementsChannel.id}>`,
+		content: `Welcome to the Pretendo Network server :smile:\n\n_Pretendo Network_ is a free, open-source, Nintendo Network replacement for the Wii U and 3DS family of consoles. Please refer to the <#${rulesChannel.id}>, <#${faqChannel.id}>, and <#${rolesChannel.id}> channels for further information about the server. For updates about the project and its services, refer to <#${githubChannel.id}> and <#${announcementsChannel.id}>.\n\nRun the \`/help\` command for information about server commands`,
 		embeds: [],
 		components: [row1, row2, row3]
 	};
