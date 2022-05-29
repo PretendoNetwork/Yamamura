@@ -279,45 +279,6 @@ async function setupReadmeChannel(guild) {
 		await message1.edit(message1Content);
 	}
 
-	const rolesEmbed = new Discord.MessageEmbed();
-	rolesEmbed.setTitle('Roles');
-	rolesEmbed.setDescription('The server roles and their meanings');
-	rolesEmbed.setColor(0x1B1F3B);
-	rolesEmbed.setFields([
-		{
-			'name': 'Owners',
-			'value': '@Owner - Members with this role either own the server or are original founders of Pretendo, most of the time both. Currently only 2 owners exist, however some high-ranking admins may have the role temporarily to perform certain tasks otherwise impossible'
-		},
-		{
-			'name': 'Developers',
-			'value': '@Developer - A person who has provided work to Pretendo in some significant way. Members with this role include official team members, people who contribute to the core libraries of the project, people who have provided guidance or information about important topics, or outside developers whom we wish to discuss things privately with in regards to Pretendo\n\n@Senior Dev 👴 - Members with this role have been developers since the near beginning of the project and contributed much of the original core codebase. These members likely have the most knowledge of the Pretendo project itself as well as Nintendo Network as a whole\n\n@WiiU - This role indicates that the developer works on titles and servers for the Wii U\n\n@3DS - This role indicates that the developer works on titles and servers for the 3DS family of consoles\n\n@Miiverse - This role indicates that the developer works on servers for Miiverse\n\n@Web Developer - Members with this role have contributed to the development and maintaining of the Pretendo website'
-		},
-		{
-			'name': 'Developers 2',
-			'value': '@Designer - Members with this role have contributed official design work for Pretendo. This can be anything from web design to official art for SplatFest\'s\n\n@Splatfest Developer - This role indicates that the developer works on servers for Splatoon SplatFests\n\n@Patch Developer - This role indicates that the developer works on the Cemu Pretendo patch\n\n@Shares Dumps - This is a special role indicating the user shares network dumps containing traffic from online of some titles for some consoles. This role is only given out to very few trusted people, not even all devs have this role, due to the network traffic possibly containing sensitive information like passwords, IP addresses or other identifying information'
-		},
-		{
-			'name': 'Partners/Testers',
-			'value': '@Partner - Members with this role are partners of the project but are not directly affiliated with it\'s core development. Examples include Rverse, a different Miiverse clone whose aim is to recreate Miiverse as it originally was and whom we share information back and forth with\n\n@Tester - Members with this role are official testers. They have access to the beta servers which have in-testing features not yet ready for the general public. These include testers hand-picked by the development team as well as Patreon donors'
-		},
-		{
-			'name': 'Supporters',
-			'value': '@Supporter - Members with this role have supported Pretendo through donations either through Ko-Fi or Patreon\n\n@Supporter - Star Power - This role indicates that the supported donated to the Star Power tier on Patreon\n\n@Supporter - Mega Mushroom - This role indicates that the supported donated to the Mega Mushroom tier on Patreon\n\n@Supporter - Super Mario - This role indicates that the supported donated to the Super Mario tier on Patreon\n\n@Supporter - Mario - This role indicates that the supported donated to the Mario tier on Patreon'
-		},
-		{
-			'name': 'Moderation',
-			'value': '@Admin - Members with this role are server administrators. They have higher permissions than regular moderators\n\n@Moderator - Members with this role help moderate the server to make sure the rules are being followed\n\n@Muted - Members with this role cannot send messages in any channel\n\n@NSFW Punished - Members with this role have been suspected of sending NSFW content in the server and have been locked to a single channel'
-		},
-		{
-			'name': 'Community',
-			'value': '@Updates - Members with this role get pinged whenever important server announcements happen\n\n@StreamPing - Members with this role get pinged whenever a new Twitch stream is beginning\n\n@Translator - Members with this role have helped with translating parts of Pretendo, mostly the website, but are not full-fledged developers'
-		},
-		{
-			'name': 'Misc',
-			'value': '@Bot - Role given to all bots\n\n@beep boop - Role given to all bots\n\n@Ko-fi Bot - Role for the Ko-Fi bot\n\n@Patreon - Role for the Patreon bot\n\n@INVITE.GG - Role for the invite.gg bot\n\n@Yamamura - Role for Yamamura\n\n@Chubby - Role for Chubby'
-		}
-	]);
-
 	const botsEmbed = new Discord.MessageEmbed();
 	botsEmbed.setTitle('Bots');
 	botsEmbed.setDescription('The bots and what they do');
@@ -333,7 +294,7 @@ async function setupReadmeChannel(guild) {
 		}
 	]);
 
-	const message2Content = { embeds: [rolesEmbed, botsEmbed] };
+	const message2Content = { embeds: [botsEmbed] };
 
 	const message2 = botMessages.at(1);
 
@@ -462,21 +423,100 @@ async function setupRolesChannel(guild) {
 	let botMessages = messages.filter(message => message.author.id === guild.me.id);
 	botMessages = botMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
 
+	const roles = await guild.roles.fetch();
+
+	const ownerRole = roles.find(role => role.name.toLowerCase() === 'owner');
+	const developerRole = roles.find(role => role.name.toLowerCase() === 'developer');
+	const seniorDevRole = roles.find(role => role.name.toLowerCase() === 'senior dev 👴');
+	const wiiuRole = roles.find(role => role.name.toLowerCase() === 'wiiu');
+	const threeDSRole = roles.find(role => role.name.toLowerCase() === '3ds');
+	const miiverseRole = roles.find(role => role.name.toLowerCase() === 'miiverse');
+	const webDeveloperRole = roles.find(role => role.name.toLowerCase() === 'web developer');
+	const designerRole = roles.find(role => role.name.toLowerCase() === 'designer');
+	const splatfestDeveloperRole = roles.find(role => role.name.toLowerCase() === 'splatfest developer');
+	const patchDeveloperRole = roles.find(role => role.name.toLowerCase() === 'patch developer');
+	const sharesDumpsRole = roles.find(role => role.name.toLowerCase() === 'shares dumps');
+	const partnerRole = roles.find(role => role.name.toLowerCase() === 'partner');
+	const testerRole = roles.find(role => role.name.toLowerCase() === 'tester');
+	const supporterRole = roles.find(role => role.name.toLowerCase() === 'supporter');
+	const supporterStarPowerRole = roles.find(role => role.name.toLowerCase() === 'supporter - star power');
+	const supporterMegaMushroomRole = roles.find(role => role.name.toLowerCase() === 'supporter - mega mushroom');
+	const supporterSuperMarioRole = roles.find(role => role.name.toLowerCase() === 'supporter - super mario');
+	const supporterMarioRole = roles.find(role => role.name.toLowerCase() === 'supporter - mario');
+	const adminRole = roles.find(role => role.name.toLowerCase() === 'admin');
+	const moderatorRole = roles.find(role => role.name.toLowerCase() === 'moderator');
+	const mutedRole = roles.find(role => role.name.toLowerCase() === 'muted');
+	const nsfwPunishedRole = roles.find(role => role.name.toLowerCase() === 'nsfw punished');
+	const updatesRole = roles.find(role => role.name.toLowerCase() === 'updates');
+	const streampingRole = roles.find(role => role.name.toLowerCase() === 'streamping');
+	const translatorRole = roles.find(role => role.name.toLowerCase() === 'translator');
+
+	const rolesEmbed = new Discord.MessageEmbed();
+	rolesEmbed.setTitle('Roles');
+	rolesEmbed.setDescription('The server roles and their meanings');
+	rolesEmbed.setColor(0x1B1F3B);
+	rolesEmbed.setFields([
+		{
+			'name': 'Owners',
+			'value': `<@&${ownerRole.id}> - Members with this role either own the server or are original founders of Pretendo, most of the time both. Currently only 2 owners exist, however some high-ranking admins may have the role temporarily to perform certain tasks otherwise impossible`
+		},
+		{
+			'name': 'Developers',
+			'value': `<@&${developerRole.id}> - A person who has provided work to Pretendo in some significant way. Members with this role include official team members, people who contribute to the core libraries of the project, people who have provided guidance or information about important topics, or outside developers whom we wish to discuss things privately with in regards to Pretendo\n\n<@&${seniorDevRole.id}> - Members with this role have been developers since the near beginning of the project and contributed much of the original core codebase. These members likely have the most knowledge of the Pretendo project itself as well as Nintendo Network as a whole\n\n<@&${wiiuRole.id}> - This role indicates that the developer works on titles and servers for the Wii U\n\n<@&${threeDSRole.id}> - This role indicates that the developer works on titles and servers for the 3DS family of consoles\n\n<@&${miiverseRole.id}> - This role indicates that the developer works on servers for Miiverse`
+		},
+		{
+			'name': 'Developers (continued)',
+			'value': `<@&${webDeveloperRole.id}> - Members with this role have contributed to the development and maintaining of the Pretendo website\n\n<@&${designerRole.id}> - Members with this role have contributed official design work for Pretendo. This can be anything from web design to official art for SplatFest's\n\n<@&${splatfestDeveloperRole.id}> - This role indicates that the developer works on servers for Splatoon SplatFests\n\n<@&${patchDeveloperRole.id}> - This role indicates that the developer works on the Cemu Pretendo patch\n\n<@&${sharesDumpsRole.id}> - This is a special role indicating the user shares network dumps containing traffic from online of some titles for some consoles. This role is only given out to very few trusted people, not even all devs have this role, due to the network traffic possibly containing sensitive information like passwords, IP addresses or other identifying information`
+		},
+		{
+			'name': 'Partners/Testers',
+			'value': `<@&${partnerRole.id}> - Members with this role are partners of the project but are not directly affiliated with it's core development. Examples include Rverse, a different Miiverse clone whose aim is to recreate Miiverse as it originally was and whom we share information back and forth with\n\n<@&${testerRole.id}> - Members with this role are official testers. They have access to the beta servers which have in-testing features not yet ready for the general public. These include testers hand-picked by the development team as well as Patreon donors`
+		},
+		{
+			'name': 'Supporters',
+			'value': `<@&${supporterRole.id}> - Members with this role have supported Pretendo through donations either through Ko-Fi or Patreon\n\n<@&${supporterStarPowerRole.id}> - This role indicates that the supported donated to the Star Power tier on Patreon\n\n<@&${supporterMegaMushroomRole.id}> - This role indicates that the supported donated to the Mega Mushroom tier on Patreon\n\n<@&${supporterSuperMarioRole.id}> - This role indicates that the supported donated to the Super Mario tier on Patreon\n\n<@&${supporterMarioRole.id}> - This role indicates that the supported donated to the Mario tier on Patreon`
+		},
+		{
+			'name': 'Moderation',
+			'value': `<@&${adminRole.id}> - Members with this role are server administrators. They have higher permissions than regular moderators\n\n<@&${moderatorRole.id}> - Members with this role help moderate the server to make sure the rules are being followed\n\n<@&${mutedRole.id}> - Members with this role cannot send messages in any channel\n\n<@&${nsfwPunishedRole.id}> - Members with this role have been suspected of sending NSFW content in the server and have been locked to a single channel`
+		},
+		{
+			'name': 'Community',
+			'value': `<@&${updatesRole.id}> - Members with this role get pinged whenever important server announcements happen\n\n<@&${streampingRole.id}> - the Members with this role get pinged whenever a new Twitch stream is beginning\n\n<@&${translatorRole.id}> - Members with this role have helped with translating parts of Pretendo, mostly the website, but are not full-fledged developers`
+		}
+	]);
+
+	const message1Content = {
+		content: null,
+		embeds: [rolesEmbed],
+		components: []
+	};
+
+	const message1 = botMessages.at(0);
+
+	if (!message1) {
+		await channel.send(message1Content);
+	} else {
+		// TODO: Check if old message equals current message data?
+		await message1.edit(message1Content);
+	}
+
 	const row = new Discord.MessageActionRow();
 	row.addComponents([roleSelectMenu]);
 
-	const messageContent = {
+	const message2Content = {
 		content: 'Self-assign certain roles!\nCan also be toggled using the `/togglerole` command',
+		embeds: [],
 		components: [row]
 	};
 
-	const message = botMessages.at(0);
+	const message2 = botMessages.at(1);
 
-	if (!message) {
-		await channel.send(messageContent);
+	if (!message2) {
+		await channel.send(message2Content);
 	} else {
 		// TODO: Check if old message equals current message data?
-		await message.edit(messageContent);
+		await message2.edit(message2Content);
 	}
 }
 

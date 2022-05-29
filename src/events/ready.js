@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const setupGuild = require('./setup-guild');
+const setupGuild = require('../setup-guild');
 
 /**
  * 
