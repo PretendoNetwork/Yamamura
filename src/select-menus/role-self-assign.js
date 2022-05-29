@@ -65,6 +65,7 @@ async function roleSelfAssignHandler(interaction) {
 }
 
 module.exports = {
+	name: roleSelectMenu.customId,
 	select_menu: roleSelectMenu,
 	handler: roleSelfAssignHandler
 };

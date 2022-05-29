@@ -20,6 +20,7 @@ const command = new SlashCommandBuilder()
 	.setDescription('Apply for a position as a moderator');
 
 module.exports = {
+	name: command.name,
 	handler: modApplicationHandler,
 	deploy: command.toJSON()
 };

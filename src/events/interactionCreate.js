@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
-const commandHandler = require('../command-handler');
-const buttonHandler = require('../button-handler');
-const selectMenuHandler = require('../select-menu-handler');
+const commandHandler = require('../handlers/command-handler');
+const buttonHandler = require('../handlers/button-handler');
+const selectMenuHandler = require('../handlers/select-menu-handler');
 
 /**
  * 

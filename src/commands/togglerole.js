@@ -55,6 +55,7 @@ command.addStringOption(option => {
 });
 
 module.exports = {
+	name: command.name,
 	handler: toggleroleHandler,
 	deploy: command.toJSON()
 };

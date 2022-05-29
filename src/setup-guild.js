@@ -3,13 +3,7 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
 const util = require('./util');
 const { select_menu: roleSelectMenu } = require('./select-menus/role-self-assign');
-const commands = require('./commands-manager');
 const { bot_token: botToken } = require('../config.json');
-
-
-const rest = new REST({ version: '10' }).setToken(botToken);
-
-const commandsDeploy = Object.keys(commands).map(name => commands[name].deploy);
 
 /**
  * 
@@ -40,6 +34,15 @@ async function setupGuild(guild) {
  * @param {Discord.Guild} guild
  */
 async function deployCommands(guild) {
+	const rest = new REST({ version: '10' }).setToken(botToken);
+
+	/** @type {Discord.Collection} */
+	const commands = guild.client.commands;
+	
+	const commandsDeploy = commands.map(command => command.deploy);
+
+	console.log(commandsDeploy);
+
 	await rest.put(Routes.applicationGuildCommands(guild.me.id, guild.id), { body: commandsDeploy });
 }
 

@@ -45,6 +45,7 @@ async function modApplicationAcceptHandler(interaction) {
 }
 
 module.exports = {
+	name: denyButton.customId,
 	button: denyButton,
 	handler: modApplicationAcceptHandler
 };

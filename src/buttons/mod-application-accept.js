@@ -45,6 +45,7 @@ async function modApplicationAcceptHandler(interaction) {
 }
 
 module.exports = {
+	name: acceptButton.customId,
 	button: acceptButton,
 	handler: modApplicationAcceptHandler
 };

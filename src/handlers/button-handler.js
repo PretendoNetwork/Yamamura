@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const buttons = require('./buttons-manager');
 
 /**
  * 
@@ -8,14 +7,18 @@ const buttons = require('./buttons-manager');
 async function buttonHandler(interaction) {
 	const { customId } = interaction;
 
+	/** @type {Discord.Collection} */
+	const buttons = interaction.client.buttons;
+	const button = buttons.get(customId);
+
 	// do nothing if no button
-	if (!buttons[customId]) {
+	if (!button) {
 		interaction.reply(`Missing button handler for \`${customId}\``);
 		return;
 	}
 
 	// run the button
-	buttons[customId].handler(interaction);
+	button.handler(interaction);
 }
 
 module.exports = buttonHandler;

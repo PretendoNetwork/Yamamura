@@ -120,6 +120,7 @@ async function modApplicationHandler(interaction) {
 }
 
 module.exports = {
+	name: modApplicationModal.customId,
 	modal: modApplicationModal,
 	handler: modApplicationHandler
 };

@@ -1,5 +1,5 @@
+const Discord = require('discord.js');
 const { ModalSubmitInteraction } = require('discord-modals');
-const modals = require('../modals-manager');
 
 /**
  * 
@@ -8,14 +8,18 @@ const modals = require('../modals-manager');
 async function modalSubmitHandler(interaction) {
 	const { customId } = interaction;
 
-	// do nothing if no command
-	if (!modals[customId]) {
+	/** @type {Discord.Collection} */
+	const modals = interaction.client.modals;
+	const modal = modals.get(customId);
+
+	// do nothing if no modal
+	if (!modal) {
 		interaction.reply(`Missing modal handler for \`${customId}\``);
 		return;
 	}
 
-	// run the command
-	modals[customId].handler(interaction);
+	// run the modal
+	modal.handler(interaction);
 }
 
 module.exports = modalSubmitHandler;

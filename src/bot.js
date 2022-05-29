@@ -18,6 +18,12 @@ const client = new Discord.Client({
 
 discordModals(client);
 
+client.buttons = new Discord.Collection();
+client.commands = new Discord.Collection();
+client.contextMenus = new Discord.Collection();
+client.modals = new Discord.Collection();
+client.selectMenus = new Discord.Collection();
+
 client.on('ready', readyHandler);
 client.on('guildMemberAdd', guildMemberAddHandler);
 client.on('guildMemberRemove', guildMemberRemoveHandler);
