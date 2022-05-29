@@ -61,6 +61,7 @@ async function setupTextChannels(guild) {
 	await setupReadmeChannel(guild);
 	await setupRulesChannel(guild);
 	await setupRolesChannel(guild);
+	await setupFAQChannel(guild);
 	await setupModApplicationsChannel(guild);
 }
 
@@ -230,42 +231,10 @@ async function setupReadmeChannel(guild) {
 		{
 			'name': 'What is this place?',
 			'value': '_Pretendo Network_ is a free, open-source, Nintendo Network replacement for the Wii U and 3DS family of consoles'
-		},
-		{
-			'name': 'How can I use Pretendo?',
-			'value': 'At the moment Pretendo is in closed beta. The servers are too unstable for mass use for long periods of time, though we do open the servers up to the public for stress testing and special events for short periods of time. Official testers also have access to the beta servers',
-			'inline': true
-		},
-		{
-			'name': 'Can I become an official tester?',
-			'value': 'Yes! There are 2 main ways to become a tester:\n\n- A developer may select a community member for any reason to become a tester for any period of time. These people are chosen at the developers discretion and there are no set rules to be picked\n- A donation to the projects Patreon will grant you access to the closed beta. You will also have access to beta servers even after the public release to test new features sooner. A donation also gives you read-only access to select development channels',
-			'inline': true
-		},
-		{
-			'name': 'Is there an ETA for the public release?',
-			'value': 'No. Due to the size and complexity of the project it is difficult to give an exact ETA. Every day we find new issues to fix, new features to add, and new discoveries which need research. All of these things bring drive the ETA further and further back. To best keep up with progress check out the #github and #announcements-updates channels as well as the progress page on our website, https://pretendo.network/progress. You may also assign yourself the `@updates` role to be notified of updates'
-		},
-		{
-			'name': 'Why is development slow/Why have there been no updates recently?',
-			'value': 'Development may seem slow but we are almost always hard at work working on some feature for the network. Whether that be spending some time just researching and testing, only pushing out bug fixes, or simply working on the bots, just because no new major feature updates happen does not mean work is not being done. Pretendo is being worked on by a very small team of volunteers in our free time. If you would like to help make Pretendo development a full time job consider donating to the projects Patreon'
-		},
-		{
-			'name': 'Does Pretendo support emulators?',
-			'value': 'Pretendo supports any client that can interact with Nintendo Network. Currently the only emulator with this kind of functionality is Cemu. Cemu does work somewhat but is not considered stable by any means. In order to use Cemu you must obtain console dumps and use this patch https://github.com/PretendoNetwork/cemu-patcher to connect to Pretendo. Your mileage may vary, and we do not provide official support for this at this time. Cemu also does not provide official support for Pretendo. _**Do not ask the Cemu developers, or anyone else in the Cemu community, for support regarding Pretendo**_\n\nCitra does not support true online play and thus does not work with Pretendo, and does not show signs of supporting true online play at all. Mikage, a 3DS emulator for mobile devices, may provide support in the future though this is far from certain',
-			'inline': true
-		},
-		{
-			'name': 'Will Pretendo support the Wii/Switch?',
-			'value': 'The Wii already has custom servers provided by https://wiimmfi.de/\n\nWe currently have no plans to support the Switch. Many first-party Switch games _do_ use the same server software as used on the Wii U and 3DS, however we do not wish to bring negative attention to ourselves from Nintendo or the community by providing a free alternative to Nintendo\'s paid online servers on their flagship console. And after the backlash Yuzu/Rapture Network received for trying to provide such a service, it is unlikely we ever will. Nintendo is also moving away from the old server software in newer first-party titles and thus they would be unsupported by Pretendo anyway',
-			'inline': true
-		},
-		{
-			'name': 'Will Pretendo support Miiverse',
-			'value': 'We already do! Juxtaposition, or Juxt for short, is the Pretendo Miiverse revival. We do not call it a clone, as Juxt aims to not recreate Miiverse 1:1 in terms of features and look, but instead reimagine Miiverse as if it were being made for a modern system. All the original Miiverse features such as friends, communities, and in-game features will still exist, along with new fresh additions exclusive to Juxt sporting a brand-new custom UI for the original Miiverse title giving it a fresh, modern, yet familiar feeling'
 		}
 	]);
 
-	const message1Content = {
+	const message1Payload = {
 		content: 'Welcome to the Pretendo Network server :smile:\n\nBefore you continue please read this channel completely. It contains all the information needed to ensure you, and your fellow community members, have a good and civilized time. Thank you for joining!\n\nDiscord invite:  https://invite.gg/pretendo\n\n',
 		embeds: [socialMediaEmbed, introductionEmbed]
 	};
@@ -273,10 +242,10 @@ async function setupReadmeChannel(guild) {
 	const message1 = botMessages.at(0);
 
 	if (!message1) {
-		await channel.send(message1Content);
+		await channel.send(message1Payload);
 	} else {
 		// TODO: Check if old message equals current message data?
-		await message1.edit(message1Content);
+		await message1.edit(message1Payload);
 	}
 
 	const botsEmbed = new Discord.MessageEmbed();
@@ -294,15 +263,15 @@ async function setupReadmeChannel(guild) {
 		}
 	]);
 
-	const message2Content = { embeds: [botsEmbed] };
+	const message2Payload = { embeds: [botsEmbed] };
 
 	const message2 = botMessages.at(1);
 
 	if (!message2) {
-		await channel.send(message2Content);
+		await channel.send(message2Payload);
 	} else {
 		// TODO: Check if old message equals current message data?
-		await message2.edit(message2Content);
+		await message2.edit(message2Payload);
 	}
 }
 
@@ -376,15 +345,15 @@ async function setupRulesChannel(guild) {
 		}
 	]);
 
-	const messageContent = { embeds: [rulesEmbed] };
+	const messagePayload = { embeds: [rulesEmbed] };
 
 	const message = botMessages.at(0);
 
 	if (!message) {
-		await channel.send(messageContent);
+		await channel.send(messagePayload);
 	} else {
 		// TODO: Check if old message equals current message data?
-		await message.edit(messageContent);
+		await message.edit(messagePayload);
 	}
 }
 
@@ -486,7 +455,7 @@ async function setupRolesChannel(guild) {
 		}
 	]);
 
-	const message1Content = {
+	const message1Payload = {
 		content: null,
 		embeds: [rolesEmbed],
 		components: []
@@ -495,16 +464,16 @@ async function setupRolesChannel(guild) {
 	const message1 = botMessages.at(0);
 
 	if (!message1) {
-		await channel.send(message1Content);
+		await channel.send(message1Payload);
 	} else {
 		// TODO: Check if old message equals current message data?
-		await message1.edit(message1Content);
+		await message1.edit(message1Payload);
 	}
 
 	const row = new Discord.MessageActionRow();
 	row.addComponents([roleSelectMenu]);
 
-	const message2Content = {
+	const message2Payload = {
 		content: 'Self-assign certain roles!\nCan also be toggled using the `/togglerole` command',
 		embeds: [],
 		components: [row]
@@ -513,10 +482,106 @@ async function setupRolesChannel(guild) {
 	const message2 = botMessages.at(1);
 
 	if (!message2) {
-		await channel.send(message2Content);
+		await channel.send(message2Payload);
 	} else {
 		// TODO: Check if old message equals current message data?
-		await message2.edit(message2Content);
+		await message2.edit(message2Payload);
+	}
+}
+
+/**
+ *
+ * @param {Discord.Guild} guild
+ */
+async function setupFAQChannel(guild) {
+	const channels = await guild.channels.fetch();
+	const category = channels.find(channel => channel.type === 'GUILD_CATEGORY' && channel.name === 'pretendo');
+	let channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'faq');
+
+	if (!channel) {
+		channel = await guild.channels.create('faq', {
+			type: 'GUILD_TEXT'
+		});
+	}
+
+	if (channel.parentId !== category.id) {
+		await channel.setParent(category);
+	}
+
+	const permissionOverwrites = [{
+		id: guild.roles.everyone,
+		allow: [
+			Discord.Permissions.FLAGS.VIEW_CHANNEL
+		],
+		deny: [
+			Discord.Permissions.FLAGS.SEND_MESSAGES
+		]
+	}];
+
+	await channel.permissionOverwrites.set(permissionOverwrites);
+
+	const messages = await channel.messages.fetch();
+	let botMessages = messages.filter(message => message.author.id === guild.me.id);
+	botMessages = botMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+
+	let message1Content = '_**How can I use Pretendo?**_\n';
+	message1Content += 'At the moment Pretendo is in closed beta. The servers are too unstable for mass use for long periods of time, though we do open the servers up to the public for stress testing and special events for short periods of time. Official testers also have access to the beta servers.\n\n';
+
+	message1Content += '_**Can I become an official tester?**_\n';
+	message1Content += 'Yes! There are 2 main ways to become a tester:\n\n- A developer may select a community member for any reason to become a tester for any period of time. These people are chosen at the developers discretion and there are no set rules to be picked\n- A donation to the projects Patreon will grant you access to the closed beta. You will also have access to beta servers even after the public release to test new features before they are laucnhed publicly. A donation also gives you read-only access to select development channels\n\n';
+
+	message1Content += '_**Is there an ETA for the public release?**_\n';
+	message1Content += 'No. Due to the size and complexity of the project it is difficult to give an exact ETA. Every day we find new issues to fix, new features to add, and new discoveries which need research. All of these things bring drive the ETA further and further back. To best keep up with progress check out the #github and #announcements channels as well as the progress page on our website, <https://pretendo.network/progress>. You may also assign yourself the `@updates` role to be notified of updates\n\n';
+
+	message1Content += '_**Why is development slow/Why have there been no updates recently?**_\n';
+	message1Content += 'Development may seem slow but we are almost always hard at work working on some feature for the network. Whether that be spending some time just researching and testing, only pushing out bug fixes, or simply working on the bots, just because no new major feature updates happen does not mean work is not being done. Pretendo is being worked on by a very small team of volunteers in our free time. If you would like to help make Pretendo development a full time job consider donating to the projects Patreon\n\n';
+
+	const message1Payload = {
+		content: message1Content
+	};
+
+	const message1 = botMessages.at(0);
+
+	if (!message1) {
+		await channel.send(message1Payload);
+	} else {
+		// TODO: Check if old message equals current message data?
+		await message1.edit(message1Payload);
+	}
+
+	let message2Content = '** **\n_**Does Pretendo support emulators?**_\n';
+	message2Content += 'Pretendo supports any client that can interact with Nintendo Network. Currently the only emulator with this kind of functionality is Cemu. Cemu does work somewhat but is not considered stable by any means. In order to use Cemu you must obtain console dumps and use this patch <https://github.com/PretendoNetwork/cemu-patcher> to connect to Pretendo. Your mileage may vary, and we do not provide official support for this at this time. Cemu also does not provide official support for Pretendo. _**Do not ask the Cemu developers, or anyone else in the Cemu community, for support regarding Pretendo**_\n\nCitra does not support true online play and thus does not work with Pretendo, and does not show signs of supporting true online play at all. Mikage, a 3DS emulator for mobile devices, may provide support in the future though this is far from certain\n\n';
+
+	message2Content += '_**Will Pretendo support the Wii/Switch?**_\n';
+	message2Content += 'The Wii already has custom servers provided by <https://wiimmfi.de/>\n\nWe currently have no plans to support the Nintendo Switch. Many first-party Switch games _do_ use the same server software as used on the Wii U and 3DS, however we do not wish to bring negative attention to ourselves from Nintendo or the community by providing a free alternative to Nintendo\'s paid online servers on their flagship console. And after the backlash Yuzu/Rapture Network received for trying to provide such a service, it is unlikely we ever will. Nintendo is also moving away from the old server software in newer first-party titles and thus they would be unsupported by Pretendo anyway\n\n';
+
+	const message2Payload = {
+		content: message2Content
+	};
+
+	const message2 = botMessages.at(1);
+
+	if (!message2) {
+		await channel.send(message2Payload);
+	} else {
+		// TODO: Check if old message equals current message data?
+		await message2.edit(message2Payload);
+	}
+
+	let message3Content = '** **\n_**Will Pretendo support Miiverse**_\n';
+	message3Content += 'We already do! Juxtaposition, or Juxt for short, is the Pretendo Miiverse revival. We do not call it a clone, as Juxt aims to not recreate Miiverse 1:1 in terms of features and look, but instead reimagine Miiverse as if it were being made for a modern system. All the original Miiverse features such as friends, communities, and in-game features will still exist, along with new fresh additions exclusive to Juxt sporting a brand-new custom UI for the original Miiverse title giving it a fresh, modern, yet familiar feeling. If you are looking for a more traditional Miiverse clone which sports the original UI, consider checking out rverse <https://discord.gg/wCvJSCxf4G> (currently only functional on the 3DS)';
+
+	const message3Payload = {
+		content: message3Content
+	};
+
+	const message3 = botMessages.at(2);
+
+	if (!message3) {
+		await channel.send(message3Payload);
+	} else {
+		// TODO: Check if old message equals current message data?
+		await message3.edit(message3Payload);
 	}
 }
 
