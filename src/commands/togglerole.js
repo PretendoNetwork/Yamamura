@@ -2,9 +2,9 @@ const Discord = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const allowedSelfAssignRoles = [
-  "streamping",
-  "updates"
-]
+	'streamping',
+	'updates'
+];
 
 /**
  *
@@ -21,14 +21,14 @@ async function toggleroleHandler(interaction) {
 	const roles = await guild.roles.fetch();
 	const role = roles.find(role => role.name.toLowerCase() === roleName);
 	
-  if (!allowedSelfAssignRoles.includes(roleName)) {
-    await interaction.followUp({
-      content: "Requested role is not self-assignable.",
-      ephemeral: true,
-    });
+	if (!allowedSelfAssignRoles.includes(roleName)) {
+		await interaction.followUp({
+			content: 'Requested role is not self-assignable.',
+			ephemeral: true,
+		});
 
-    return;
-  }
+		return;
+	}
 
 	if (!role) {
 		await interaction.followUp({
@@ -73,7 +73,7 @@ module.exports = {
 	help: 'Toggle on/off a given user role.\n```\nUsage: /togglerole <role>\n```',
 	handler: toggleroleHandler,
 	deploy: command.toJSON(),
-  extra: {
-    allowedSelfAssignRoles
-  }
+	extra: {
+		allowedSelfAssignRoles,
+	},
 };

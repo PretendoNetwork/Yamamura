@@ -14,16 +14,16 @@ async function readyHandler(client) {
 	loadBotHandlersCollection('modals', client.modals);
 	loadBotHandlersCollection('select-menus', client.selectMenus);
 
-  // deploy commands globally
-  await deployCommands(client);
-  console.log(`Registered global commands`);
+	// deploy commands globally
+	await deployCommands(client);
+	console.log('Registered global commands');
 
-  // setup joined guilds
+	// setup joined guilds
 	const guilds = await client.guilds.fetch();
 	for (let guild of guilds) {
 		guild = await guild[1].fetch();
 		await setupGuild(guild);
-    console.log(`setup guild: ${guild.name}`);
+		console.log(`setup guild: ${guild.name}`);
 	}
 
 	console.log(`Logged in as ${client.user.tag}`);

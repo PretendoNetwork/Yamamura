@@ -9,7 +9,7 @@ const modalSubmitHandler = require('./events/modalSubmit');
 const config = require('../config.json');
 
 if (!config.guild_id) {
-  throw new Error("No guild id set in config, exiting");
+	throw new Error('No guild id set in config, exiting');
 }
 
 const client = new Discord.Client({

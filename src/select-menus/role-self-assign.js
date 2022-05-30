@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { allowedSelfAssignRoles } = require("../commands/togglerole").extra;
+const { allowedSelfAssignRoles } = require('../commands/togglerole').extra;
 
 const roleSelectMenu = new Discord.MessageSelectMenu();
 roleSelectMenu.setCustomId('role-self-assign');
@@ -33,14 +33,14 @@ async function roleSelfAssignHandler(interaction) {
 	const roles = await guild.roles.fetch();
 	const role = roles.find(role => role.name.toLowerCase() === roleName);
 
-  if (!allowedSelfAssignRoles.includes(roleName)) {
-    await interaction.followUp({
-      content: "Requested role is not self-assignable.",
-      ephemeral: true,
-    });
+	if (!allowedSelfAssignRoles.includes(roleName)) {
+		await interaction.followUp({
+			content: 'Requested role is not self-assignable.',
+			ephemeral: true,
+		});
 
-    return;
-  }
+		return;
+	}
 
 	if (!role) {
 		await interaction.followUp({
