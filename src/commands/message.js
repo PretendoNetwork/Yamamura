@@ -22,10 +22,7 @@ async function messageHandler(interaction) {
 			const messageId = interaction.options.getString('message-id');
 
 			if (!messageId) {
-				await interaction.reply({
-					content: 'Message ID is required for this action',
-					ephemeral: true
-				});
+				throw new Error('Message ID is required for this action');
 			}
 
 			/*
@@ -84,10 +81,9 @@ async function messageHandler(interaction) {
 		const messageId = interaction.options.getString('message-id');
 
 		if (!messageId) {
-			await interaction.reply({
-				content: 'Message ID is required for this action',
-				ephemeral: true
-			});
+			if (!messageId) {
+				throw new Error('Message ID is required for this action');
+			}
 		}
 
 		try {
