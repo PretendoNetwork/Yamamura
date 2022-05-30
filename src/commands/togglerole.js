@@ -3,6 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const allowedSelfAssignRoles = [
   "streamping",
+  "updates"
 ]
 
 /**
@@ -28,7 +29,7 @@ async function toggleroleHandler(interaction) {
 
     return;
   }
-  
+
 	if (!role) {
 		await interaction.followUp({
 			content: 'Unable to find the requested role. Contact and admin as soon as possible',
