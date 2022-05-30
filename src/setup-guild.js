@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
 const util = require('./util');
-const { bot_token: botToken, application_id: applicationId } = require('../config.json');
+const { bot_token: botToken } = require('../config.json');
 const rest = new REST({ version: '10' }).setToken(botToken);
 
 /**
@@ -47,23 +47,6 @@ async function deployCommandsToGuild(guild) {
 	});
 }
 
-async function deployCommands(client) {
-	const deploy = [];
-
-	client.commands.forEach((command) => {
-		deploy.push(command.deploy);
-	});
-
-	client.contextMenus.forEach((contextMenu) => {
-		deploy.push(contextMenu.deploy);
-	});
-
-	await rest.put(Routes.applicationCommands(applicationId), {
-		body: deploy,
-	});
-}
-
 module.exports = {
 	setupGuild,
-	deployCommands,
 };

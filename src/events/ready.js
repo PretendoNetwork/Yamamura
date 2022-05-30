@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const glob = require('glob');
 const path = require('path');
-const { deployCommands, setupGuild } = require('../setup-guild');
+const { setupGuild } = require('../setup-guild');
 
 /**
  * 
@@ -13,9 +13,6 @@ async function readyHandler(client) {
 	loadBotHandlersCollection('context-menus', client.contextMenus);
 	loadBotHandlersCollection('modals', client.modals);
 	loadBotHandlersCollection('select-menus', client.selectMenus);
-
-	// deploy commands globally
-	await deployCommands(client);
 	console.log('Registered global commands');
 
 	// setup joined guilds

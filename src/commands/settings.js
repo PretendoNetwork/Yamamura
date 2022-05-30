@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const db = require('../db');
-const { guild_id } = require('../../config.json');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const editableOptions = [
@@ -13,16 +12,11 @@ const editableOptions = [
 	'stats.channels.bots',
 ];
 
-async function isValidkey(interaction) {
+async function verifyInputtedKey(interaction) {
 	const key = interaction.options.getString('key');
 	if (!editableOptions.includes(key)) {
-		await interaction.reply({
-			content: 'Cannot edit this setting - not a valid setting',
-			ephemeral: true,
-		});
-		return false;
+		throw new Error('Cannot edit this setting - not a valid setting');
 	}
-	return true;
 }
 
 /**
@@ -30,17 +24,9 @@ async function isValidkey(interaction) {
  * @param {Discord.CommandInteraction} interaction
  */
 async function settingsHandler(interaction) {
-	if (interaction.guildId !== guild_id) {
-		await interaction.reply({
-			content: 'Cannot edit this setting - this guild is not whitelisted',
-			ephemeral: true,
-		});
-		return;
-	}
-
 	const key = interaction.options.getString('key');
 	if (interaction.options.getSubcommand() === 'get') {
-		if (!(await isValidkey(interaction))) return;
+		await verifyInputtedKey(interaction);
 		// this is hellish string concatenation, I know
 		await interaction.reply({
 			content:
@@ -54,7 +40,7 @@ async function settingsHandler(interaction) {
 	}
 
 	if (interaction.options.getSubcommand() === 'set') {
-		if (!(await isValidkey(interaction))) return;
+		await verifyInputtedKey(interaction);
 		db.getDB().set(key, interaction.options.getString('value'));
 		await interaction.reply({
 			content: `setting \`${key}\` has been saved successfully`,
