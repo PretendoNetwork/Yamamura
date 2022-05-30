@@ -1,4 +1,5 @@
 {
   "bot_token": "TOKEN",
-  "guild_id": "GUILDID"
+  "guild_id": "GUILDID",
+  "application_id": "APPID"
 }

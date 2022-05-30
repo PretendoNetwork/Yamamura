@@ -2,7 +2,8 @@ const Discord = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v10");
 const util = require("./util");
-const { bot_token: botToken } = require("../config.json");
+const { bot_token: botToken, application_id: applicationId } = require("../config.json");
+const rest = new REST({ version: "10" }).setToken(botToken);
 
 /**
  *
@@ -16,12 +17,12 @@ async function setupGuild(guild) {
   }
 
   // Setup commands
-  await deployCommands(guild);
+  await deployCommandsToGuild(guild);
   
   try {
     await util.updateMemberCountChannels(guild);
   } catch {
-    // we dont care if it fails on setup
+    // we dont care if it fails on setup, itll sync again on join
   }
 }
 
@@ -29,7 +30,7 @@ async function setupGuild(guild) {
  *
  * @param {Discord.Guild} guild
  */
-async function deployCommands(guild) {
+async function deployCommandsToGuild(guild) {
   const deploy = [];
 
   guild.client.commands.forEach((command) => {
@@ -40,11 +41,29 @@ async function deployCommands(guild) {
     deploy.push(contextMenu.deploy);
   });
 
-  const rest = new REST({ version: "10" }).setToken(botToken);
 
   await rest.put(Routes.applicationGuildCommands(guild.me.id, guild.id), {
     body: deploy,
   });
 }
 
-module.exports = setupGuild;
+async function deployCommands(client) {
+  const deploy = [];
+
+  client.commands.forEach((command) => {
+    deploy.push(command.deploy);
+  });
+
+  client.contextMenus.forEach((contextMenu) => {
+    deploy.push(contextMenu.deploy);
+  });
+
+  await rest.put(Routes.applicationCommands(applicationId), {
+    body: deploy,
+  });
+}
+
+module.exports = {
+  setupGuild,
+  deployCommands,
+};

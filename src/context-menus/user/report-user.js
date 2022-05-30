@@ -9,6 +9,7 @@ const { modal: reportUserModal } = require('../../modals/report-user');
  * @param {Discord.ContextMenuInteraction} interaction
  */
 async function reportUserHandler(interaction) {
+  // TODO report user should also be an command, context menus are not available on mobile
 	const { targetId } = interaction;
 
 	if (targetId === interaction.user.id) {
