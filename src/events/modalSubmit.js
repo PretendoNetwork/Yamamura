@@ -19,7 +19,11 @@ async function modalSubmitHandler(interaction) {
 	}
 
 	// run the modal
-	modal.handler(interaction);
+  try {
+    await modal.handler(interaction);
+  } catch {
+    console.error("handler failed modal");
+  }
 }
 
 module.exports = modalSubmitHandler;

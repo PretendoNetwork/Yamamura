@@ -1,3 +1,4 @@
 {
-	"bot_token": "TOKEN"
+  "bot_token": "TOKEN",
+  "guild_id": "GUILDID"
 }

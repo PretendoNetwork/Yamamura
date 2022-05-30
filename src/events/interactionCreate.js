@@ -37,8 +37,8 @@ async function interactionCreateHander(interaction) {
 			} else {
 				await interaction.reply(payload);
 			}
-		} catch (error) {
-			console.log(error);
+		} catch (replyError) {
+			console.log(replyError, error);
 		}
 	}
 }
