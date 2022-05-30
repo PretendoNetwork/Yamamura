@@ -30,7 +30,7 @@ async function readyHandler(client) {
  * @param {Discord.Collection} collection
  */
 function loadBotHandlersCollection(name, collection) {
-	const files = glob.sync(`${__dirname}/../${name}/*.js`);
+	const files = glob.sync(`${__dirname}/../${name}/**/*.js`);
 
 	for (const file of files) {
 		const handler = require(path.resolve(file));

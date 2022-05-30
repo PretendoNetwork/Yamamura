@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const { ContextMenuCommandBuilder } = require('@discordjs/builders');
 const { ApplicationCommandType } = require('discord-api-types/v10');
 const { showModal } = require('discord-modals');
-const { modal: reportUserModal } = require('../modals/report-user');
+const { modal: reportUserModal } = require('../../modals/report-user');
 
 /**
  *
