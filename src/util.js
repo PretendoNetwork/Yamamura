@@ -8,11 +8,13 @@ const db = require('./db');
 async function updateMemberCountChannels(guild) {
 	// TODO this should really done on interval, a bot raid will ratelimit the bot so it cant take any more actions for a while
 	// (this is on global ratelimit iirc)
-	const channels = await guild.channels.fetch();
 
-	const membersChannel = channels.find(channel => channel.id === db.getDB().get('stats.channels.members'));
-	const peopleChannel = channels.find(channel => channel.id === db.getDB().get('stats.channels.people'));
-	const botsChannel = channels.find(channel => channel.id === db.getDB().get('stats.channels.bots'));
+	const memberChannelId = db.getDB().get('stats.channels.members');
+	const peopleChannelId = db.getDB().get('stats.channels.people');
+	const botsChannelId = db.getDB().get('stats.channels.bots');
+	const membersChannel = memberChannelId && await guild.channels.fetch(memberChannelId);
+	const peopleChannel = memberChannelId && await guild.channels.fetch(peopleChannelId);
+	const botsChannel = memberChannelId && await guild.channels.fetch(botsChannelId);
 
 	const members = await guild.members.fetch();
 	const membersCount = guild.memberCount;

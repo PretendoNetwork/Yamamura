@@ -59,8 +59,8 @@ async function modApplicationHandler(interaction) {
 	const applyingMember = await interaction.member.fetch();
 	const guild = await interaction.guild.fetch();
 
-	const channels = await guild.channels.fetch();
-	const channel = channels.find(channel => channel.id === db.getDB().get('mod-applications.channel.log'));
+	const channelId = db.getDB().get('mod-applications.channel.log');
+	const channel = channelId && guild.channels.fetch(channelId);
 
 	if (!channel) {
 		await interaction.editReply({
