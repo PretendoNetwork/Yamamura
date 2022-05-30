@@ -63,11 +63,7 @@ async function modApplicationHandler(interaction) {
 	const channel = channelId && guild.channels.fetch(channelId);
 
 	if (!channel) {
-		await interaction.editReply({
-			content: 'application failed to submit - channel not setup!',
-			ephemeral: true
-		});
-		return;
+		throw new Error('application failed to submit - channel not setup!');
 	}
 
 	const modApplicationEmbed = new Discord.MessageEmbed();

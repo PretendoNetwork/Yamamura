@@ -47,11 +47,7 @@ async function reportUserHandler(interaction) {
 	const reportsChannel = channels.find(channel => channel.id === db.getDB().get('report.channel.log'));
 
 	if (!reportsChannel) {
-		await interaction.editReply({
-			content: 'Report failed to submit - channel not setup',
-			ephemeral: true
-		});
-		return;
+		throw new Error('Report failed to submit - channel not setup');
 	}
 
 	const reportEmbed = new Discord.MessageEmbed();
