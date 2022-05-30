@@ -13,12 +13,11 @@ async function contextMenuHandler(interaction) {
 
 	// do nothing if no contextMenu
 	if (!contextMenu) {
-		interaction.reply(`Missing context menu handler for \`${commandName}\``);
-		return;
+		throw new Error(`Missing context menu handler for \`${commandName}\``);
 	}
 
 	// run the contextMenu
-	contextMenu.handler(interaction);
+	await contextMenu.handler(interaction);
 }
 
 module.exports = contextMenuHandler;

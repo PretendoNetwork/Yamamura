@@ -9,33 +9,24 @@ const { ApplicationCommandType } = require('discord-api-types/v10');
 async function reportUserHandler(interaction) {
 	const { targetId } = interaction;
 
-	try {
-		const message = await interaction.channel.messages.fetch(targetId);
-		const messageJSON = message.toJSON();
+	const message = await interaction.channel.messages.fetch(targetId);
+	const messageJSON = message.toJSON();
 
-		// Only take the properties we need
-		const messagePayload = {
-			content: messageJSON.content || null,
-			embeds: messageJSON.embeds || [],
-			attachments: messageJSON.attachments || [],
-			components: messageJSON.components || []
-		};
+	// Only take the properties we need
+	const messagePayload = {
+		content: messageJSON.content || null,
+		embeds: messageJSON.embeds || [],
+		attachments: messageJSON.attachments || [],
+		components: messageJSON.components || []
+	};
 
-		await interaction.reply({
-			content: 'Message Payload Attached',
-			files: [
-				new Discord.MessageAttachment(Buffer.from(JSON.stringify(messagePayload)), 'message-payload.json')
-			],
-			ephemeral: true
-		});
-	} catch (error) {
-		await interaction.reply({
-			content: error.message,
-			ephemeral: true
-		});
-
-		return;
-	}
+	await interaction.reply({
+		content: 'Message Payload Attached',
+		files: [
+			new Discord.MessageAttachment(Buffer.from(JSON.stringify(messagePayload)), 'message-payload.json')
+		],
+		ephemeral: true
+	});
 }
 
 const contextMenu = new ContextMenuCommandBuilder();

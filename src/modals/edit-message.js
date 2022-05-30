@@ -18,18 +18,9 @@ async function editMessageHandler(interaction) {
 	const messageId = interaction.getTextInputValue('message-id').trim();
 	const payload = interaction.getTextInputValue('payload').trim();
 
-	try {
-		const message = await interaction.channel.messages.fetch(messageId);
-		const messagePayload = JSON.parse(payload);
-		await message.edit(messagePayload);
-	} catch (error) {
-		await interaction.editReply({
-			content: error.message,
-			ephemeral: true
-		});
-
-		return;
-	}
+	const message = await interaction.channel.messages.fetch(messageId);
+	const messagePayload = JSON.parse(payload);
+	await message.edit(messagePayload);
 
 	await interaction.editReply({
 		content: 'Message Edited',

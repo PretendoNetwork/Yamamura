@@ -13,12 +13,11 @@ async function selectMenuHandler(interaction) {
 
 	// do nothing if no selectMenu
 	if (!selectMenu) {
-		interaction.reply(`Missing select menu handler for \`${customId}\``);
-		return;
+		throw new Error(`Missing select menu handler for \`${customId}\``);
 	}
 
 	// run the selectMenu
-	selectMenu.handler(interaction);
+	await selectMenu.handler(interaction);
 }
 
 module.exports = selectMenuHandler;

@@ -13,12 +13,11 @@ async function commandHandler(interaction) {
 
 	// do nothing if no command
 	if (!command) {
-		interaction.reply(`Missing command handler for \`${commandName}\``);
-		return;
+		throw new Error(`Missing command handler for \`${commandName}\``);
 	}
 
 	// run the command
-	command.handler(interaction);
+	await command.handler(interaction);
 }
 
 module.exports = commandHandler;

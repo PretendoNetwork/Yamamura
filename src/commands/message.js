@@ -18,65 +18,56 @@ async function messageHandler(interaction) {
 			interaction: interaction
 		});
 	} else if (action === 'edit') {
-		try {
-			const messageId = interaction.options.getString('message-id');
+		const messageId = interaction.options.getString('message-id');
 
-			if (!messageId) {
-				throw new Error('Message ID is required for this action');
-			}
-
-			/*
-				Make these components here to keep them in the right order
-				and to set the default values
-			*/
-
-			const message = await interaction.channel.messages.fetch(messageId);
-
-			if (message.author.id !== interaction.client.user.id) {
-				throw new Error('Can only manage Yamamura messages with this command');
-			}
-
-			const messageJSON = message.toJSON();
-
-			// Only take the properties we need
-			const messagePayload = {
-				content: messageJSON.content || null,
-				embeds: messageJSON.embeds || [],
-				attachments: messageJSON.attachments || [],
-				components: messageJSON.components || []
-			};
-
-			const messageIdInput = new TextInputComponent();
-			messageIdInput.setCustomId('message-id');
-			messageIdInput.setStyle('SHORT');
-			messageIdInput.setLabel('Message ID (DO NOT CHANGE)');
-			messageIdInput.setDefaultValue(messageId);
-			messageIdInput.setRequired(true);
-
-			const payload = new TextInputComponent();
-			payload.setCustomId('payload');
-			payload.setStyle('LONG');
-			payload.setLabel('Message Payload');
-			payload.setPlaceholder('http://discohook.org & https://discord.com/developers/docs/resources/channel#message-object for help');
-			payload.setDefaultValue(JSON.stringify(messagePayload, null, 4));
-			payload.setRequired(true);
-
-			const modal = cloneDeep(editMessageModal);
-
-			modal.addComponents(messageIdInput, payload);
-
-			await showModal(modal, {
-				client: interaction.client,
-				interaction: interaction
-			});
-		} catch (error) {
-			await interaction.reply({
-				content: error.message,
-				ephemeral: true
-			});
-
-			return;
+		if (!messageId) {
+			throw new Error('Message ID is required for this action');
 		}
+
+		const message = await interaction.channel.messages.fetch(messageId);
+
+		if (message.author.id !== interaction.client.user.id) {
+			throw new Error('Can only manage Yamamura messages with this command');
+		}
+
+		const messageJSON = message.toJSON();
+
+		// Only take the properties we need
+		const messagePayload = {
+			content: messageJSON.content || null,
+			embeds: messageJSON.embeds || [],
+			attachments: messageJSON.attachments || [],
+			components: messageJSON.components || []
+		};
+
+		/*
+			Make these components here to keep them in the right order
+			and to set the default values
+		*/
+
+		const messageIdInput = new TextInputComponent();
+		messageIdInput.setCustomId('message-id');
+		messageIdInput.setStyle('SHORT');
+		messageIdInput.setLabel('Message ID (DO NOT CHANGE)');
+		messageIdInput.setDefaultValue(messageId);
+		messageIdInput.setRequired(true);
+
+		const payload = new TextInputComponent();
+		payload.setCustomId('payload');
+		payload.setStyle('LONG');
+		payload.setLabel('Message Payload');
+		payload.setPlaceholder('http://discohook.org & https://discord.com/developers/docs/resources/channel#message-object for help');
+		payload.setDefaultValue(JSON.stringify(messagePayload, null, 4));
+		payload.setRequired(true);
+
+		const modal = cloneDeep(editMessageModal);
+
+		modal.addComponents(messageIdInput, payload);
+
+		await showModal(modal, {
+			client: interaction.client,
+			interaction: interaction
+		});
 	} else if (action === 'get-payload') {
 		const messageId = interaction.options.getString('message-id');
 
@@ -86,34 +77,25 @@ async function messageHandler(interaction) {
 			}
 		}
 
-		try {
-			const message = await interaction.channel.messages.fetch(messageId);
+		const message = await interaction.channel.messages.fetch(messageId);
 
-			const messageJSON = message.toJSON();
+		const messageJSON = message.toJSON();
 
-			// Only take the properties we need
-			const messagePayload = {
-				content: messageJSON.content || null,
-				embeds: messageJSON.embeds || [],
-				attachments: messageJSON.attachments || [],
-				components: messageJSON.components || []
-			};
+		// Only take the properties we need
+		const messagePayload = {
+			content: messageJSON.content || null,
+			embeds: messageJSON.embeds || [],
+			attachments: messageJSON.attachments || [],
+			components: messageJSON.components || []
+		};
 
-			await interaction.reply({
-				content: 'Message Payload Attached',
-				files: [
-					new Discord.MessageAttachment(Buffer.from(JSON.stringify(messagePayload)), 'message-payload.json')
-				],
-				ephemeral: true
-			});
-		} catch (error) {
-			await interaction.reply({
-				content: error.message,
-				ephemeral: true
-			});
-
-			return;
-		}
+		await interaction.reply({
+			content: 'Message Payload Attached',
+			files: [
+				new Discord.MessageAttachment(Buffer.from(JSON.stringify(messagePayload)), 'message-payload.json')
+			],
+			ephemeral: true
+		});
 	}
 }
 

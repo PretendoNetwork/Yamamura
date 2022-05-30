@@ -26,17 +26,8 @@ async function sendMessageHandler(interaction) {
 
 	const payload = interaction.getTextInputValue('payload').trim();
 
-	try {
-		const messagePayload = JSON.parse(payload);
-		await interaction.channel.send(messagePayload);
-	} catch (error) {
-		await interaction.editReply({
-			content: error.message,
-			ephemeral: true
-		});
-
-		return;
-	}
+	const messagePayload = JSON.parse(payload);
+	await interaction.channel.send(messagePayload);
 
 	await interaction.editReply({
 		content: 'Message Sent',

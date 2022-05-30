@@ -13,12 +13,11 @@ async function buttonHandler(interaction) {
 
 	// do nothing if no button
 	if (!button) {
-		interaction.reply(`Missing button handler for \`${customId}\``);
-		return;
+		throw new Error(`Missing button handler for \`${customId}\``);
 	}
 
 	// run the button
-	button.handler(interaction);
+	await button.handler(interaction);
 }
 
 module.exports = buttonHandler;

@@ -9,20 +9,37 @@ const selectMenuHandler = require('../handlers/select-menu-handler');
  * @param {Discord.Interaction} interaction
  */
 async function interactionCreateHander(interaction) {
-	if (interaction.isCommand()) {
-		await commandHandler(interaction);
-	}
+	try {
+		if (interaction.isCommand()) {
+			await commandHandler(interaction);
+		}
 
-	if (interaction.isButton()) {
-		await buttonHandler(interaction);
-	}
+		if (interaction.isButton()) {
+			await buttonHandler(interaction);
+		}
 
-	if (interaction.isSelectMenu()) {
-		await selectMenuHandler(interaction);
-	}
+		if (interaction.isSelectMenu()) {
+			await selectMenuHandler(interaction);
+		}
 
-	if (interaction.isContextMenu()) {
-		await contextMenuHandler(interaction);
+		if (interaction.isContextMenu()) {
+			await contextMenuHandler(interaction);
+		}
+	} catch (error) {
+		const payload = {
+			content: error.message || 'Missing error message',
+			ephemeral: true
+		};
+
+		try {
+			if (interaction.replied) {
+				await interaction.editReply(payload);
+			} else {
+				await interaction.reply(payload);
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }
 

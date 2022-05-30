@@ -9,7 +9,7 @@ async function messageCreateHandler(message) {
 
 	// Check if the message is a command and handle it
 	if (message.content === '.toggleupdates') {
-		message.reply('Looks like you tried to use a legacy command! Try our new slash commands by just typing "/"!');
+		await message.reply('Looks like you tried to use a legacy command! Try our new slash commands by just typing "/"!');
 		return;
 	}
 }
