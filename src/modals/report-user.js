@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const db = require('../db');
 const { Modal, TextInputComponent, ModalSubmitInteraction } = require('discord-modals');
 const discordTranscripts = require('discord-html-transcripts');
 
@@ -43,7 +44,11 @@ async function reportUserHandler(interaction) {
 	}
 
 	const channels = await interaction.guild.channels.fetch();
-	const reportsChannel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'reports');
+	const reportsChannel = channels.find(channel => channel.id === db.getDB().get('report.channel.log'));
+
+	if (!reportsChannel) {
+		throw new Error('Report failed to submit - channel not setup');
+	}
 
 	const reportEmbed = new Discord.MessageEmbed();
 

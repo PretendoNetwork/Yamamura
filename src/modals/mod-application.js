@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const db = require('../db');
 const { Modal, TextInputComponent, ModalSubmitInteraction } = require('discord-modals');
 const { button: acceptButton } = require('../buttons/mod-application-accept');
 const { button: denyButton } = require('../buttons/mod-application-deny');
@@ -58,8 +59,12 @@ async function modApplicationHandler(interaction) {
 	const applyingMember = await interaction.member.fetch();
 	const guild = await interaction.guild.fetch();
 
-	const channels = await guild.channels.fetch();
-	const channel = channels.find(channel => channel.type === 'GUILD_TEXT' && channel.name === 'mod-applications');
+	const channelId = db.getDB().get('mod-applications.channel.log');
+	const channel = channelId && guild.channels.fetch(channelId);
+
+	if (!channel) {
+		throw new Error('application failed to submit - channel not setup!');
+	}
 
 	const modApplicationEmbed = new Discord.MessageEmbed();
 

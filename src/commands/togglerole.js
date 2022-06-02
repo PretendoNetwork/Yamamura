@@ -15,7 +15,7 @@ async function toggleroleHandler(interaction) {
 	const guild = await interaction.guild.fetch();
 	const roles = await guild.roles.fetch();
 	const role = roles.find(role => role.name.toLowerCase() === roleName);
-	
+
 	if (!role) {
 		await interaction.followUp({
 			content: 'Unable to find the requested role. Contact and admin as soon as possible',
@@ -58,5 +58,5 @@ module.exports = {
 	name: command.name,
 	help: 'Toggle on/off a given user role.\n```\nUsage: /togglerole <role>\n```',
 	handler: toggleroleHandler,
-	deploy: command.toJSON()
+	deploy: command.toJSON(),
 };
