@@ -17,8 +17,10 @@ async function readyHandler(client) {
 
 	// setup joined guilds
 	const guilds = await client.guilds.fetch();
-	for (let guild of guilds) {
-		guild = await guild[1].fetch();
+
+	for (const id of guilds.keys()) {
+		const guild = await guilds.get(id).fetch();
+
 		await setupGuild(guild);
 		console.log(`setup guild: ${guild.name}`);
 	}
