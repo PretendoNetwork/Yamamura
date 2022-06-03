@@ -21,16 +21,19 @@ async function helpHandler(interaction) {
 	});
 
 	if (!commandName) {
+		const commandNames = [...interaction.client.commands.filter(command => command.deploy.default_permission).keys()];
+		const contextMenuNames = [...interaction.client.contextMenus.filter(command => command.deploy.default_permission).keys()];
+
 		helpEmbed.setDescription('To get detailed information about a command, use `/help <command name>` or `/<command name>` to check the commands description\n\nAll commands are Discord application commands with ephemeral (only visible to you) responses. Context Menu commands are visible via right clicking on a message or user and navigating to `Apps > <command name>`');
 		helpEmbed.setFields([
 			{
 				'name': 'Commands',
-				'value': '```\nhelp\nmod-application\ntogglerole\n```',
+				'value': `\`\`\`\n${commandNames.join('\n')}\`\`\``,
 				'inline': true
 			},
 			{
 				'name': 'Context Menus',
-				'value': '```\nReport User\n```',
+				'value': `\`\`\`\n${contextMenuNames.join('\n')}\`\`\``,
 				'inline': true
 			}
 		]);
@@ -65,6 +68,7 @@ command.addStringOption(option => {
 	option.addChoice('/mod-application', 'commands:mod-application');
 	option.addChoice('/togglerole', 'commands:togglerole');
 	option.addChoice('Report User', 'contextMenus:Report User');
+	option.addChoice('Warn Piracy', 'contextMenus:Warn Piracy');
 
 	return option;
 });
