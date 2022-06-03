@@ -32,7 +32,7 @@ async function interactionCreateHander(interaction) {
 		};
 
 		try {
-			if (interaction.replied) {
+			if (interaction.replied || interaction.deferred) {
 				await interaction.editReply(payload);
 			} else {
 				await interaction.reply(payload);
