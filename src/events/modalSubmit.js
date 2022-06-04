@@ -21,8 +21,21 @@ async function modalSubmitHandler(interaction) {
 
 		// run the modal
 		await modal.handler(interaction);
-	} catch (err) {
-		console.error('modal submit failed to be handled', err);
+	} catch (error) {
+		const payload = {
+			content: error.message || 'Missing error message',
+			ephemeral: true
+		};
+
+		try {
+			if (interaction.replied || interaction.deferred) {
+				await interaction.editReply(payload);
+			} else {
+				await interaction.reply(payload);
+			}
+		} catch (replyError) {
+			console.log(replyError, error);
+		}
 	}
 }
 
