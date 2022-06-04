@@ -60,7 +60,7 @@ async function modApplicationHandler(interaction) {
 	const guild = await interaction.guild.fetch();
 
 	const channelId = db.getDB().get('mod-applications.channel.log');
-	const channel = channelId && guild.channels.fetch(channelId);
+	const channel = channelId && await guild.channels.fetch(channelId);
 
 	if (!channel) {
 		throw new Error('application failed to submit - channel not setup!');
