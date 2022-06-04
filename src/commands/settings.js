@@ -10,6 +10,7 @@ const editableOptions = [
 	'stats.channels.members',
 	'stats.channels.people',
 	'stats.channels.bots',
+	'roles.admin',
 ];
 
 async function verifyInputtedKey(interaction) {

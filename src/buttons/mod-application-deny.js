@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const db = require('../db');
 
 const denyButton = new Discord.MessageButton();
 denyButton.setCustomId('mod-application-deny');
@@ -14,7 +15,15 @@ async function modApplicationAcceptHandler(interaction) {
 		ephemeral: true
 	});
 
-	if (!interaction.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
+	const adminRoleId = db.getDB().get('roles.admin');
+
+	if (!adminRoleId) {
+		throw new Error('No admin role ID set!');
+	}
+
+	const hasdAdminRole = interaction.member.roles.cache.get(adminRoleId);
+
+	if (!hasdAdminRole) {
 		throw new Error('Only administrators have permission to accept/deny applications');
 	}
 
