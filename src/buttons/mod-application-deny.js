@@ -14,6 +14,10 @@ async function modApplicationAcceptHandler(interaction) {
 		ephemeral: true
 	});
 
+	if (!interaction.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
+		throw new Error('Only administrators have permission to accept/deny applications');
+	}
+
 	const { message } = interaction;
 	const modApplicationEmbed = message.embeds[0];
 	const rowOld = message.components[0];
